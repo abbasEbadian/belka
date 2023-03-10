@@ -11,7 +11,7 @@ import NightModeContext from "../components/Context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     background-color: #edf8fc;
@@ -105,7 +105,7 @@ const Content = styled.div`
         }
     }
 `;
-const ProfMain = styled.div`
+const ProfMain = styled('div')`
     .b-shad {
         box-shadow: 5px 7px 26px -5px #9f9fbb;
         -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
@@ -123,7 +123,7 @@ const ProfMain = styled.div`
         color: #fff !important;
     }
 `;
-const RightBox = styled.div`
+const RightBox = styled('div')`
     position: relative;
     width: 711px;
     height: 100%;
@@ -204,7 +204,7 @@ const RightBox = styled.div`
         }
     }
 `;
-const LeftBox = styled.div`
+const LeftBox = styled('div')`
     width: 711px;
     padding: 32px;
     padding-top: 50px;
@@ -236,7 +236,7 @@ const LeftBox = styled.div`
         }
     }
 `;
-const Alert = styled.div`
+const Alert = styled('div')`
     width: 473px;
     height: 52px;
     background: #f6543e;
@@ -257,7 +257,7 @@ const Alert = styled.div`
         margin-top: 40px;
     }
 `;
-const Success = styled.div`
+const Success = styled('div')`
     width: 473px;
     height: 52px;
     background: #018f41;
@@ -295,7 +295,7 @@ const Inp = styled.input`
     }
 `;
 
-const SubBtn = styled.button`
+const SubBtn = styled('button')`
     width: 228px;
     height: 39px;
     background: linear-gradient(90deg, #128cbd -1.72%, #3dbdc8 100%);

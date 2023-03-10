@@ -10,8 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-const Main = styled.div``;
-const Circles = styled.div`
+const Main = styled('div')``;
+const Circles = styled('div')`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,7 +20,7 @@ const Circles = styled.div`
         right: 0px;
     }
 `;
-const Circle = styled.div`
+const Circle = styled('div')`
     width: 38px;
     min-width: 38px;
     height: 38px;
@@ -52,12 +52,12 @@ const Circle = styled.div`
     }
 `;
 
-const Line = styled.div`
+const Line = styled('div')`
     width: 100%;
     border-bottom: 1px solid #000;
 `;
 
-const Content = styled.div`
+const Content = styled('div')`
     margin-top: 70px;
     width: 100%;
     display: flex;
@@ -67,7 +67,7 @@ const Content = styled.div`
     }
 `;
 
-const StepOne = styled.div`
+const StepOne = styled('div')`
     width: 625px;
     height: 285px;
     background: #ffffff;
@@ -115,7 +115,7 @@ const StepOne = styled.div`
     -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
 `;
 
-const StepTwo = styled.div`
+const StepTwo = styled('div')`
     box-shadow: 5px 7px 26px -5px #9f9fbb;
     -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
     width: 625px;
@@ -175,7 +175,7 @@ const StepTwo = styled.div`
     }
 `;
 
-const StepThree = styled.div`
+const StepThree = styled('div')`
     width: 625px;
     box-shadow: 5px 7px 26px -5px #9f9fbb;
     -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
@@ -223,7 +223,7 @@ const StepThree = styled.div`
     }
 `;
 
-const BackBtn = styled.button`
+const BackBtn = styled('button')`
     width: 231px;
     height: 42px;
     background: #d6f4ff;
@@ -231,7 +231,7 @@ const BackBtn = styled.button`
     margin-top: 16px;
 `;
 
-const Uploads = styled.div`
+const Uploads = styled('div')`
     display: flex;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -247,7 +247,7 @@ const Uploads = styled.div`
     }
 `;
 
-const Upload = styled.div`
+const Upload = styled('div')`
     border: 3px dashed #29335c;
     width: 100px;
     height: 100px;
@@ -268,7 +268,7 @@ const Upload = styled.div`
     }
 `;
 
-const Submit = styled.button`
+const Submit = styled('button')`
     width: 231px;
     height: 42px;
     margin-top: 65px;

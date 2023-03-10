@@ -1,5 +1,5 @@
 import { Person, PersonAdd } from "@mui/icons-material";
-import { AppBar, Box, Button, Container, Stack, Typography, useMediaQuery } from "@mui/material";
+import { AppBar, Box, Button, Collapse, Container, Divider, IconButton, List, ListItemButton, ListItemText, Menu, MenuItem, MenuList, Stack, Typography, useMediaQuery } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import axios from "axios";
 import Image from "next/image";
@@ -7,149 +7,27 @@ import Link from "next/link";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { baseUrl } from "./BaseUrl";
+import { SETTINGS } from './settings'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import MenuIcon from '@mui/icons-material/Menu';
 
 
-const Headers = styled(AppBar)(({theme}) => ({
-    background: console.log(theme)
+const Headers = styled(AppBar)(({ theme }) => ({
+    background: theme.palette.common.white,
+
 }))
 
-
-const Nav = styled(Box)`
-    border-bottom: 1px solid #222;
-    position: relative;
-    height: 50px;
-    color: rgb(153, 153, 153);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #111;
-    text-align: center;
-    width: 100%;
-    li {
-        margin: 0 13px;
-        cursor: pointer;
-        font-weight: 500;
-        font-size: 15px;
-        color: #fff;
+const Nav = styled(Box)(({ theme }) => ({
+    background: theme.palette.grey[100],
+    paddingBlock: 2,
+    [".active-nav"]: {
+        color: `1px solid ${theme.palette.primary.main}`
     }
-    ul {
-        margin-bottom: 0;
-    }
-    .active {
-        color: #fd961a;
-    }
-    .menu-btn {
-        display: none;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-        cursor: pointer;
-        transition: 0.5s;
-        span {
-            transition: 0.5s;
-            width: 24px;
-            height: 2px;
-            background-color: #fd961a;
-            padding: 0 !important;
-            margin: 3px 0;
-        }
-    }
-    .open-menu {
-        span {
-            :first-child {
-                transform: rotate(45deg) translateY(7px) translateX(4px) !important;
-            }
-            :nth-child(2) {
-                opacity: 0;
-            }
-
-            :nth-child(3) {
-                transform: rotate(-45deg) translateY(-7px) translateX(4px) !important;
-            }
-        }
-    }
-	.dropdown {
-    position: absolute;
-    margin: 0px;
-    padding: 0px;
-    display: none;
-    list-style: none;
-    z-index: 99999;
-    background: black;
-
-
-		
-	}
-	.mobilemenu {
-		display:none;
-	}
-	ul li:hover {
-		color:orange;
-	}
-	.guideli:hover > ul{
-    display:block;
-}
-    @media (max-width: 992px) {
-        justify-content: flex-start;
-        padding: 0 14px;
-
-      .desktopmenu {
-		  
-		  display : none !important; 
-	  }
-        .menu-btn {
-            display: flex;
-        }
-		
-		.mobilemenu {
-	    display: none;
-    list-style: none;
-    position: absolute;
-    width: 320px;
-    z-index: 999;
-    background: black;
-    top: 50px;
-	border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
-		
-	}
-	
-	.mobilemenu li {
-		
-		padding:5px;
-	}
-	
-	.mobilemenu .dropdown {
-    position: relative;
-    margin: 0px;
-    padding: 0px;
-    list-style: none;
-    z-index: 99999;
-    background: #555;
-}
-		
-    }
-`;
-const LandingHeaders = (props) => {
+}))
+const LandingHeaders = ({ page }) => {
     const [LoginUser, setLoginUser] = useState(false);
     const [Show, setShow] = useState(false);
     const isMobile = useMediaQuery("(max-width: 992px)")
-    const handleClick = () => {
-
-        var x = document.getElementById("mobilemenu2");
-
-        console.log(x.style.display);
-
-        if (x.style.display === "none" || x.style.display === "") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-
-
-
-
-    };
 
     let token = "";
     setTimeout(() => {
@@ -177,246 +55,187 @@ const LandingHeaders = (props) => {
                 .catch((error) => { });
         }, 2200);
     }, []);
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl2, setAnchorEl2] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const open2 = Boolean(anchorEl2);
+    const handleMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleMenu2 = (event) => {
+        setAnchorEl2(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleClose2 = () => {
+        setAnchorEl2(null);
+    };
+
     return (
         <Headers>
             <Container maxWidth={"xl"}>
-                <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"} >
-                    <Box position={"relative"} width={130}  height={62}>
-                        <Image src={"/images/logo2.png"} layout={"fill"} onClick={() =>  Router.push("/")} alt='logo'/>
+                <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"} paddingY={{
+                    xs: 0,
+                    md: 1
+                }}>
+                    <Box position={"relative"} width={130} height={62}>
+                        <Image src={"/images/logo2.png"} layout={"fill"} onClick={() => Router.push("/")} alt='logo' />
                     </Box>
-                 
-                    {!LoginUser &&
-                    <>
+
+                    {!LoginUser ?
                         <Stack direction={"row"} spacing={2} alignItems={"center"} flexGrow={1} justifyContent={"flex-end"}>
                             <Link href={"/login"}>
-                                <Button variant="outlined" startIcon={<Person/>} size={ !isMobile ? "large": "small" }>
+                                <Button variant="outlined" startIcon={<Person />} size={!isMobile ? "large" : "small"}>
                                     <Typography color="primary">ورود</Typography>
                                 </Button>
                             </Link>
                             <Link href={"/register"}>
-                                <Button variant="contained" startIcon={<PersonAdd/>} size={ !isMobile ? "large": "small" }>
+                                <Button variant="contained" startIcon={<PersonAdd />} size={!isMobile ? "large" : "small"}>
                                     ثبت نام
                                 </Button>
                             </Link>
 
-                        </Stack>
-                    </>
-                    }
-                    {LoginUser &&
-                        <ul className="unstyled user d-flex">
-                            <li className="sign-in">
-                                <span
-                                    className="btn btn-primary"
-                                    onClick={() => {
-                                        Router.push("/dashboard");
-                                    }}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="14"
-                                        height="16"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path
-                                            id="ic_person_24px"
-                                            d="M12,12A4,4,0,1,0,8,8,4,4,0,0,0,12,12Zm0,2c-2.67,0-8,1.34-8,4v2H20V18C20,15.34,14.67,14,12,14Z"
-                                            transform="translate(-4 -4)"
-                                        />
-                                    </svg>
-                                    حساب کاربری
-                                </span>
-                            </li>
 
-                        </ul>}
+                        </Stack>
+                        :
+                        <Link href={"/dashboard"}>
+                            <Button variant="contained" startIcon={<Person />} size={!isMobile ? "large" : "small"}>
+                                حساب کاربری
+                            </Button>
+                        </Link>
+                    }
                 </Stack>
             </Container>
-            <Nav className="navigation">
-                <ul className="desktopmenu list-unstyled d-flex align-items-center">
-                    <li
-                        onClick={() => {
-                            Router.push("/");
-                        }}
-                        className={props.page == "index" && "active"}
-                    >
-                        خانه
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/trade");
-                        }}
-                        className={props.page == "trade" && "active"}
-                    >
-                        خرید و فروش{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/change");
-                        }}
+            <Nav className="test">
+                {!isMobile ? <Stack direction={'row'} justifyContent={"center"}>
+                    {
+                        NAVITEMS.map((item, idx) => {
+                            if (item.path) return <Link href={item.path} key={idx}>
+                                <Button variant='text' className={page === item.slug ? "active-nav" : ""} color={"neutral"}>
+                                    <Typography variant="body2" color="common.white">{item.title}</Typography>
+                                </Button>
+                            </Link>
 
-                        className={props.page == "change" && "active"}
-                    >
-                        خرید و فروش تتر{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/guide");
-                        }}
-                        className={'guideli ' + (props.page == "guide" && "active")}
+                            return <Box key={idx}>
+                                <Button endIcon={<KeyboardArrowDownIcon />} onClick={handleMenu} variant="text" className={page === item.slug ? "active-nav" : ""} color={"neutral"}>
+                                    <Typography variant="body2" color="common.white">{item.title}</Typography>
+                                </Button>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    sx={{ "&, ul": { padding: " 0 !important" }, "li": { paddingBlock: 1.6 } }}
+                                >
+                                    {item.children.map((child, idx2) => {
+                                        return <><MenuItem onClick={handleClose} key={idx2} >
+                                            <Link href={child.path}>
+                                                {/* <Button variant='text' fullWidth  color={"neutral"}  sx={{'&, & *': {p: 0}, height: "100%"}}> */}
+                                                <Typography variant="body2" color="common.white">{child.title}</Typography>
+                                                {/* </Button> */}
+                                            </Link>
+                                        </MenuItem>
+                                            {idx2 < item.children.length - 1 && <Divider sx={{ margin: "0 !important" }} />}
+                                        </>
+                                    })}
 
-                    >
-                        راهنمای متاورس
-                        <ul className="dropdown" >
+                                </Menu>
+                            </Box>
+                        })
+                    }
+                </Stack>
+                    :
+                    <>
+                        <IconButton onClick={handleMenu2}>
+                            <MenuIcon />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEl2}
+                            open={open2}
+                            onClose={handleClose2}
+                            sx={{
+                                "&, ul": { padding: " 0 !important" },
+                                "li": { paddingBlock: 1.6 },
+                                "ul": {
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    maxWidth: "100vw",
+                                    width: 300
+                                }
+                            }}
+                        >
+                            {
+                                NAVITEMS.map((item, idx) => {
+                                    if (item.path) return <Link href={item.path} key={idx}>
+                                        <Button variant='text' className={page === item.slug ? "active-nav" : ""} color={"neutral"}>
+                                            <Typography variant="body2" color="common.white">{item.title}</Typography>
+                                        </Button>
+                                    </Link>
 
-                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_sell">آموزش خرید و فروش ارز دیجیتال</a></li>
-                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_usdt">آموزش خرید و فروش تتر
-                            </a></li>
-                            <li className="menu-items" ><a href="https://metavers-ex.com/help_register">راهنمای ثبت نام
-                            </a></li>
-
-                        </ul>
-
-
-                    </li>
-                    <li>
-                        <a className="no-under" target="blank" href="https://blog.metavers-ex.com">
-                            آکادمی متاورس{" "}
-                        </a>
-                    </li>
-
-                    <li
-                        onClick={() => {
-                            Router.push("/faq");
-                        }}
-                        className={props.page == "faq" && "active"}
-                    >
-                        {" "}
-                        سوالات متداول{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/our_rules");
-                        }}
-                        className={props.page == "our_rules" && "active"}
-                    >
-                        قوانین ما{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/about_us");
-                        }}
-                        className={props.page == "about_us" && "active"}
-                    >
-                        درباره ما{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/contact_us");
-                        }}
-                        className={props.page == "contact_us" && "active"}
-                    >
-                        تماس با ما
-                    </li>
-                </ul>
-                <ul className="mobilemenu" id="mobilemenu2">
-                    <li
-                        onClick={() => {
-                            Router.push("/");
-                        }}
-                        className={props.page == "index" && "active"}
-                    >
-                        خانه
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/trade");
-                        }}
-                        className={props.page == "trade" && "active"}
-                    >
-                        خرید و فروش{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/change");
-                        }}
-
-                        className={props.page == "change" && "active"}
-                    >
-                        خرید و فروش تتر{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/guide");
-                        }}
-                        className={'guideli ' + (props.page == "guide" && "active")}
-
-                    >
-                        راهنمای متاورس
-                        <ul className="dropdown" >
-
-                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_sell">آموزش خرید و فروش ارز دیجیتال</a></li>
-                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_usdt">آموزش خرید و فروش تتر
-                            </a></li>
-                            <li className="menu-items" ><a href="https://metavers-ex.com/help_register">راهنمای ثبت نام
-                            </a></li>
-
-                        </ul>
+                                    return <Box key={idx}>
+                                        <Button fullWidth endIcon={<KeyboardArrowDownIcon />} onClick={e => setShow(f => !f)} variant="text" className={page === item.slug ? "active-nav" : ""} color={"neutral"}>
+                                            <Typography variant="body2" color="common.white">{item.title}</Typography>
+                                        </Button>
+                                        <Collapse in={Show} timeout="auto" unmountOnExit>
+                                            <List component="div" disablePadding >
+                                                
+                                                    {
+                                                        item.children.map((child, idx2) => {
+                                                            return <><ListItemButton sx={{ pl: 4 }}><ListItemText key={idx2}>
+                                                                <Link href={child.path}>
+                                                                    <Typography variant="body2" color="common.white">{child.title}</Typography>
+                                                                </Link>
+                                                            </ListItemText>
+                                                            </ListItemButton>
+                                                            {idx2 < item.children.length - 1 && <Divider sx={{ margin: "0 !important" }} />}
+                                                            </>
+                                                        })
+                                                    }
+                                                    
+                                            </List>
+                                        </Collapse>
+                                        <Menu
+                                            anchorEl={anchorEl}
+                                            open={open}
+                                            onClose={handleClose2}
+                                            sx={{ "&, ul": { padding: " 0 !important" }, "li": { paddingBlock: 1.6 } }}
+                                        >
 
 
-                    </li>
-                    <li>
-                        <a className="no-under" target="blank" href="https://blog.metavers-ex.com">
-                            آکادمی متاورس{" "}
-                        </a>
-                    </li>
+                                        </Menu>
+                                    </Box>
+                                })
+                            }
 
-                    <li
-                        onClick={() => {
-                            Router.push("/faq");
-                        }}
-                        className={props.page == "faq" && "active"}
-                    >
-                        {" "}
-                        سوالات متداول{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/our_rules");
-                        }}
-                        className={props.page == "our_rules" && "active"}
-                    >
-                        قوانین ما{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/about_us");
-                        }}
-                        className={props.page == "about_us" && "active"}
-                    >
-                        درباره ما{" "}
-                    </li>
-                    <li
-                        onClick={() => {
-                            Router.push("/contact_us");
-                        }}
-                        className={props.page == "contact_us" && "active"}
-                    >
-                        تماس با ما
-                    </li>
-                </ul>
-                <div
-                    className={Show ? "menu-btn open-menu" : "menu-btn"}
-                    onClick={() => {
-                        setShow(!Show);
-                        handleClick();
-                    }}
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+                        </Menu>
+                    </>
+                }
+
+              
             </Nav>
         </Headers>
     );
 };
-
 export default LandingHeaders;
+
+
+
+const NAVITEMS = [
+    { slug: "home", title: "خانه", path: "/" },
+    { slug: "trade", title: " خرید و فروش", path: "/trade" },
+    { slug: "wallet", title: "خرید و فروش تتر", path: "/wallet" },
+    {
+        slug: "help", title: ` راهنمای ${SETTINGS.WEBSITE_NAME}`, path: null, children: [
+            { slug: "", title: "آموزش خرید و فروش ارز دیجیتال", path: "/help_buy_sell" },
+            { slug: "", title: "آموزش خرید و فروش تتر", path: "/help_buy_usdt" },
+            { slug: "", title: "راهنمای ثبت نام", path: "/help_register" },
+        ]
+    },
+    { slug: "", title: `آکادمی ${SETTINGS.WEBSITE_NAME}`, path: "/" },
+    { slug: "faq", title: "سوالات متداول", path: "/faq" },
+    { slug: "rules", title: "قوانین ما", path: "/our_rules" },
+    { slug: "about", title: "درباره ما", path: "/about_us" },
+    { slug: "contact", title: "تماس با ما", path: "/contact_us" },
+]

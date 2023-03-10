@@ -16,7 +16,7 @@ import NightModeContext from "../components/Context";
 import RialDeposit from "../components/Wallet/RialDeposit";
 import RialWithdraw from "../components/Wallet/RialWithdraw";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
@@ -91,7 +91,7 @@ const Main = styled.div`
         }
     }
 `;
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     padding-bottom: 70px;
@@ -137,7 +137,7 @@ const Content = styled.div`
     }
 `;
 
-const WalletMain = styled.div`
+const WalletMain = styled('div')`
     padding: 20px 32px;
     min-height: 100vh;
     h4 {
@@ -285,7 +285,7 @@ const WalletTable = styled.table`
     }
 `;
 
-const ShowGenModal = styled.div`
+const ShowGenModal = styled('div')`
     width: 260px;
     height: 200px;
     border-radius: 20px;

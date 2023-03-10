@@ -6,7 +6,7 @@ import { baseUrl } from "../BaseUrl";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Main = styled.div`
+const Main = styled('div')`
 `
 
 const ChangePassword = () => {

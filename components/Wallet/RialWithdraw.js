@@ -7,7 +7,7 @@ import { baseUrl } from "../BaseUrl";
 import axios from "axios";
 import Select from "react-select";
 
-const Main = styled.div`
+const Main = styled('div')`
     z-index: 10;
     .box {
         width: 595px;
@@ -50,7 +50,7 @@ const Main = styled.div`
     }
 `;
 
-const InputBox = styled.div`
+const InputBox = styled('div')`
     width: 100%;
     position: relative;
     input {
@@ -79,7 +79,7 @@ const InputBox = styled.div`
     }
 `;
 
-const Submit = styled.button`
+const Submit = styled('button')`
     :disabled {
         opacity: 0.5;
     }
@@ -99,7 +99,7 @@ const Submit = styled.button`
     }
 `;
 
-const AddCard = styled.div`
+const AddCard = styled('div')`
     button {
         width: 130px;
         height: 36px;
@@ -123,7 +123,7 @@ const AddCard = styled.div`
         direction: rtl;
     }
 `;
-const Limits = styled.div`
+const Limits = styled('div')`
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px;

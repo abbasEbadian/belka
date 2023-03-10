@@ -6,7 +6,7 @@ import NightModeContext from "./Context";
 
 import LogoImage from "../public/images/logo.png"
 
-const SidebarMain = styled.div`
+const SidebarMain = styled('div')`
     z-index: 100000;
     position: fixed;
     width: 240px;
@@ -27,7 +27,7 @@ const SidebarMain = styled.div`
         fill: #fff;
     }
 `;
-const SidebarHeader = styled.div`
+const SidebarHeader = styled('div')`
     height: 70px;
     display: flex;
     align-items: center;

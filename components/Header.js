@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { baseUrl } from "./BaseUrl";
 import axios from "axios";
-const HeaderMain = styled.div`
+const HeaderMain = styled('div')`
     border-bottom: 1px solid #d4d2e24b;
     display: flex;
     align-items: center;
@@ -47,7 +47,7 @@ const HeaderMain = styled.div`
     }
 `;
 
-const HeaderRight = styled.div`
+const HeaderRight = styled('div')`
     display: flex;
     align-items: center;
     padding-right: 20px;
@@ -72,7 +72,7 @@ const HeaderRight = styled.div`
     }
 `;
 
-const HeaderLeft = styled.div`
+const HeaderLeft = styled('div')`
     display: flex;
     align-items: center;
     padding-left: 30px;
@@ -176,7 +176,7 @@ const HeaderLeft = styled.div`
     }
 `;
 
-const HeaderLeftMob = styled.div`
+const HeaderLeftMob = styled('div')`
     width: 100%;
     padding-right: 20px;
     z-index: 2 !important;
@@ -294,7 +294,7 @@ const HeaderLeftMob = styled.div`
     }
 `;
 
-const Badge = styled.div`
+const Badge = styled('div')`
     @keyframes ppp {
         0% {
             -webkit-box-shadow: 0 0 0 0 rgba(34, 192, 60, 0.9);

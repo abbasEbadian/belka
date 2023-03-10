@@ -7,7 +7,7 @@ import NightModeContext from "../Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
  
-const Main = styled.div`
+const Main = styled('div')`
     box-shadow: 5px 7px 12px -5px #9f9fbb;
     -webkit-box-shadow: 5px 7px 12px -5px #9f9fbb;
     height: 300px;

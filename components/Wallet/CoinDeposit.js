@@ -6,7 +6,7 @@ import QRCode from "react-qr-code";
 import { baseUrl } from "../BaseUrl";
 import axios from "axios";
 
-const Main = styled.div`
+const Main = styled('div')`
     z-index: 10;
     .lds-ring {
         display: inline-block;
@@ -168,7 +168,7 @@ const Main = styled.div`
     }
 `;
 
-const TxId = styled.div`
+const TxId = styled('div')`
     width: 100%;
     height: 100%;
     .center {

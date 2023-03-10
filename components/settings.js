@@ -46,6 +46,9 @@ export const theme = createTheme({
             primary: "#FFF",
             secondary: "#999"
         },
+        neutral: {
+          main: "#aaa",
+        },
         contrastThreshold: 3,
         tonalOffset: 0.2,
     },

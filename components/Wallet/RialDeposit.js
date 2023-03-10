@@ -6,7 +6,7 @@ import QRCode from "react-qr-code";
 import { baseUrl } from "../BaseUrl";
 import axios from "axios";
 
-const Main = styled.div`
+const Main = styled('div')`
     z-index: 10;
     .selecct {
         width: 220px;
@@ -88,7 +88,7 @@ const Main = styled.div`
     }
 `;
 
-const InputBox = styled.div`
+const InputBox = styled('div')`
     width: 305px;
     position: relative;
     input {
@@ -115,7 +115,7 @@ const InputBox = styled.div`
     }
 `;
 
-const Submit = styled.button`
+const Submit = styled('button')`
     width: 193px;
     height: 37px;
     background: linear-gradient(90deg, #5965f9  -1.72%, #7d86fd  100%);
@@ -133,7 +133,7 @@ const Submit = styled.button`
     }
 `;
 
-const PriceBox = styled.div`
+const PriceBox = styled('div')`
     min-width: 93px;
     margin-left: 5px;
     margin-right: 5px;
@@ -146,7 +146,7 @@ const PriceBox = styled.div`
     cursor: pointer;
 `;
 
-const AddCard = styled.div`
+const AddCard = styled('div')`
     button {
         width: 130px;
         height: 36px;
@@ -170,7 +170,7 @@ const AddCard = styled.div`
         direction: rtl;
     }
 `;
-const Limits = styled.div`
+const Limits = styled('div')`
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px;

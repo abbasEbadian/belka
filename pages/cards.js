@@ -17,7 +17,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 
 
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     background-color: #e4e3ef;
@@ -64,7 +64,7 @@ const Content = styled.div`
         }
     }
 `;
-const CardsMain = styled.div`
+const CardsMain = styled('div')`
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -77,7 +77,7 @@ const CardsMain = styled.div`
         color: #fff !important;
     }
 `;
-const Box = styled.div`
+const Box = styled('div')`
     width: 100%;
     height: 100%;
     background-color: #fff;
@@ -128,7 +128,7 @@ const Box = styled.div`
         margin-bottom: 20px;
     }
 `;
-const Card = styled.div`
+const Card = styled('div')`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #eee;
@@ -142,7 +142,7 @@ const Card = styled.div`
     }
 `;
 
-const AddCard = styled.button`
+const AddCard = styled('button')`
     width: 260px;
     height: 40px;
     margin-right: auto;
@@ -153,7 +153,7 @@ const AddCard = styled.button`
     color: #fff;
 `;
 
-const Modal = styled.div`
+const Modal = styled('div')`
     position: absolute;
     z-index: 10;
     width: 450px;

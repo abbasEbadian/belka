@@ -11,7 +11,7 @@ import NightModeContext from "../components/Context";
 import { toast, ToastContainer } from "react-toastify";
 import ReactCodeInput from "react-code-input";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
@@ -36,7 +36,7 @@ const Main = styled.div`
         }
     }
 `;
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     padding-bottom: 70px;
@@ -80,7 +80,7 @@ const Content = styled.div`
     }
 `;
 
-const AuthMain = styled.div`
+const AuthMain = styled('div')`
     margin-top: 70px;
     width: 100%;
     display: flex;
@@ -123,7 +123,7 @@ const AuthMain = styled.div`
         }
     }
 `;
-const Submit = styled.button`
+const Submit = styled('button')`
     width: 260px;
     height: 42px;
     border-radius: 8px;

@@ -9,7 +9,7 @@ import axios from "axios";
 import { baseUrl } from "../components/BaseUrl";
 import NightModeContext from "../components/Context";
 import moment from "jalali-moment";
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
@@ -58,7 +58,7 @@ const Main = styled.div`
         }
     }
 `;
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     .p-32 {

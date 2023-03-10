@@ -11,12 +11,12 @@ import axios from "axios";
 import { baseUrl } from "../components/BaseUrl";
 import NightModeContext from "../components/Context";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
 `;
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     padding-bottom: 70px;
@@ -60,7 +60,7 @@ const Content = styled.div`
     }
 `;
 
-const AuthMain = styled.div`
+const AuthMain = styled('div')`
     padding: 32px;
     h2 {
         color: #000;

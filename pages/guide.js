@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import "bootstrap/dist/css/bootstrap.css";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #111;
     width: 100%;
     min-height: 100vh;

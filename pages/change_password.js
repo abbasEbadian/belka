@@ -11,7 +11,7 @@ import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
@@ -31,7 +31,7 @@ const Main = styled.div`
     #tsparticles canvas {
     }
 `;
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     padding-bottom: 70px;
@@ -41,7 +41,7 @@ const Content = styled.div`
         }
     }
 `;
-const ChangeMain = styled.div`
+const ChangeMain = styled('div')`
     position: relative;
     z-index: 9999 !important;
     border-radius: 10px;
@@ -59,7 +59,7 @@ const ChangeMain = styled.div`
     -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
 `;
 
-const ChangeHead = styled.div`
+const ChangeHead = styled('div')`
     height: 60px;
     width: 100%;
     padding: 16px;
@@ -76,7 +76,7 @@ const ChangeHead = styled.div`
     }
 `;
 
-const ChangeContent = styled.div`
+const ChangeContent = styled('div')`
     padding: 16px;
     display: flex;
     flex-direction: column;

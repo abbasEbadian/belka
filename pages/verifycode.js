@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
 
-const Main = styled.div`
+const Main = styled('div')`
     width: 100%;
     height: 100vh;
     display: flex;
@@ -20,7 +20,7 @@ const Main = styled.div`
     padding: 24px;
 `;
 
-const Content = styled.div`
+const Content = styled('div')`
     .w-50 {
     }
     max-width: 1280px;
@@ -35,7 +35,7 @@ const Content = styled.div`
     }
 `;
 
-const LeftContent = styled.div`
+const LeftContent = styled('div')`
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -45,7 +45,7 @@ const LeftContent = styled.div`
     z-index: 1000;
 `;
 
-const Box = styled.div`
+const Box = styled('div')`
     width: 400px;
     height: 402px;
     background: #ffffff;
@@ -90,7 +90,7 @@ const Box = styled.div`
     }
 `;
 
-const Submit = styled.button`
+const Submit = styled('button')`
     width: 90%;
     height: 42px;
     border-radius: 8px;

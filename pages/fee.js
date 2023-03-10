@@ -5,7 +5,7 @@ import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #111;
     width: 100%;
     min-height: 100vh;
@@ -40,7 +40,7 @@ const Main = styled.div`
     }
 `;
 
-const FeeMain = styled.div`
+const FeeMain = styled('div')`
     width: 100%;
     margin-top: 50px;
     font-family: IRANSansX, sans-serif;
@@ -48,7 +48,7 @@ const FeeMain = styled.div`
         font-family: IRANSansX, sans-serif;
     }
 `;
-const FeeContent = styled.div`
+const FeeContent = styled('div')`
     padding-top: 30px;
     padding-left: 20px;
     justify-content: center;

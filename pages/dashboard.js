@@ -20,7 +20,7 @@ import { chartDatas2 } from "../components/Dashboard/ChartData";
 import { chartDatas3 } from "../components/Dashboard/ChartData";
 import { chartDatas4 } from "../components/Dashboard/ChartData";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
@@ -30,8 +30,8 @@ const Main = styled.div`
         }
     }
 `;
-const Content = styled.div``;
-const MainCoin = styled.div`
+const Content = styled('div')``;
+const MainCoin = styled('div')`
     h2 {
         font-size: 18px;
         font-weight: 600;
@@ -60,7 +60,7 @@ const MainCoin = styled.div`
     }
 `;
 
-const Cards = styled.div`
+const Cards = styled('div')`
     display: flex;
     align-items: center;
     overflow: auto;
@@ -82,7 +82,7 @@ const Cards = styled.div`
     }
 `;
 
-const Card = styled.div`
+const Card = styled('div')`
     position: relative;
     min-width: 214px;
     max-width: 214px;
@@ -158,7 +158,7 @@ const Card = styled.div`
     }
 `;
 
-const FlexMain = styled.div`
+const FlexMain = styled('div')`
     display: flex;
     width: 100%;
     justify-content: center;
@@ -198,7 +198,7 @@ const FlexMain = styled.div`
         max-width: 1000px;
     }
 `;
-const History = styled.div`
+const History = styled('div')`
     box-shadow: 5px 7px 12px -5px #9f9fbb;
     -webkit-box-shadow: 5px 7px 12px -5px #9f9fbb;
     height: 380px;
@@ -235,7 +235,7 @@ const History = styled.div`
     }
 `;
 
-const WalletMain = styled.div`
+const WalletMain = styled('div')`
     box-shadow: 5px 7px 12px -5px #9f9fbb;
     -webkit-box-shadow: 5px 7px 12px -5px #9f9fbb;
     height: 380px;
@@ -280,7 +280,7 @@ const WalletMain = styled.div`
     }
 `;
 
-const ChartDiv = styled.div`
+const ChartDiv = styled('div')`
     box-shadow: 5px 7px 12px -5px #9f9fbb;
     -webkit-box-shadow: 5px 7px 12px -5px #9f9fbb;
     height: 100%;

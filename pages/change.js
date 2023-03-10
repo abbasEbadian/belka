@@ -12,7 +12,7 @@ import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
-const Main = styled.div`
+const Main = styled('div')`
     background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
@@ -128,7 +128,7 @@ const Main = styled.div`
         color: #fff;
     }
 `;
-const Content = styled.div`
+const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
     padding-bottom: 70px;
@@ -154,7 +154,7 @@ const Content = styled.div`
     @media (max-width: 786px) {
     }
 `;
-const TradeMain = styled.div`
+const TradeMain = styled('div')`
     padding: 16px 0 0 0;
     min-height: 400px;
     z-index: 99;
@@ -212,7 +212,7 @@ const TradeMain = styled.div`
     }
 `;
 
-const TradeBox = styled.div`
+const TradeBox = styled('div')`
     width: calc(100vw);
     margin-right: auto;
     margin-left: auto;
@@ -310,7 +310,7 @@ const TradeBox = styled.div`
     }
 `;
 
-const Inventory = styled.div`
+const Inventory = styled('div')`
     border-bottom: 1px solid rgb(172, 172, 172);
     display: flex;
     align-items: center;
@@ -318,7 +318,7 @@ const Inventory = styled.div`
     padding: 16px 0;
 `;
 
-const SelectCoin = styled.div`
+const SelectCoin = styled('div')`
     width: 100% !important;
     h5 {
         font-size: 16px;
@@ -331,7 +331,7 @@ const SelectCoin = styled.div`
         margin-left: 5px;
     }
 `;
-const MainTable = styled.div`
+const MainTable = styled('div')`
     position: relative;
     margin-top: 100px;
     z-index: 10;

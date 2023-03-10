@@ -9,7 +9,7 @@ import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { baseUrl } from "../BaseUrl";
-const TradeMain = styled.div`
+const TradeMain = styled('div')`
     position: relative;
     .select-all {
         width: 100px;
@@ -90,7 +90,7 @@ const TradeMain = styled.div`
         margin-top : 10px;
     }
 `;
-const TradeBox = styled.div`
+const TradeBox = styled('div')`
     .head {
         color: #000;
         font-size: 15px;
@@ -229,7 +229,7 @@ const TradeBox = styled.div`
         color: #fff;
     }
 `;
-const Inventory = styled.div`
+const Inventory = styled('div')`
     border-bottom: 1px solid rgb(172, 172, 172);
     display: flex;
     align-items: center;
@@ -240,7 +240,7 @@ const Inventory = styled.div`
     }
 `;
 
-const SelectCoin = styled.div`
+const SelectCoin = styled('div')`
     width: 100% !important;
     h5 {
         font-size: 14px;
