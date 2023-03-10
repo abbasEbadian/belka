@@ -8,11 +8,23 @@ export const SETTINGS = {
 
 export const theme = createTheme({
     palette: {
+        mode:"dark",
+        breakpoints: {
+            values: {
+              xs: 0,
+              sm: 576,
+              md: 768,
+              lg: 992,
+              xl: 1200,
+              xxl: 1400
+            },
+          },
         grey: {
             100: "#111111",
+            200: "#1d1d1d"
         },
         primary: {
-            light: "#f5c791",
+            light: "#feffc6",
             main: '#fd961a',
             dark: "#a05700"
         },
@@ -27,7 +39,10 @@ export const theme = createTheme({
             dark: '#ef6c00',
             contrastText: 'rgba(0, 0, 0, 0.87)',
         },
-
+        text: {
+            primary: "#FFF",
+            secondary: "#999"
+        },
         contrastThreshold: 3,
         tonalOffset: 0.2,
     },
