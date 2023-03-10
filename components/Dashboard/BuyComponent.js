@@ -1,6 +1,6 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
@@ -315,7 +315,7 @@ const BuyComponent = () => {
     };
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage.getItem("refresh_token");
+        refreshToken = localStorage && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {

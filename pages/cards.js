@@ -1,6 +1,6 @@
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import { baseUrl } from "../components/BaseUrl";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
@@ -229,7 +229,7 @@ export default function Cards() {
     const stts = useContext(NightModeContext);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage.getItem("refresh_token");
+        refreshToken = localStorage && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {

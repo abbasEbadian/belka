@@ -85,7 +85,7 @@ input::-webkit-inner-spin-button {
 
 button {
     font-family: IRANSansX;
-    border: none !important;
+    border: none ;
     outline: none !important;
 }
 button:hover {

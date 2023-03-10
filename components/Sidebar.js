@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import Router from "next/router";
 import NightModeContext from "./Context";

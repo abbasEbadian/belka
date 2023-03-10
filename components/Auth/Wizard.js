@@ -3,7 +3,7 @@ import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import ReactCodeInput from "react-code-input";
 import ReactInputMask from "react-input-mask";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import { baseUrl } from "../BaseUrl";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";

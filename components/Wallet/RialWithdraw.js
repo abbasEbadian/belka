@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import QRCode from "react-qr-code";
 import { baseUrl } from "../BaseUrl";
 import axios from "axios";

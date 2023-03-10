@@ -1,6 +1,6 @@
 import React from "react";
 import Select from 'react-select'
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Router from "next/router";
@@ -9,10 +9,11 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SETTINGS } from "./settings";
+import { Box } from "@mui/material";
 
 
 
-const Calc = styled.div`
+const Calc = styled(Box)`
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
         url("/images/calc.jpg");
     height: 218px;

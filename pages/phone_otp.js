@@ -1,7 +1,7 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
 import Sidebar from "../components/Sidebar";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";

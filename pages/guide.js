@@ -1,6 +1,6 @@
 import LandingHeaders from "../components/LandingHeaders";
 import Head from "next/head";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import "bootstrap/dist/css/bootstrap.css";
 

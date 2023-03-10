@@ -1,7 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Router from "next/router";
-const Footer = styled.footer`
+import { Box } from "@mui/material";
+const Footer = styled(Box)`
     display: flex;
     justify-content: space-around;
     padding: 40px;

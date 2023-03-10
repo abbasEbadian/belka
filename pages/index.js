@@ -1,5 +1,5 @@
 import Head from "next/head";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import "bootstrap/dist/css/bootstrap.css";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -10,8 +10,9 @@ import LandingHeaders from "../components/LandingHeaders";
 import LandingFooter from "../components/LandingFooter";
 import HomeCalculator from "../components/HomeCalculator";
 import { SETTINGS } from "../components/settings";
+import { Box } from "@mui/material";
 
-const Main = styled.div`
+const Main = styled(Box)`
     background-color: #111;
     width: 100%;
     min-height: 100vh;
@@ -46,7 +47,7 @@ const Main = styled.div`
     }
 `;
 
-const Slider = styled.div`
+const Slider = styled(Box)`
     height: 100%;
     position: relative;
     .op-0 {
@@ -208,7 +209,7 @@ const Slider = styled.div`
     }
 `;
 
-const MainTable = styled.div`
+const MainTable = styled(Box)`
     position: relative;
     top: -50px;
     z-index: 10;
@@ -354,7 +355,7 @@ const MainTable = styled.div`
     }
 `;
 
-const Features = styled.div`
+const Features = styled(Box)`
     z-index: 10;
     width: 100%;
     background-color: rgb(29, 29, 29);
@@ -413,7 +414,7 @@ const Features = styled.div`
     }
 `;
 
-const AboutUs = styled.div`
+const AboutUs = styled(Box)`
     h3 {
         font-size: 45px;
         font-weight: 800;
@@ -469,7 +470,7 @@ const AboutUs = styled.div`
     }
 `;
 
-const WeAre = styled.div`
+const WeAre = styled(Box)`
     display: flex;
     align-items: center;
     width: calc(100vw - 100px);
@@ -561,7 +562,7 @@ const WeAre = styled.div`
     }
 `;
 
-const Items = styled.div`
+const Items = styled(Box)`
     display: flex;
     flex-wrap: wrap;
     margin-top: 40px;
@@ -599,7 +600,7 @@ const Items = styled.div`
     }
 `;
 
-const Calc = styled.div`
+const Calc = styled(Box)`
     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
         url("/images/calc.jpg");
     height: 218px;
@@ -676,7 +677,7 @@ const Calc = styled.div`
     }
 `;
 
-const Blog = styled.div`
+const Blog = styled(Box)`
     h3 {
         font-size: 45px;
         font-weight: 800;
@@ -751,7 +752,7 @@ const Blog = styled.div`
     }
 `;
 
-const Post = styled.div`
+const Post = styled(Box)`
     margin: 0 10px;
     h5 {
         color: #fff;

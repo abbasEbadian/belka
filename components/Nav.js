@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 // import { BurgerIcon } from './'
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 
 const Navigation = styled.header`
   width: 100%;

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import "bootstrap/dist/css/bootstrap.css";
 import Router from "next/router";
 import ReactCodeInput from "react-code-input";

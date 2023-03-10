@@ -1,7 +1,7 @@
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import "bootstrap/dist/css/bootstrap.css";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import { baseUrl } from "../components/BaseUrl";
@@ -364,7 +364,7 @@ export default function Dashboard() {
     }, 2000);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage.getItem("refresh_token");
+        refreshToken = localStorage && localStorage.getItem("refresh_token");
     }, 10000);
 
     setTimeout(() => {

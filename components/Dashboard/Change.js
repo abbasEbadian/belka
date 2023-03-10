@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Select from "react-select";
 import axios from "axios";
 import { baseUrl } from "../BaseUrl";
@@ -152,7 +152,7 @@ const Change = () => {
     }, 2000);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage.getItem("refresh_token");
+        refreshToken = localStorage && localStorage.getItem("refresh_token");
     }, 10000);
 
     setTimeout(() => {

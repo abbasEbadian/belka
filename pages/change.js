@@ -1,7 +1,7 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
 import Sidebar from "../components/Sidebar";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
@@ -498,7 +498,7 @@ export default function Change() {
             localStorage.getItem("token") == null ||
             typeof window == "undefined"
         ) {
-            Router.push("/login");
+            // Router.push("/login");
         }
     }, []);
     const [showMenu, setShowMenu] = useState(true);
@@ -507,7 +507,7 @@ export default function Change() {
     };
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage.getItem("refresh_token");
+        refreshToken = localStorage && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -575,7 +575,7 @@ export default function Change() {
         axios(config)
             .then((res) => {
                 if (res.status == "200") {
-                    setCoins(res.data);
+                    setCoins(typeof res.data === typeof []? res.data: []);
                 }
             })
             .catch((error) => {});

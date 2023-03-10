@@ -7,8 +7,10 @@ export const SETTINGS = {
 }
 
 export const theme = createTheme({
+    direction:'rtl',
     palette: {
         mode:"dark",
+        
         breakpoints: {
             values: {
               xs: 0,
@@ -26,7 +28,8 @@ export const theme = createTheme({
         primary: {
             light: "#feffc6",
             main: '#fd961a',
-            dark: "#a05700"
+            dark: "#a05700",
+            contrastText: "#fff"
         },
         secondary: {
             light: '#0066ff',
@@ -46,4 +49,19 @@ export const theme = createTheme({
         contrastThreshold: 3,
         tonalOffset: 0.2,
     },
+    components: {
+        MuiButton: {
+          styleOverrides: {
+            root: ({ ownerState }) => ({
+                    ...(ownerState.size === 'medium' && {
+                    padding: '8px 14px',
+                    "[class*=startIcon]": {
+                        margin: "0 0 0 4px"
+                      }
+                  }),
+                  
+            }),
+          },
+        },
+      },
 });

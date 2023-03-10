@@ -1,85 +1,20 @@
+import { Person, PersonAdd } from "@mui/icons-material";
+import { AppBar, Box, Button, Container, Stack, Typography, useMediaQuery } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { baseUrl } from "./BaseUrl";
-const Headers = styled.div`
-    background: #ffffff;
-    .sign-in {
-        span {
-            border: 1px solid #fd961a;
-            color: #fd961a;
-            font-size: 13px;
-            background: transparent;
-            padding: 11px 17px;
-            font-weight: 600;
-            transition: 0.3s;
-            svg {
-                fill: #fd961a;
-                margin-left: 10px;
-            }
-            :hover {
-                background: rgba(253, 150, 26, 0.9) !important;
-                outline: none !important;
-                color: #fff;
-                svg {
-                    fill: #fff;
-                }
-            }
-        }
-    }
-    .sign-up {
-        span {
-            border: 1px solid #fd961a;
-            background: #fd961a;
-            font-size: 13px;
-            transition: 0.3s;
-            font-weight: 600;
-            padding: 11px 17px;
-            svg {
-                margin-left: 10px;
-                fill: #fff;
-            }
-            :hover {
-                background: rgba(253, 150, 26, 0.9) !important;
-                outline: none !important;
-                color: #fff;
-            }
-        }
-    }
-    .user {
-        display: flex;
-        align-items: center;
-        padding: 20px 0;
-    }
-    ul.user li {
-        padding-right: 25px;
-    }
-    @media (max-width: 768px) {
-        img {
-            width: 115px !important;
-            height: 50px !important;
-            padding-right: 10px !important;
-        }
-        span {
-            padding: 7px 11px !important;
-            font-size: 11px !important;
-        }
-        ul.user {
-        }
-        ul.user li.sign-in {
-            padding-right: 5px !important;
-        }
-        ul.user li {
-            padding-right: 10px !important;
-        }
-        ul {
-            padding-left: 10px !important;
-        }
-    }
-`;
 
-const Nav = styled.nav`
+
+const Headers = styled(AppBar)(({theme}) => ({
+    background: console.log(theme)
+}))
+
+
+const Nav = styled(Box)`
     border-bottom: 1px solid #222;
     position: relative;
     height: 50px;
@@ -197,28 +132,28 @@ const Nav = styled.nav`
 `;
 const LandingHeaders = (props) => {
     const [LoginUser, setLoginUser] = useState(false);
-	const [Show ,setShow] = useState(false);
-	
-	 const handleClick = () => {
+    const [Show, setShow] = useState(false);
+    const isMobile = useMediaQuery("(max-width: 992px)")
+    const handleClick = () => {
 
-  var x = document.getElementById("mobilemenu2");
-  
-  console.log(x.style.display);
-  
-  if (x.style.display === "none" || x.style.display === "" ) {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
+        var x = document.getElementById("mobilemenu2");
+
+        console.log(x.style.display);
+
+        if (x.style.display === "none" || x.style.display === "") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
 
 
-    
 
-  };
-	
+
+    };
+
     let token = "";
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if (typeof window !== 'undefined') token = localStorage.getItem("token");
     }, 2000);
 
     useEffect(() => {
@@ -234,106 +169,69 @@ const LandingHeaders = (props) => {
             axios(config)
                 .then((res) => {
                     if (res.status == "200") {
-                        setLoginUser(true)
-                    }else{
-                        setLoginUser(false)
+                        // setLoginUser(true)
+                    } else {
+                        // setLoginUser(false)
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 2200);
     }, []);
     return (
         <Headers>
-            <div className="container">
-                <div className="d-flex align-items-center justify-content-between">
-                    <img
-                        onClick={() => {
-                            Router.push("/");
-                        }}
-                        className="logo"
-                        src="/images/logo2.png"
-                      
-                        height={62}
-                        alt=""
-                    />
+            <Container maxWidth={"xl"}>
+                <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"} >
+                    <Box position={"relative"} width={130}  height={62}>
+                        <Image src={"/images/logo2.png"} layout={"fill"} onClick={() =>  Router.push("/")} alt='logo'/>
+                    </Box>
+                 
                     {!LoginUser &&
-                    <ul className="unstyled user d-flex">
-                        <li className="sign-in">
-                            <span
-                                className="btn btn-primary"
-                                onClick={() => {
-                                    Router.push("/login");
-                                }}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="14"
-                                    height="16"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path
-                                        id="ic_person_24px"
-                                        d="M12,12A4,4,0,1,0,8,8,4,4,0,0,0,12,12Zm0,2c-2.67,0-8,1.34-8,4v2H20V18C20,15.34,14.67,14,12,14Z"
-                                        transform="translate(-4 -4)"
-                                    />
-                                </svg>
-                                ورود
-                            </span>
-                        </li>
-                        <li className="sign-up">
-                            <span
-                                className="btn btn-primary"
-                                onClick={() => {
-                                    Router.push("/register");
-                                }}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="16"
-                                    viewBox="0 0 22 16"
-                                >
-                                    <path
-                                        id="ic_person_add_24px"
-                                        d="M15,12a4,4,0,1,0-4-4A4,4,0,0,0,15,12ZM6,10V7H4v3H1v2H4v3H6V12H9V10Zm9,4c-2.67,0-8,1.34-8,4v2H23V18C23,15.34,17.67,14,15,14Z"
-                                        transform="translate(-1 -4)"
-                                    />
-                                </svg>
-                                ثبت نام
-                            </span>
-                        </li>
-                    </ul>
+                    <>
+                        <Stack direction={"row"} spacing={2} alignItems={"center"} flexGrow={1} justifyContent={"flex-end"}>
+                            <Link href={"/login"}>
+                                <Button variant="outlined" startIcon={<Person/>} size={ !isMobile ? "large": "small" }>
+                                    <Typography color="primary">ورود</Typography>
+                                </Button>
+                            </Link>
+                            <Link href={"/register"}>
+                                <Button variant="contained" startIcon={<PersonAdd/>} size={ !isMobile ? "large": "small" }>
+                                    ثبت نام
+                                </Button>
+                            </Link>
+
+                        </Stack>
+                    </>
                     }
                     {LoginUser &&
-                    <ul className="unstyled user d-flex">
-                        <li className="sign-in">
-                            <span
-                                className="btn btn-primary"
-                                onClick={() => {
-                                    Router.push("/dashboard");
-                                }}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="14"
-                                    height="16"
-                                    viewBox="0 0 16 16"
+                        <ul className="unstyled user d-flex">
+                            <li className="sign-in">
+                                <span
+                                    className="btn btn-primary"
+                                    onClick={() => {
+                                        Router.push("/dashboard");
+                                    }}
                                 >
-                                    <path
-                                        id="ic_person_24px"
-                                        d="M12,12A4,4,0,1,0,8,8,4,4,0,0,0,12,12Zm0,2c-2.67,0-8,1.34-8,4v2H20V18C20,15.34,14.67,14,12,14Z"
-                                        transform="translate(-4 -4)"
-                                    />
-                                </svg>
-                                حساب کاربری
-                            </span>
-                        </li>
-                        
-                    </ul>}
-                </div>
-            </div>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="14"
+                                        height="16"
+                                        viewBox="0 0 16 16"
+                                    >
+                                        <path
+                                            id="ic_person_24px"
+                                            d="M12,12A4,4,0,1,0,8,8,4,4,0,0,0,12,12Zm0,2c-2.67,0-8,1.34-8,4v2H20V18C20,15.34,14.67,14,12,14Z"
+                                            transform="translate(-4 -4)"
+                                        />
+                                    </svg>
+                                    حساب کاربری
+                                </span>
+                            </li>
+
+                        </ul>}
+                </Stack>
+            </Container>
             <Nav className="navigation">
-			 <ul className="desktopmenu list-unstyled d-flex align-items-center">
+                <ul className="desktopmenu list-unstyled d-flex align-items-center">
                     <li
                         onClick={() => {
                             Router.push("/");
@@ -354,7 +252,7 @@ const LandingHeaders = (props) => {
                         onClick={() => {
                             Router.push("/change");
                         }}
-                        
+
                         className={props.page == "change" && "active"}
                     >
                         خرید و فروش تتر{" "}
@@ -363,21 +261,21 @@ const LandingHeaders = (props) => {
                         onClick={() => {
                             Router.push("/guide");
                         }}
-                        className={ 'guideli ' + (props.page == "guide" && "active") }
-						
+                        className={'guideli ' + (props.page == "guide" && "active")}
+
                     >
                         راهنمای متاورس
-						<ul className="dropdown" >
-						
-						<li className="menu-items" ><a href="https://metavers-ex.com/help_buy_sell">آموزش خرید و فروش ارز دیجیتال</a></li>
-						<li className="menu-items" ><a href="https://metavers-ex.com/help_buy_usdt">آموزش خرید و فروش تتر
-</a></li>
-						<li className="menu-items" ><a href="https://metavers-ex.com/help_register">راهنمای ثبت نام
-</a></li>
-						
-						</ul>
-						
-						
+                        <ul className="dropdown" >
+
+                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_sell">آموزش خرید و فروش ارز دیجیتال</a></li>
+                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_usdt">آموزش خرید و فروش تتر
+                            </a></li>
+                            <li className="menu-items" ><a href="https://metavers-ex.com/help_register">راهنمای ثبت نام
+                            </a></li>
+
+                        </ul>
+
+
                     </li>
                     <li>
                         <a className="no-under" target="blank" href="https://blog.metavers-ex.com">
@@ -440,7 +338,7 @@ const LandingHeaders = (props) => {
                         onClick={() => {
                             Router.push("/change");
                         }}
-                        
+
                         className={props.page == "change" && "active"}
                     >
                         خرید و فروش تتر{" "}
@@ -449,21 +347,21 @@ const LandingHeaders = (props) => {
                         onClick={() => {
                             Router.push("/guide");
                         }}
-                        className={ 'guideli ' + (props.page == "guide" && "active") }
-						
+                        className={'guideli ' + (props.page == "guide" && "active")}
+
                     >
                         راهنمای متاورس
-						<ul className="dropdown" >
-						
-						<li className="menu-items" ><a href="https://metavers-ex.com/help_buy_sell">آموزش خرید و فروش ارز دیجیتال</a></li>
-						<li className="menu-items" ><a href="https://metavers-ex.com/help_buy_usdt">آموزش خرید و فروش تتر
-</a></li>
-						<li className="menu-items" ><a href="https://metavers-ex.com/help_register">راهنمای ثبت نام
-</a></li>
-						
-						</ul>
-						
-						
+                        <ul className="dropdown" >
+
+                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_sell">آموزش خرید و فروش ارز دیجیتال</a></li>
+                            <li className="menu-items" ><a href="https://metavers-ex.com/help_buy_usdt">آموزش خرید و فروش تتر
+                            </a></li>
+                            <li className="menu-items" ><a href="https://metavers-ex.com/help_register">راهنمای ثبت نام
+                            </a></li>
+
+                        </ul>
+
+
                     </li>
                     <li>
                         <a className="no-under" target="blank" href="https://blog.metavers-ex.com">
@@ -508,8 +406,8 @@ const LandingHeaders = (props) => {
                 <div
                     className={Show ? "menu-btn open-menu" : "menu-btn"}
                     onClick={() => {
-                         setShow(!Show);
-						handleClick();
+                        setShow(!Show);
+                        handleClick();
                     }}
                 >
                     <span></span>

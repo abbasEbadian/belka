@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import Router from "next/router";
 import NightModeContext from "./Context";
@@ -386,7 +386,7 @@ const Header = (props) => {
             axios(config)
                 .then((res) => {
                     if (res.status == "200") {
-                        setNotifs(res.data);
+                        setNotifs(typeof res.data === typeof [] ? res.data : [] );
                     }
                 })
                 .catch((error) => {});
@@ -468,17 +468,7 @@ const Header = (props) => {
             className={stts.night == "true" ? "night-header no-shadow" : ""}
         >
             <HeaderRight>
-                <ToastContainer
-                    rtl={true}
-                    position="top-center"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    pauseOnFocusLoss={false}
-                    draggable
-                    pauseOnHover={false}
-                />
+                
                 {!props["show-menu-state"] ? (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

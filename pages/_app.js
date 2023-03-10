@@ -1,5 +1,22 @@
+import { ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import NightModeContext from "../components/Context";
+import { theme } from "../components/settings";
+
+
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { prefixer } from 'stylis';
+
+// Create rtl cache
+const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [prefixer, rtlPlugin],
+});
+const cssCache = createCache({ key: 'css', prepend: true });
+
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -8,7 +25,7 @@ function MyApp({ Component, pageProps }) {
     const setStatus = (i) => {
         setNight(i);
     };
-    
+
     useEffect(() => {
         !(function () {
             var i = "1EBClY",
@@ -24,19 +41,36 @@ function MyApp({ Component, pageProps }) {
             "complete" === d.readyState
                 ? g()
                 : a.attachEvent
-                ? a.attachEvent("onload", g)
-                : a.addEventListener("load", g, !1);
+                    ? a.attachEvent("onload", g)
+                    : a.addEventListener("load", g, !1);
         })();
     }, []);
     return (
-        <NightModeContext.Provider
-            value={{
-                night,
-                setStatus,
-            }}
-        >
-            <Component {...pageProps} />
-        </NightModeContext.Provider>
+        <CacheProvider value={cssCache}>
+            <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                    <NightModeContext.Provider
+                        value={{
+                            night,
+                            setStatus,
+                        }}
+                    >
+                        <Component {...pageProps} />
+                        <ToastContainer
+                            rtl={true}
+                            position="top-center"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            pauseOnFocusLoss={false}
+                            draggable
+                            pauseOnHover={false}
+                        />
+                    </NightModeContext.Provider>
+                </ThemeProvider>
+            </CacheProvider>
+        </CacheProvider>
     );
 }
 
