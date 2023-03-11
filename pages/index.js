@@ -508,7 +508,7 @@ const WeAre = styled(Box)`
             color: rgb(153, 153, 153);
             padding: 0 20px;
             border-right: 1px solid #999;
-            :first-child {
+            :last-child {
                 border-right: none;
                 padding-right: 0;
             }

@@ -113,8 +113,11 @@ const Calc = styled(Box)`
         border-radius: 8px;
         border: 1.5px solid #dbdbdb;
         align-items: stretch;
+        height: 40px;
         input{
             height: 100%;
+            border: none;
+            background: transparent;
         }
         img {
             width: 22px;
@@ -190,7 +193,7 @@ const Calc = styled(Box)`
 const HomeCalculator = () => {
 
     const [coins, setCoins] = useState([]);
-
+    const [sourceAmount, setSourceAmount] = useState(0)
     const [selectedOption, setSelectedOption] = useState();
     const [selectedOptionTwo, setSelectedOptionTwo] = useState();
 
@@ -225,22 +228,29 @@ const HomeCalculator = () => {
 
     };
 
+    /**
+     * 
+     * @param {string} newSourceAmount 
+     * @returns void
+     */
+    const excalc = (newSourceAmount) => {
+        const matches = /[\d]+([.]?)/;
+        const moreDots =  newSourceAmount.indexOf('.') !== newSourceAmount.lastIndexOf('.') 
+        if(!matches.test(newSourceAmount) && newSourceAmount.length > 0 || moreDots) return
+        setSourceAmount(newSourceAmount)
+        var src = selectedOption?.value || {};
+        var dst = selectedOptionTwo?.value || {};
 
-    const excalc = (e) => {
+        if (selectedOptionTwo?.key == 0) {
 
-        var src = selectedOption.value;
-        var dst = selectedOptionTwo.value;
-
-        if (selectedOptionTwo.key == 0) {
-
-            var res = src * dst * e;
+            var res = src * dst * newSourceAmount;
         } else {
-            var res = (src / dst) * e;
+            var res = (src / dst) * newSourceAmount;
         }
 
 
 
-        document.getElementById('ramount').value = res;
+        document.getElementById('ramount').value = res || newSourceAmount/10;
 
 
 
@@ -263,10 +273,11 @@ const HomeCalculator = () => {
                             id="amount"
                             placeholder="مقدار"
                             type="tel"
-                            onKeyUp={(e) => {
+                            onChange={(e) => {
                                 excalc(e.target.value);
                             }}
-
+                            value={sourceAmount}
+                            onFocus={() => setSourceAmount("")}
                         />
                         <Select
                             value={selectedOption}
@@ -362,10 +373,9 @@ const HomeCalculator = () => {
                         <input
                             className="ramount"
                             placeholder="مقدار"
-                            type="number"
+                            type="tel"
                             id="ramount"
-
-
+                            readOnly
                         />
 
                     </div>

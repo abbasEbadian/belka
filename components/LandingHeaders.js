@@ -1,4 +1,4 @@
-import { Person, PersonAdd } from "@mui/icons-material";
+import { BorderBottom, Person, PersonAdd } from "@mui/icons-material";
 import { AppBar, Box, Button, Collapse, Container, Divider, IconButton, List, ListItemButton, ListItemText, Menu, MenuItem, MenuList, Stack, Typography, useMediaQuery } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import axios from "axios";
@@ -130,15 +130,13 @@ const LandingHeaders = ({ page }) => {
                                     sx={{ "&, ul": { padding: " 0 !important" }, "li": { paddingBlock: 1.6 } }}
                                 >
                                     {item.children.map((child, idx2) => {
-                                        return <><MenuItem onClick={handleClose} key={idx2} >
+                                        return <MenuItem onClick={handleClose} key={idx2} BorderBottom={idx2 < item.children.length - 1 && "1px solid #ccc"} >
                                             <Link href={child.path}>
                                                 {/* <Button variant='text' fullWidth  color={"neutral"}  sx={{'&, & *': {p: 0}, height: "100%"}}> */}
                                                 <Typography variant="body2" color="common.white">{child.title}</Typography>
                                                 {/* </Button> */}
                                             </Link>
                                         </MenuItem>
-                                            {idx2 < item.children.length - 1 && <Divider sx={{ margin: "0 !important" }} />}
-                                        </>
                                     })}
 
                                 </Menu>
@@ -183,14 +181,12 @@ const LandingHeaders = ({ page }) => {
                                                 
                                                     {
                                                         item.children.map((child, idx2) => {
-                                                            return <><ListItemButton sx={{ pl: 4 }}><ListItemText key={idx2}>
+                                                            return <ListItemButton sx={{ pl: 4 }}><ListItemText key={idx2}>
                                                                 <Link href={child.path}>
                                                                     <Typography variant="body2" color="common.white">{child.title}</Typography>
                                                                 </Link>
                                                             </ListItemText>
                                                             </ListItemButton>
-                                                            {idx2 < item.children.length - 1 && <Divider sx={{ margin: "0 !important" }} />}
-                                                            </>
                                                         })
                                                     }
                                                     
