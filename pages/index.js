@@ -50,6 +50,7 @@ const Main = styled(Box)`
 const Slider = styled(Box)`
     height: 100%;
     position: relative;
+    padding-block: 100px;
     .op-0 {
         opacity: 0;
         height: 0 !important;
@@ -155,11 +156,13 @@ const Slider = styled(Box)`
         svg {
             fill: rgb(253, 150, 26);
         }
+        transform: rotate(180deg);
     }
     .right-arrow {
         right: 0;
         top: 45%;
         opacity: 0;
+        
     }
     .left-arrow {
         left: 0;
@@ -243,7 +246,7 @@ const MainTable = styled(Box)`
             background-color: #feffc6;
             color: #000;
 
-            :first-child {
+            :last-child {
                 border-radius: 0px 5px 0 0;
                 border-left: 1px solid #020202 !important;
             }
@@ -267,12 +270,15 @@ const MainTable = styled(Box)`
             width: 100%;
             border-radius: 8px 8px 0 0 !important;
             height: 40px;
-            padding-right: 40px;
+            padding-inline: 16px 40px;
         }
         svg {
             position: absolute;
             cursor: pointer;
             right: 8px;
+            color: #ddd;
+            fill: #aaa;
+            transform: scale(0.8);
         }
     }
     .scrollable {
@@ -964,14 +970,7 @@ export default function Home() {
             </Slider>
             <MainTable>
                 <div className="select-shop">
-                    <button
-                        onClick={() => {
-                            setActiveBtn(1);
-                        }}
-                        className={activeBtn == 1 && "active"}
-                    >
-                        تومان
-                    </button>
+                    
                     <button
                         onClick={() => {
                             setActiveBtn(2);
@@ -979,6 +978,14 @@ export default function Home() {
                         className={activeBtn == 2 && "active"}
                     >
                         تتر
+                    </button>
+                    <button
+                        onClick={() => {
+                            setActiveBtn(1);
+                        }}
+                        className={activeBtn == 1 && "active"}
+                    >
+                        تومان
                     </button>
                 </div>
                 <div className="search">
