@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import NightModeContext from "../components/Context";
@@ -20,8 +20,7 @@ const cssCache = createCache({ key: 'css', prepend: true });
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
-    const [night, setNight] = useState(false);
-
+    const [night, setNight] = useState(true);
     const setStatus = (i) => {
         setNight(i);
     };
@@ -49,6 +48,7 @@ function MyApp({ Component, pageProps }) {
         <CacheProvider value={cssCache}>
             <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
+                    <CssBaseline />
                     <NightModeContext.Provider
                         value={{
                             night,

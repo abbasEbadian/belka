@@ -52,7 +52,7 @@ const SidebarHeader = styled('div')`
         padding-left: 20px;
     }
 `;
-const SidebarUl = styled.ul`
+const SidebarUl = styled('ul')`
     list-style: none;
     margin-top: 44px;
     padding-left: 0 !important;

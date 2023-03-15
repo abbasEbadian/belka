@@ -504,7 +504,7 @@ export default function Dashboard() {
             localStorage.getItem("token") == null ||
             typeof window == "undefined"
         ) {
-            Router.push("/login");
+            // Router.push("/login");
         }
     }, []);
     const [showMenu, setShowMenu] = useState(true);
