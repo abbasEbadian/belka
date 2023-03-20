@@ -158,7 +158,7 @@ const RialWithdraw = (props) => {
             };
             let config = {
                 method: "GET",
-                url: `${baseUrl}bank/name/list/`,
+                url: `${BASEURL}bank/name/list/`,
                 data: data,
                 headers: {
                     "Content-type": "application/json",
@@ -183,7 +183,7 @@ const RialWithdraw = (props) => {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            url: `${baseUrl}bank/list/`,
+            url: `${BASEURL}bank/list/`,
             method: "GET",
         };
         axios(config)
@@ -208,7 +208,7 @@ const RialWithdraw = (props) => {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}bank/add/`,
+            url: `${BASEURL}bank/add/`,
             data: data,
             headers: {
                 "Content-type": "application/json",
@@ -244,7 +244,7 @@ const RialWithdraw = (props) => {
     const withdrawOtpHandler = (e) => {
         let config = {
             method: "GET",
-            url: `${baseUrl}wallet/withdrawal/otp/`,
+            url: `${BASEURL}wallet/withdrawal/otp/`,
             headers: {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -285,7 +285,7 @@ const RialWithdraw = (props) => {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}wallet/manage/`,
+            url: `${BASEURL}wallet/manage/`,
             data: data,
             headers: {
                 "Content-type": "application/json",

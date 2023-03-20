@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import "bootstrap/dist/css/bootstrap.css";
 import Router from "next/router";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
@@ -267,7 +267,7 @@ export default function Register() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/register/`,
+            url: `${BASEURL}token/register/`,
             data: data,
         };
 

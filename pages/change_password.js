@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -160,7 +160,7 @@ export default function ChangePass() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -183,7 +183,7 @@ export default function ChangePass() {
                 Authorization: `Bearer ${token}`,
             },
             method: "POST",
-            url: `${baseUrl}account/manage/`,
+            url: `${BASEURL}account/manage/`,
             data: data,
         };
 

@@ -1,7 +1,7 @@
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
@@ -336,7 +336,7 @@ export default function Profile() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -360,7 +360,7 @@ export default function Profile() {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            url: `${baseUrl}account/details/`,
+            url: `${BASEURL}account/details/`,
             method: "GET",
         };
         axios(config)
@@ -382,7 +382,7 @@ export default function Profile() {
                 "Content-Type": "multipart/form-data",
             },
             method: "POST",
-            url: `${baseUrl}account/avatar/`,
+            url: `${BASEURL}account/avatar/`,
             data: data,
         };
         axios(config)
@@ -421,7 +421,7 @@ export default function Profile() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}account/details/`,
+                url: `${BASEURL}account/details/`,
                 method: "GET",
             };
             axios(config)
@@ -442,7 +442,7 @@ export default function Profile() {
                 Authorization: `Bearer ${token}`,
             },
             method: "GET",
-            url: `${baseUrl}account/verify/phone/`,
+            url: `${BASEURL}account/verify/phone/`,
         };
         axios(config2)
             .then((response) => {})

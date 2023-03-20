@@ -329,7 +329,7 @@ const BuyComponent = () => {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -360,7 +360,7 @@ const BuyComponent = () => {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}wallet/list/`,
+                url: `${BASEURL}wallet/list/`,
                 method: "GET",
             };
             axios(config)
@@ -375,7 +375,7 @@ const BuyComponent = () => {
     }, []);
 
     let config = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
     useEffect(() => {
@@ -422,7 +422,7 @@ const BuyComponent = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/calculator/`,
+                url: `${BASEURL}order/calculator/`,
                 data: data,
             };
             axios(config)
@@ -488,7 +488,7 @@ const BuyComponent = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/calculator/`,
+                url: `${BASEURL}order/calculator/`,
                 data: data,
             };
             axios(config)
@@ -557,7 +557,7 @@ const BuyComponent = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/create/`,
+                url: `${BASEURL}order/create/`,
                 data: data,
             };
             axios(config)
@@ -618,7 +618,7 @@ const BuyComponent = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/create/`,
+                url: `${BASEURL}order/create/`,
                 data: data,
             };
             axios(config)
@@ -674,7 +674,7 @@ const BuyComponent = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}schedule/create/`,
+                url: `${BASEURL}schedule/create/`,
                 data: data,
             };
             axios(config)
@@ -731,7 +731,7 @@ const BuyComponent = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}schedule/create/`,
+                url: `${BASEURL}schedule/create/`,
                 data: data,
             };
             axios(config)

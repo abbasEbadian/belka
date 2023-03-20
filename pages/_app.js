@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import NightModeContext from "../components/Context";
 import { theme } from "../components/settings";
 
@@ -18,6 +18,7 @@ const cacheRtl = createCache({
 const cssCache = createCache({ key: 'css', prepend: true });
 
 import "../styles/globals.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 function MyApp({ Component, pageProps }) {
     const [night, setNight] = useState(true);
@@ -44,6 +45,10 @@ function MyApp({ Component, pageProps }) {
                     : a.addEventListener("load", g, !1);
         })();
     }, []);
+
+    useEffect(() => {
+        
+    }, [])
     return (
         <CacheProvider value={cssCache}>
             <CacheProvider value={cacheRtl}>
@@ -75,3 +80,4 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+

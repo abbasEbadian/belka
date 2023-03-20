@@ -1,7 +1,7 @@
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
@@ -243,7 +243,7 @@ export default function Cards() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -268,7 +268,7 @@ export default function Cards() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}bank/list/`,
+                url: `${BASEURL}bank/list/`,
                 method: "GET",
             };
             axios(config)
@@ -285,7 +285,7 @@ export default function Cards() {
         setTimeout(() => {
             let config = {
                 method: "GET",
-                url: `${baseUrl}bank/name/list/`,
+                url: `${BASEURL}bank/name/list/`,
                 headers: {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -308,7 +308,7 @@ export default function Cards() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}bank/add/`,
+            url: `${BASEURL}bank/add/`,
             data: data,
             headers: {
                 "Content-type": "application/json",

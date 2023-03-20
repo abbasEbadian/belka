@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -162,7 +162,7 @@ export default function Authenticator() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -185,7 +185,7 @@ export default function Authenticator() {
                 Authorization: `Bearer ${token}`,
             },
             method: "POST",
-            url: `${baseUrl}account/manage/`,
+            url: `${BASEURL}account/manage/`,
             data: data,
         };
 
@@ -213,7 +213,7 @@ export default function Authenticator() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}account/details/`,
+                url: `${BASEURL}account/details/`,
                 method: "GET",
             };
             axios(config)

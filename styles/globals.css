@@ -338,3 +338,9 @@ ul {
 a {
     text-decoration: none !important;
 }
+
+@media (max-width: 768px ) {
+    #goftino_w{
+        transform: scale(0.9) translate(24px, -32px) !important;
+    }
+}

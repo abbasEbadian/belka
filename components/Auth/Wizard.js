@@ -400,7 +400,7 @@ const Wizard = (props) => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}account/manage/`,
+                url: `${BASEURL}account/manage/`,
                 data: data,
             };
 			
@@ -448,7 +448,7 @@ const Wizard = (props) => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}account/verify/phone/complete/`,
+                url: `${BASEURL}account/verify/phone/complete/`,
                 data: data,
             };
 
@@ -504,7 +504,7 @@ const Wizard = (props) => {
                 Authorization: `Bearer ${token}`,
             },
             method: "POST",
-            url: `${baseUrl}account/document/`,
+            url: `${BASEURL}account/document/`,
             data: data,
         };
 

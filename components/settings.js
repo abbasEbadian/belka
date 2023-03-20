@@ -1,10 +1,12 @@
 import { alpha, createTheme } from "@mui/material";
 
-export const SETTINGS = {
+export const SETTINGS = Object.freeze({
   WEBSITE_NAME: "بلکاکریپتو",
   WEBSITE_NAME_ENG: "Belka Crypto",
   WEBSITE_NAME_ENG_NO_SPACE: "BelkaCrypto",
-}
+
+})
+export const BASEURL =  "https://api.belkacrypto.com/api/v2/"
 
 export const theme = createTheme({
   direction: 'rtl',
@@ -23,7 +25,9 @@ export const theme = createTheme({
     },
     grey: {
       100: "#111111",
-      200: "#1d1d1d"
+      200: "#1d1d1d",
+      300: "#1f2533",
+      400: "#757b89"
     },
     primary: {
       light: "#feffc6",
@@ -52,6 +56,7 @@ export const theme = createTheme({
     },
     neutral: {
       main: "#aaa",
+      dark: "#888"
     },
     simple:{
       main: "#fff",
@@ -60,6 +65,17 @@ export const theme = createTheme({
     common:{
       white: "#FFF",
       black: "#000"
+    },
+    success:{
+      light: alpha("#00bd8d", 0.2),
+      main: "#00bd8d",
+      dark: "#00bd8d66",
+      contrastText: "#FFF"
+    },
+    dark:{
+      light: "#303748",
+      main: "#1f2533",
+      dark: "#1f2533aa"
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,

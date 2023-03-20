@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Router from "next/router";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import axios from "axios";
 import LandingHeaders from "../components/LandingHeaders";
 import LandingFooter from "../components/LandingFooter";
@@ -817,7 +817,7 @@ export default function Home() {
 
     let row = -1;
     let config = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
 	    let config2 = {
@@ -1556,3 +1556,21 @@ export default function Home() {
         </Main>
     );
 }
+
+export async function getServerSideProps(context) {
+    try {
+        const data = await fetch(`${BASEURL}/service/list/`)
+        const services = await  r.json()
+        
+    } catch (error) {
+         console.log(error)
+        
+    }
+    
+    return {
+      props: {
+        services
+      }, // will be passed to the page component as props
+    }
+  }
+  

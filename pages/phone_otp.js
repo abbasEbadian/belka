@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 import { toast, ToastContainer } from "react-toastify";
 import ReactCodeInput from "react-code-input";
@@ -181,7 +181,7 @@ export default function Edit() {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}account/verify/phone/complete/`,
+                url: `${BASEURL}account/verify/phone/complete/`,
                 data: data,
             };
 

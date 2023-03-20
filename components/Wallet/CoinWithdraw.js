@@ -129,7 +129,7 @@ const CoinWithdraw = (props) => {
     const withdrawOtpHandler = (e) => {
         let config = {
             method: "GET",
-            url: `${baseUrl}wallet/withdrawal/otp/`,
+            url: `${BASEURL}wallet/withdrawal/otp/`,
             headers: {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -171,7 +171,7 @@ const CoinWithdraw = (props) => {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}wallet/withdrawal/`,
+            url: `${BASEURL}wallet/withdrawal/`,
             data: data,
             headers: {
                 "Content-type": "application/json",

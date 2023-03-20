@@ -166,7 +166,7 @@ const Change = () => {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -186,7 +186,7 @@ const Change = () => {
         }
     }, []);
     let config = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
     useEffect(() => {
@@ -203,7 +203,7 @@ const Change = () => {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}wallet/list/`,
+                url: `${BASEURL}wallet/list/`,
                 method: "GET",
             };
             axios(config)
@@ -223,7 +223,7 @@ const Change = () => {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            url: `${baseUrl}order/list/`,
+            url: `${BASEURL}order/list/`,
             method: "GET",
         };
     }, 3000);
@@ -285,7 +285,7 @@ const Change = () => {
                 Authorization: `Bearer ${token}`,
             },
             method: "POST",
-            url: `${baseUrl}order/calculator/`,
+            url: `${BASEURL}order/calculator/`,
             data: data,
         };
         axios(config)
@@ -331,7 +331,7 @@ const Change = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/calculator/`,
+                url: `${BASEURL}order/calculator/`,
                 data: data,
             };
             axios(config)

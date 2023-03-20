@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { styled } from '@mui/material/styles';
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NightModeContext from "../components/Context";
@@ -378,7 +378,7 @@ export default function Dashboard() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -398,7 +398,7 @@ export default function Dashboard() {
         }
     }, []);
     let config = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
     useEffect(() => {
@@ -418,7 +418,7 @@ export default function Dashboard() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}wallet/list/`,
+                url: `${BASEURL}wallet/list/`,
                 method: "GET",
             };
             axios(config)
@@ -438,7 +438,7 @@ export default function Dashboard() {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            url: `${baseUrl}order/list/`,
+            url: `${BASEURL}order/list/`,
             method: "GET",
         };
     }, 3000);
@@ -496,7 +496,7 @@ export default function Dashboard() {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/create/`,
+                url: `${BASEURL}order/create/`,
                 data: data,
             };
             axios(config)
@@ -549,7 +549,7 @@ export default function Dashboard() {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}order/calculator/`,
+                url: `${BASEURL}order/calculator/`,
                 data: data,
             };
             axios(config)

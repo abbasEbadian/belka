@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import Image from "next/image";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CoinDeposit from "../components/Wallet/CoinDeposit";
@@ -390,7 +390,7 @@ export default function Dashboard() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/refresh/`,
+            url: `${BASEURL}token/refresh/`,
             data: data,
         };
 
@@ -410,7 +410,7 @@ export default function Dashboard() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}wallet/list/`,
+                url: `${BASEURL}wallet/list/`,
                 method: "GET",
             };
             axios(config)
@@ -426,7 +426,7 @@ export default function Dashboard() {
     }, []);
 
     let config_2 = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
     useEffect(() => {
@@ -453,7 +453,7 @@ export default function Dashboard() {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}wallet/generate/`,
+                url: `${BASEURL}wallet/generate/`,
                 data: data,
             };
             axios(config_3)

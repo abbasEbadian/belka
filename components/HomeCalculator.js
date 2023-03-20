@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Router from "next/router";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -199,7 +199,7 @@ const HomeCalculator = () => {
 
 
     let config = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
 

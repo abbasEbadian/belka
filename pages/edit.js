@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -153,7 +153,7 @@ export default function Edit() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}account/details/`,
+                url: `${BASEURL}account/details/`,
                 method: "GET",
             };
             axios(config)
@@ -177,7 +177,7 @@ export default function Edit() {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-                url: `${baseUrl}account/edit/`,
+                url: `${BASEURL}account/edit/`,
                 data: data,
             };
 

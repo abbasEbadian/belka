@@ -25,19 +25,10 @@ const MAppbar = styled(AppBar)(({ theme }) => ({
 function MarketAppbar({ currency= "بیتکوین/تتر" }) {
     const [activeTab, setActiveTab] = useState(MARKET_TABS.SPOT)
     return (
-        <MAppbar elevation={0}>
-            <Toolbar>
-                <Button variant='text' size="small" color={activeTab === MARKET_TABS.SPOT? "simple": 'neutral'}>
-                    اسپات
-                </Button>
+        <MAppbar elevation={0} position='static'>
 
-                <Button variant='text' size="small" color={activeTab === MARKET_TABS.MARGIN? "simple": 'neutral'}>
-                    ایزوله شده
-                </Button>
-
-            </Toolbar>
             <Toolbar >
-                <Stack direction={'row'} alignItems='center' sx={{width: "100%"}} spacing={1}>
+                <Stack direction={'row'} alignItems='center' sx={{width: "100%"}} spacing={1} >
                     <IconButton  sx={{borderRadius: 1}}>
                         <MenuOpenIcon color='simple' />
                     </IconButton>
@@ -48,13 +39,8 @@ function MarketAppbar({ currency= "بیتکوین/تتر" }) {
                         -4.10%
                     </Typography>
 
-                    <Button color='success' variant='chip' size='small' sx={{marginLeft: 'auto !important'}}>
-                         <Typography variant='caption'> 10X 
-                         </Typography>
-                         <ChevronLeft fontSize='14' sx={{m: 0}}></ChevronLeft>
-                    </Button>
 
-                    <IconButton sx={{borderRadius: 1}}>
+                    <IconButton sx={{borderRadius: 1, marginLeft: 'auto !important' }} >
                         <CandlestickChartOutlined color="neutral"/>
                     </IconButton>
 

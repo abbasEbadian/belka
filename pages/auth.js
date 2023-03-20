@@ -8,7 +8,7 @@ import Router from "next/router";
 import Image from "next/image";
 import Wizard from "../components/Auth/Wizard";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 
 const Main = styled('div')`
@@ -106,7 +106,7 @@ export default function Auth() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}account/details/`,
+                url: `${BASEURL}account/details/`,
                 method: "GET",
             };
             axios(config)

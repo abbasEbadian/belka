@@ -6,8 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-import { baseUrl } from "./BaseUrl";
-import { SETTINGS } from './settings'
+import { BASEURL, SETTINGS } from './settings'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -41,7 +40,7 @@ const LandingHeaders = ({ page }) => {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}account/details/`,
+                url: `${BASEURL}account/details/`,
                 method: "GET",
             };
             axios(config)

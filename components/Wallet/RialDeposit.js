@@ -207,7 +207,7 @@ const RialDeposit = (props) => {
             };
             let config = {
                 method: "GET",
-                url: `${baseUrl}bank/name/list/`,
+                url: `${BASEURL}bank/name/list/`,
                 data: data,
                 headers: {
                     "Content-type": "application/json",
@@ -228,7 +228,7 @@ const RialDeposit = (props) => {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            url: `${baseUrl}bank/list/`,
+            url: `${BASEURL}bank/list/`,
             method: "GET",
         };
         axios(config)
@@ -247,7 +247,7 @@ const RialDeposit = (props) => {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}bank/add/`,
+            url: `${BASEURL}bank/add/`,
             data: data,
             headers: {
                 "Content-type": "application/json",
@@ -287,7 +287,7 @@ const RialDeposit = (props) => {
         data.append("bank_id", cardId);
         let config = {
             method: "POST",
-            url: `${baseUrl}wallet/manage/`,
+            url: `${BASEURL}wallet/manage/`,
             data: data,
             headers: {
                 "Content-type": "application/json",

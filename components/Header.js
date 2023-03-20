@@ -380,7 +380,7 @@ const Header = (props) => {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}notification/unread_list/`,
+                url: `${BASEURL}notification/unread_list/`,
                 method: "GET",
             };
             axios(config)
@@ -399,7 +399,7 @@ const Header = (props) => {
                 Authorization: `Bearer ${token}`,
             },
             method: "POST",
-            url: `${baseUrl}notification/readAll/`,
+            url: `${BASEURL}notification/readAll/`,
         };
 
         axios(config)
@@ -449,7 +449,7 @@ const Header = (props) => {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}account/details/`,
+                url: `${BASEURL}account/details/`,
                 method: "GET",
             };
             axios(config)

@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import Router from "next/router";
 import ReactCodeInput from "react-code-input";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import { ToastContainer, toast } from "react-toastify";
 import Head from "next/head";
 import "react-toastify/dist/ReactToastify.css";
@@ -124,7 +124,7 @@ export default function Register() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/verify/`,
+            url: `${BASEURL}token/verify/`,
             data: data,
         };
 
@@ -159,7 +159,7 @@ export default function Register() {
         };
         let config = {
             method: "POST",
-            url: `${baseUrl}token/otp/resend/`,
+            url: `${BASEURL}token/otp/resend/`,
             data: data,
         };
         await axios(config)

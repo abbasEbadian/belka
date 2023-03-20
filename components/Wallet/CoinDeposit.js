@@ -214,7 +214,7 @@ const CoinDeposit = (props) => {
             };
             let config = {
                 method: "POST",
-                url: `${baseUrl}wallet/deposit/address/`,
+                url: `${BASEURL}wallet/deposit/address/`,
                 data: data,
                 headers: {
                     "Content-type": "application/json",
@@ -238,7 +238,7 @@ const CoinDeposit = (props) => {
             };
             let config = {
                 method: "POST",
-                url: `${baseUrl}wallet/deposit/`,
+                url: `${BASEURL}wallet/deposit/`,
                 data: data,
                 headers: {
                     "Content-type": "application/json",

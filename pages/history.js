@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { baseUrl } from "../components/BaseUrl";
+import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 import moment from "jalali-moment";
 const Main = styled('div')`
@@ -159,7 +159,7 @@ export default function History() {
     const [coins, setCoins] = useState([]);
     const [tabActive, setTabActive] = useState("trade");
     let config = {
-        url: `${baseUrl}service/list/`,
+        url: `${BASEURL}service/list/`,
         method: "GET",
     };
     useEffect(() => {
@@ -194,7 +194,7 @@ export default function History() {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                url: `${baseUrl}transaction/list/`,
+                url: `${BASEURL}transaction/list/`,
                 method: "GET",
             };
             axios(config)
@@ -211,7 +211,7 @@ export default function History() {
                 "Content-type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            url: `${baseUrl}order/list/`,
+            url: `${BASEURL}order/list/`,
             method: "GET",
         };
     }, 3000);
