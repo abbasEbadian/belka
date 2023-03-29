@@ -178,7 +178,7 @@ export default function Edit() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}account/verify/phone/complete/`,

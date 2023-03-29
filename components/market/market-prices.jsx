@@ -48,7 +48,7 @@ const prices = [
     },
 ]
 const PriceBox = styled(Box)(({ variant, theme, fill }) => ({
-    p: console.log(variant),
+    
     "&": { position: "relative" },
     "&:after": {
         position: 'absolute',
@@ -70,16 +70,16 @@ const StyledSelect = styled(Select)(({theme}) => ({
 }))
 
 
-function MarketPrices() {
+function MarketPrices( {selectedCoins} ) {
     const [fraction, setFraction] = useState("0.1")
     const changeFraction = (event) => {
         setFraction(event.target.value)
     }
     return (
-        <Box p={1.4}>
+        <Box px={2} py={5} sx={{width: "100%"}}>
             <Grid container spacing={1}>
                 <Grid item xs={7}>
-                    <MarketActions />
+                    <MarketActions selectedCoins={selectedCoins}/>
                 </Grid>
                 <Grid item xs={5}>
                     <Stack>
@@ -97,7 +97,7 @@ function MarketPrices() {
                         {
                             prices.map((priceRow, idx) => {
                                 const color = 'error' ?? `${priceRow.color}.main`
-                                return <PriceBox key={priceRow.id} py={0.2} variant={color} fill={priceRow.fill}>
+                                return <PriceBox key={idx} py={0.2} variant={color} fill={priceRow.fill}>
                                     <Stack direction={"row"} justifyContent="space-between">
                                         <Typography color={"neutral.main"} variant="caption">
                                             {priceRow.price1}
@@ -119,7 +119,7 @@ function MarketPrices() {
                         {
                             prices.map((priceRow, idx) => {
                                 const color = 'success' ?? `${priceRow.color}.main`
-                                return <PriceBox key={priceRow.id} py={0.2} variant={color} fill={priceRow.fill}>
+                                return <PriceBox key={idx} py={0.2} variant={color} fill={priceRow.fill}>
                                     <Stack direction={"row"} justifyContent="space-between">
                                         <Typography color={"neutral.main"} variant="caption">
                                             {priceRow.price1}

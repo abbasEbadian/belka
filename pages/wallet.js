@@ -173,7 +173,7 @@ const WalletMain = styled('div')`
     }
 `;
 
-const WalletTable = styled.table`
+const WalletTable = styled('table')`
     min-width: 600px;
     width: 100%;
     margin-top: 20px;
@@ -376,7 +376,7 @@ export default function Dashboard() {
     }, []);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2100);
 
     setTimeout(() => {
@@ -408,7 +408,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}wallet/list/`,
                 method: "GET",
@@ -450,7 +450,7 @@ export default function Dashboard() {
             let config_3 = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}wallet/generate/`,
@@ -792,7 +792,7 @@ export default function Dashboard() {
                                                                   wal.service
                                                                       .id ===
                                                                       item.id ? (
-                                                                  <span>
+                                                                  <span key={wal.id}>
                                                                       <span className="d-none">
                                                                           {ids.push(
                                                                               item.id

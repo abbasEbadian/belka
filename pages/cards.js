@@ -229,7 +229,7 @@ export default function Cards() {
     const stts = useContext(NightModeContext);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -266,7 +266,7 @@ export default function Cards() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}bank/list/`,
                 method: "GET",
@@ -288,7 +288,7 @@ export default function Cards() {
                 url: `${BASEURL}bank/name/list/`,
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
             };
 
@@ -312,7 +312,7 @@ export default function Cards() {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
 

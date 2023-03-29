@@ -1,16 +1,14 @@
 import Head from "next/head";
 import { styled } from '@mui/material/styles';
 import "bootstrap/dist/css/bootstrap.css";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Router from "next/router";
-import { BASEURL } from "../components/settings";
-import axios from "axios";
 import LandingHeaders from "../components/LandingHeaders";
 import LandingFooter from "../components/LandingFooter";
 import HomeCalculator from "../components/HomeCalculator";
 import { SETTINGS } from "../components/settings";
 import { Box } from "@mui/material";
+import { useFetchCoins } from "../components/hooks/fetchCoins";
 
 const Main = styled(Box)`
     background-color: #111;
@@ -804,53 +802,31 @@ const Post = styled(Box)`
     }
 `;
 
+
 export default function Home() {
     const [showMenu, setShowMenu] = useState(true);
     const [showSlider, setShowSlider] = useState(false);
     const [aboutActive, setAboutActive] = useState(1);
-    const [coins, setCoins] = useState([]);
-	const [posts,setPosts] = useState([]);
     const [activeBtn, setActiveBtn] = useState(1);
     const [searchActive, setSearchActive] = useState(false);
     const [searchWord, setSearchWord] = useState("");
-	const regex = /(<([^>]+)>)/gi;
+
+    const { isLoading: isCoinLoading, data: coins} = useFetchCoins()
+    // const { isBlogLoading, data:blogData} = useQuery("get-blogs", () => {
+    //     return axios.get(`https://blog.metavers-ex.com/wp-json/wp/v2/posts`)
+    // })
 
     let row = -1;
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
-	    let config2 = {
-        url: `https://blog.metavers-ex.com/wp-json/wp/v2/posts`,
-        method: "GET",
-    };
-	
-    useEffect(() => {
-        setInterval(() => {
-        axios(config)
-            .then((res) => {
-                setCoins(typeof res.data === typeof  []? res.data : []);
-	
-            })
-            .catch((error) => {});
-        },3000);
-    }, []);
-	
-	    useEffect(() => {
-        axios(config2)
-            .then((res) => {
-                setPosts(typeof res.data === typeof  []? res.data : []);
-            })
-            .catch((error) => {});
-    }, []);
-	
-	
+   
+
+
+
     const [ress, setRess] = useState([]);
     const searchHandler = (e) => {
         setSearchWord(e.target.value);
         setSearchActive(true);
         setRess(
-            coins.filter(
+            coins?.filter(
                 (item) =>
                     item.name.includes(e.target.value) ||
                     item.small_name.includes(e.target.value) ||
@@ -862,27 +838,28 @@ export default function Home() {
     const sortHandler = (e) => {
         setSortMethod(!sortMethod);
         sortMethod
-            ? coins.sort(
-                  (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
-              )
-            : coins.sort(
-                  (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
-              );
+            ? coins?.sort(
+                (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
+            )
+            : coins?.sort(
+                (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
+            );
         ress.length !== 0 && sortMethod
             ? ress.sort(
-                  (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
-              )
+                (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
+            )
             : ress.sort(
-                  (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
-              );
+                (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
+            );
     };
+
     return (
         <Main>
             <Head>
                 <title>صرافی  {SETTINGS.WEBSITE_NAME} </title>
                 <link rel="shortcut icon" href="/images/favicon.ico" />
-               
-<link rel="manifest" href="manifest.json" />
+
+                <link rel="manifest" href="manifest.json" />
 
 
             </Head>
@@ -894,7 +871,7 @@ export default function Home() {
             <Slider>
                 <div className={showSlider ? "item-1 active" : "op-0"}>
                     <h3>
-                         {SETTINGS.WEBSITE_NAME} ، راهی <span>جدید</span> و <span>امن</span>
+                        {SETTINGS.WEBSITE_NAME} ، راهی <span>جدید</span> و <span>امن</span>
                         <br />
                         به دنیای ارز دیجیتال
                     </h3>
@@ -914,7 +891,7 @@ export default function Home() {
                         این شعار  {SETTINGS.WEBSITE_NAME}  است
                     </h3>
                     <span className="span">
-                        خرید و فروش امن بیت کوین و ارزهای دیجیتال با  {SETTINGS.WEBSITE_NAME} 
+                        خرید و فروش امن بیت کوین و ارزهای دیجیتال با  {SETTINGS.WEBSITE_NAME}
                     </span>
                     <span className="span">
                         با  {SETTINGS.WEBSITE_NAME}  سریع و اسان و با رعایت تمامی پرتکل های امنیتی
@@ -970,7 +947,7 @@ export default function Home() {
             </Slider>
             <MainTable>
                 <div className="select-shop">
-                    
+
                     <button
                         onClick={() => {
                             setActiveBtn(2);
@@ -1040,299 +1017,299 @@ export default function Home() {
                             </tr>
                         </thead>
                         <tbody>
-                            {searchActive !== true
-                                ? coins.map((item) => {
-                                      row++;
-                                      if (item.name !== "تومان") {
-                                          return (
-                                              <tr key={item.id}>
-                                                  <td>{row}</td>
-                                                  <td>
-                                                      <img
-                                                          src={item.image}
-                                                          width={25}
-                                                          alt=""
-                                                      />
-                                                      <span>
-                                                          {item.small_name_slug}
-                                                      </span>
-                                                      <span>{item.name}</span>
-                                                  </td>
-                                                  {activeBtn == 1 ? (
-                                                      <>
-                                                          <td>
-                                                              { Math.trunc(
-                                                                  (item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100) +
-                                                                      item.buyPrice) *
-                                                                  coins[0]
-                                                                      .buyPrice
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                          <td>
-                                                              {Math.trunc(
-                                                                  item.buyPrice *
-                                                                      coins[0]
-                                                                          .buyPrice -
-                                                                  item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100) *
-                                                                      coins[0]
-                                                                          .buyPrice
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                      </>
-                                                  ) : (
-                                                      <>
-                                                          <td>
-                                                              {(
-                                                                  item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100) +
-                                                                  item.buyPrice
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                          <td>
-                                                              {(
-                                                                  item.buyPrice -
-                                                                  item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100)
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                      </>
-                                                  )}
-                                                  <td>
-                                                      <div
-                                                          className={
-                                                              item.quote_usd !==
-                                                                  undefined &&
-                                                              item.quote_usd
-                                                                  .percent24h >
-                                                                  0
-                                                                  ? "plus changes"
-                                                                  : item.quote_usd !==
-                                                                        undefined &&
+                            {!searchActive ?
+                                 coins?.map((item) => {
+                                    row++;
+                                    if (item.name !== "تومان") {
+                                        return (
+                                            <tr key={item.id}>
+                                                <td>{row}</td>
+                                                <td>
+                                                    <img
+                                                        src={item.image}
+                                                        width={25}
+                                                        alt=""
+                                                    />
+                                                    <span>
+                                                        {item.small_name_slug}
+                                                    </span>
+                                                    <span>{item.name}</span>
+                                                </td>
+                                                {activeBtn == 1 ? (
+                                                    <>
+                                                        <td>
+                                                            {Math.trunc(
+                                                                (item.buyPrice *
+                                                                    (item.trade_fee /
+                                                                        100) +
+                                                                    item.buyPrice) *
+                                                                    coins[0]
+                                                                    .buyPrice
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td>
+                                                            {Math.trunc(
+                                                                item.buyPrice *
+                                                                coins[0]
+                                                                    .buyPrice -
+                                                                item.buyPrice *
+                                                                (item.trade_fee /
+                                                                    100) *
+                                                                coins[0]
+                                                                    .buyPrice
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <td>
+                                                            {(
+                                                                item.buyPrice *
+                                                                (item.trade_fee /
+                                                                    100) +
+                                                                item.buyPrice
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td>
+                                                            {(
+                                                                item.buyPrice -
+                                                                item.buyPrice *
+                                                                (item.trade_fee /
+                                                                    100)
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                    </>
+                                                )}
+                                                <td>
+                                                    <div
+                                                        className={
+                                                            item.quote_usd !==
+                                                                undefined &&
+                                                                item.quote_usd
+                                                                    .percent24h >
+                                                                0
+                                                                ? "plus changes"
+                                                                : item.quote_usd !==
+                                                                    undefined &&
                                                                     item
                                                                         .quote_usd
                                                                         .percent24h <
-                                                                        0
-                                                                  ? "nega changes"
-                                                                  : "zero changes"
-                                                          }
-                                                      >
-                                                          {item.quote_usd !==
-                                                              undefined &&
-                                                          item.quote_usd
-                                                              .percent24h > 0
-                                                              ? "+ " +
-                                                                item.quote_usd
-                                                                    .percent24h
-                                                              : item.quote_usd
-                                                                    .percent24h}
-                                                      </div>
-                                                  </td>
-                                                  <td>
-                                                      {item.quote_usd !==
-                                                          undefined &&
-                                                      item.quote_usd
-                                                          .percent24h > 0 ? (
-                                                          <img
-                                                              className="ch-img"
-                                                              src={
-                                                                  "/images/green-chart" +
-                                                                  (Math.floor(
-                                                                      Math.random() *
-                                                                          6
-                                                                  ) +
-                                                                      1) +
-                                                                  ".svg"
-                                                              }
-                                                              alt=""
-                                                              width={160}
-                                                              height={60}
-                                                          />
-                                                      ) : (
-                                                          <img
-                                                              className="ch-img"
-                                                              src={
-                                                                  "/images/red-chart" +
-                                                                  (Math.floor(
-                                                                      Math.random() *
-                                                                          6
-                                                                  ) +
-                                                                      1) +
-                                                                  ".svg"
-                                                              }
-                                                              alt=""
-                                                              width={160}
-                                                              height={60}
-                                                          />
-                                                      )}
-                                                  </td>
-                                                  <td>
-                                                      <button
-                                                          onClick={() => {
-                                                              Router.push(
-                                                                  "/trade"
-                                                              );
-                                                          }}
-                                                          className="btn btn-yellow"
-                                                      >
-                                                          معامله
-                                                      </button>
-                                                  </td>
-                                              </tr>
-                                          );
-                                      }
-                                  })
+                                                                    0
+                                                                    ? "nega changes"
+                                                                    : "zero changes"
+                                                        }
+                                                    >
+                                                        {item.quote_usd !==
+                                                            undefined &&
+                                                            item.quote_usd
+                                                                .percent24h > 0
+                                                            ? "+ " +
+                                                            item.quote_usd
+                                                                .percent24h
+                                                            : item.quote_usd
+                                                                .percent24h}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {item.quote_usd !==
+                                                        undefined &&
+                                                        item.quote_usd
+                                                            .percent24h > 0 ? (
+                                                        <img
+                                                            className="ch-img"
+                                                            src={
+                                                                "/images/green-chart" +
+                                                                (Math.floor(
+                                                                    Math.random() *
+                                                                    6
+                                                                ) +
+                                                                    1) +
+                                                                ".svg"
+                                                            }
+                                                            alt=""
+                                                            width={160}
+                                                            height={60}
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            className="ch-img"
+                                                            src={
+                                                                "/images/red-chart" +
+                                                                (Math.floor(
+                                                                    Math.random() *
+                                                                    6
+                                                                ) +
+                                                                    1) +
+                                                                ".svg"
+                                                            }
+                                                            alt=""
+                                                            width={160}
+                                                            height={60}
+                                                        />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        onClick={() => {
+                                                            Router.push(
+                                                                "/trade"
+                                                            );
+                                                        }}
+                                                        className="btn btn-yellow"
+                                                    >
+                                                        معامله
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    }
+                                })
                                 : ress.map((item) => {
-                                      row++;
-                                      if (item.name !== "تومان") {
-                                          return (
-                                              <tr key={item.id}>
-                                                  <td>{row}</td>
-                                                  <td>
-                                                      <img
-                                                          src={item.image}
-                                                          width={25}
-                                                          alt=""
-                                                      />
-                                                      <span>
-                                                          {item.small_name_slug}
-                                                      </span>
-                                                      <span>{item.name}</span>
-                                                  </td>
-                                                  {activeBtn == 1 ? (
-                                                      <>
-                                                          <td>
-                                                              {(
-                                                                  (item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100) +
-                                                                      item.buyPrice) *
-                                                                  coins[0]
-                                                                      .buyPrice
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                          <td>
-                                                              {(
-                                                                  item.buyPrice *
-                                                                      coins[0]
-                                                                          .buyPrice -
-                                                                  item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100) *
-                                                                      coins[0]
-                                                                          .buyPrice
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                      </>
-                                                  ) : (
-                                                      <>
-                                                          <td>
-                                                              {(
-                                                                  item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100) +
-                                                                  item.buyPrice
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                          <td>
-                                                              {(
-                                                                  item.buyPrice -
-                                                                  item.buyPrice *
-                                                                      (item.trade_fee /
-                                                                          100)
-                                                              ).toLocaleString()}
-                                                          </td>
-                                                      </>
-                                                  )}
-                                                  <td>
-                                                      <div
-                                                          className={
-                                                              item.quote_usd !==
-                                                                  undefined &&
-                                                              item.quote_usd
-                                                                  .percent24h >
-                                                                  0
-                                                                  ? "plus changes"
-                                                                  : item.quote_usd !==
-                                                                        undefined &&
+                                    row++;
+                                    if (item.name !== "تومان") {
+                                        return (
+                                            <tr key={item.id}>
+                                                <td>{row}</td>
+                                                <td>
+                                                    <img
+                                                        src={item.image}
+                                                        width={25}
+                                                        alt=""
+                                                    />
+                                                    <span>
+                                                        {item.small_name_slug}
+                                                    </span>
+                                                    <span>{item.name}</span>
+                                                </td>
+                                                {activeBtn == 1 ? (
+                                                    <>
+                                                        <td>
+                                                            {(
+                                                                (item.buyPrice *
+                                                                    (item.trade_fee /
+                                                                        100) +
+                                                                    item.buyPrice) *
+                                                                coins[0]
+                                                                    .buyPrice
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td>
+                                                            {(
+                                                                item.buyPrice *
+                                                                coins[0]
+                                                                    .buyPrice -
+                                                                item.buyPrice *
+                                                                (item.trade_fee /
+                                                                    100) *
+                                                                coins[0]
+                                                                    .buyPrice
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <td>
+                                                            {(
+                                                                item.buyPrice *
+                                                                (item.trade_fee /
+                                                                    100) +
+                                                                item.buyPrice
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                        <td>
+                                                            {(
+                                                                item.buyPrice -
+                                                                item.buyPrice *
+                                                                (item.trade_fee /
+                                                                    100)
+                                                            ).toLocaleString()}
+                                                        </td>
+                                                    </>
+                                                )}
+                                                <td>
+                                                    <div
+                                                        className={
+                                                            item.quote_usd !==
+                                                                undefined &&
+                                                                item.quote_usd
+                                                                    .percent24h >
+                                                                0
+                                                                ? "plus changes"
+                                                                : item.quote_usd !==
+                                                                    undefined &&
                                                                     item
                                                                         .quote_usd
                                                                         .percent24h <
-                                                                        0
-                                                                  ? "nega changes"
-                                                                  : "zero changes"
-                                                          }
-                                                      >
-                                                          {item.quote_usd !==
-                                                              undefined &&
-                                                          item.quote_usd
-                                                              .percent24h > 0
-                                                              ? "+ " +
-                                                                item.quote_usd
-                                                                    .percent24h
-                                                              : item.quote_usd
-                                                                    .percent24h}
-                                                      </div>
-                                                  </td>
-                                                  <td>
-                                                      {item.quote_usd !==
-                                                          undefined &&
-                                                      item.quote_usd
-                                                          .percent24h > 0 ? (
-                                                          <img
-                                                              className="ch-img"
-                                                              src={
-                                                                  "/images/green-chart" +
-                                                                  (Math.floor(
-                                                                      Math.random() *
-                                                                          6
-                                                                  ) +
-                                                                      1) +
-                                                                  ".svg"
-                                                              }
-                                                              alt=""
-                                                              width={160}
-                                                              height={60}
-                                                          />
-                                                      ) : (
-                                                          <img
-                                                              className="ch-img"
-                                                              src={
-                                                                  "/images/red-chart" +
-                                                                  (Math.floor(
-                                                                      Math.random() *
-                                                                          6
-                                                                  ) +
-                                                                      1) +
-                                                                  ".svg"
-                                                              }
-                                                              alt=""
-                                                              width={160}
-                                                              height={60}
-                                                          />
-                                                      )}
-                                                  </td>
-                                                  <td>
-                                                      <button
-                                                          onClick={() => {
-                                                              Router.push(
-                                                                  "/trade"
-                                                              );
-                                                          }}
-                                                          className="btn btn-yellow"
-                                                      >
-                                                          معامله
-                                                      </button>
-                                                  </td>
-                                              </tr>
-                                          );
-                                      }
-                                  })}
+                                                                    0
+                                                                    ? "nega changes"
+                                                                    : "zero changes"
+                                                        }
+                                                    >
+                                                        {item.quote_usd !==
+                                                            undefined &&
+                                                            item.quote_usd
+                                                                .percent24h > 0
+                                                            ? "+ " +
+                                                            item.quote_usd
+                                                                .percent24h
+                                                            : item.quote_usd
+                                                                .percent24h}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    {item.quote_usd !==
+                                                        undefined &&
+                                                        item.quote_usd
+                                                            .percent24h > 0 ? (
+                                                        <img
+                                                            className="ch-img"
+                                                            src={
+                                                                "/images/green-chart" +
+                                                                (Math.floor(
+                                                                    Math.random() *
+                                                                    6
+                                                                ) +
+                                                                    1) +
+                                                                ".svg"
+                                                            }
+                                                            alt=""
+                                                            width={160}
+                                                            height={60}
+                                                        />
+                                                    ) : (
+                                                        <img
+                                                            className="ch-img"
+                                                            src={
+                                                                "/images/red-chart" +
+                                                                (Math.floor(
+                                                                    Math.random() *
+                                                                    6
+                                                                ) +
+                                                                    1) +
+                                                                ".svg"
+                                                            }
+                                                            alt=""
+                                                            width={160}
+                                                            height={60}
+                                                        />
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        onClick={() => {
+                                                            Router.push(
+                                                                "/trade"
+                                                            );
+                                                        }}
+                                                        className="btn btn-yellow"
+                                                    >
+                                                        معامله
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    }
+                                })}
                         </tbody>
                     </table>
                 </div>
@@ -1411,7 +1388,7 @@ export default function Home() {
                     <div className="pxx">
                         <h5> {SETTINGS.WEBSITE_NAME}  را بیشتر بشناسید</h5>
                         <p>
-                             {SETTINGS.WEBSITE_NAME}  محلی است برای هر فردی که میخواهد در سریع ترین
+                            {SETTINGS.WEBSITE_NAME}  محلی است برای هر فردی که میخواهد در سریع ترین
                             زمان ممکن و با کمترین کارمزد، و با رعایت امنیت و
                             آسودگی خیال از حفظ سرمایه خود، در بازار ارز دیجیتال
                             به خرید و فروش و هولد کردن بپردازد.
@@ -1457,7 +1434,7 @@ export default function Home() {
                             </p>
                         ) : (
                             <p className="about-p">
-                                 {SETTINGS.WEBSITE_NAME}  با پشتیبانی از ارزهای مختلف، امکان پرداخت
+                                {SETTINGS.WEBSITE_NAME}  با پشتیبانی از ارزهای مختلف، امکان پرداخت
                                 با تومان و حتی سایر رمزارزها و خرید و فروش و
                                 تبدیل آن‌ها به یکدیگر را می‌دهد
                             </p>
@@ -1529,48 +1506,47 @@ export default function Home() {
                 </div>
             </Items>
             <HomeCalculator />
-            <Blog>
+            {/* <Blog>
                 <h3>
                     مقالات <span>ما</span>
                 </h3>
                 <h6>آخرین پست های وبلاگ  {SETTINGS.WEBSITE_NAME} </h6>
                 <div className="posts">
-				{typeof posts === typeof [] &&  posts?.map((item) => {
-                 return  (  <Post key={item.id}>
-				 <div key={item.id}>
-                        <img
-                           src={item.fimg_url}
-                           alt={item.title.rendered}
-                        />
-                        <h5>{item.title.rendered}</h5>
-                        <p>
-                          {item.excerpt.rendered.toString().replace(regex, "").split('',100)}
-                        </p>
-                        <a href={item.guid.rendered}> بیشتر بخوانید </a>
-						</div>
-                    </Post> ) 
-				})}
+                    { blogData?.data?.map((item) => {
+                        return (<Post key={item.id}>
+                            <div key={item.id}>
+                                <img
+                                    src={item.fimg_url}
+                                    alt={item.title.rendered}
+                                />
+                                <h5>{item.title.rendered}</h5>
+                                <p>
+                                    {item.excerpt.rendered.toString().replace(regex, "").split('', 100)}
+                                </p>
+                                <a href={item.guid.rendered}> بیشتر بخوانید </a>
+                            </div>
+                        </Post>)
+                    })}
                 </div>
-            </Blog>
+            </Blog> */}
             <LandingFooter />
         </Main>
     );
 }
 
 export async function getServerSideProps(context) {
-    try {
-        const data = await fetch(`${BASEURL}/service/list/`)
-        const services = await  r.json()
-        
-    } catch (error) {
-         console.log(error)
-        
-    }
-    
+    // let services = []
+    // try {
+    //     const data = await fetch(`${BASEURL}/service/list/`)
+    //     services = await r.json()
+
+    // } catch (error) {
+    //     console.log(error)
+    // }
+
     return {
-      props: {
-        services
-      }, // will be passed to the page component as props
+        props: {
+            // services
+        }, // will be passed to the page component as props
     }
-  }
-  
+}

@@ -151,7 +151,7 @@ export default function Edit() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}account/details/`,
                 method: "GET",
@@ -174,7 +174,7 @@ export default function Edit() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}account/edit/`,

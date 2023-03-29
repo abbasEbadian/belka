@@ -218,7 +218,7 @@ const CoinDeposit = (props) => {
                 data: data,
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
             };
 
@@ -242,7 +242,7 @@ const CoinDeposit = (props) => {
                 data: data,
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
             };
 

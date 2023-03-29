@@ -1,6 +1,7 @@
+import React from 'react'
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import NightModeContext from "../components/Context";
 import { theme } from "../components/settings";
 
@@ -19,9 +20,23 @@ const cssCache = createCache({ key: 'css', prepend: true });
 
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
+import { AuthGuard } from "../components/AuthGaurd";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import axios from 'axios';
+
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token')
+    if (token)
+        config.headers["Authorization"] = `Bearer ${token}`
+    return config
+})
+
 
 function MyApp({ Component, pageProps }) {
     const [night, setNight] = useState(true);
+    const [online, setOnline] = useState(true);
+
     const setStatus = (i) => {
         setNight(i);
     };
@@ -47,35 +62,56 @@ function MyApp({ Component, pageProps }) {
     }, []);
 
     useEffect(() => {
-        
+        window.addEventListener("offline", (e) => {
+            setOnline(false)
+        });
+
+        window.addEventListener("online", (e) => {
+            setOnline(true)
+        });
     }, [])
+    const [queryClient] = React.useState(() => new QueryClient());
     return (
-        <CacheProvider value={cssCache}>
-            <CacheProvider value={cacheRtl}>
-                <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <NightModeContext.Provider
-                        value={{
-                            night,
-                            setStatus,
-                        }}
-                    >
-                        <Component {...pageProps} />
-                        <ToastContainer
-                            rtl={true}
-                            position="top-center"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            pauseOnFocusLoss={false}
-                            draggable
-                            pauseOnHover={false}
-                        />
-                    </NightModeContext.Provider>
-                </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+            <CacheProvider value={cssCache}>
+                <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <NightModeContext.Provider
+                            value={{
+                                night,
+                                setStatus,
+                            }}
+                        >
+                            { online?
+                                    Component.protected ?
+                                        <AuthGuard>
+                                            <Component {...pageProps} />
+                                        </AuthGuard>
+                                        :
+                                        <Component {...pageProps} />
+                                    :
+                                    <h1> OFFLINE !</h1>
+                            }
+                            
+                            <ToastContainer
+                                rtl={true}
+                                position="top-center"
+                                autoClose={5000}
+                                hideProgressBar={false}
+                                newestOnTop={false}
+                                closeOnClick
+                                pauseOnFocusLoss={false}
+                                draggable
+                                pauseOnHover={false}
+                            />
+                        </NightModeContext.Provider>
+                    </ThemeProvider>
+                </CacheProvider>
             </CacheProvider>
-        </CacheProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+
+        </QueryClientProvider>
     );
 }
 

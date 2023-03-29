@@ -397,7 +397,7 @@ const Wizard = (props) => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}account/manage/`,
@@ -445,7 +445,7 @@ const Wizard = (props) => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}account/verify/phone/complete/`,
@@ -501,7 +501,7 @@ const Wizard = (props) => {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             method: "POST",
             url: `${BASEURL}account/document/`,

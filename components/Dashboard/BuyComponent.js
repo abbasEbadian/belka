@@ -9,6 +9,7 @@ import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { baseUrl } from "../BaseUrl";
+import { BASEURL } from "../settings";
 const TradeMain = styled('div')`
     position: relative;
     .poabs {
@@ -315,7 +316,7 @@ const BuyComponent = () => {
     };
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -358,7 +359,7 @@ const BuyComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}wallet/list/`,
                 method: "GET",
@@ -419,7 +420,7 @@ const BuyComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -483,10 +484,7 @@ const BuyComponent = () => {
             data.append("changed", "source");
 
             let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+               
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
                 data: data,
@@ -552,10 +550,7 @@ const BuyComponent = () => {
                 type: "buy",
             };
             let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+               
                 method: "POST",
                 url: `${BASEURL}order/create/`,
                 data: data,
@@ -613,10 +608,7 @@ const BuyComponent = () => {
                 type: "sell",
             };
             let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+               
                 method: "POST",
                 url: `${BASEURL}order/create/`,
                 data: data,
@@ -669,10 +661,7 @@ const BuyComponent = () => {
                 type: "buy",
             };
             let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+              
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
                 data: data,
@@ -728,7 +717,7 @@ const BuyComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,

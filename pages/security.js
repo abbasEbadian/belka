@@ -209,7 +209,7 @@ export default function ChangePass() {
     let refreshToken = "";
     console.log(oldPassword, newPassword, confirmPassword);
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -241,7 +241,7 @@ export default function ChangePass() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}account/details/`,
                 method: "GET",
@@ -279,7 +279,7 @@ const twostepvalidator = function() {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             method: "POST",
             url: `${BASEURL}account/edit/`,
@@ -336,7 +336,7 @@ const twostepdeactivator = function() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}account/edit/`,
@@ -391,7 +391,7 @@ const twostepdeactivator = function() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}account/edit/`,
@@ -444,7 +444,7 @@ const twostepdeactivator = function() {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             method: "POST",
             url: `${BASEURL}account/manage/`,

@@ -6,6 +6,7 @@ import { baseUrl } from "../BaseUrl";
 import NightModeContext from "../Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { BASEURL } from "../settings";
  
 const Main = styled('div')`
     box-shadow: 5px 7px 12px -5px #9f9fbb;
@@ -148,11 +149,11 @@ const Change = () => {
     };
     let token = "";
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if( typeof window !=='undefined'  )token = localStorage.getItem("token");
     }, 2000);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken =  typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 10000);
 
     setTimeout(() => {
@@ -201,7 +202,7 @@ const Change = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}wallet/list/`,
                 method: "GET",
@@ -221,7 +222,7 @@ const Change = () => {
         order_config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             url: `${BASEURL}order/list/`,
             method: "GET",
@@ -282,7 +283,7 @@ const Change = () => {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             method: "POST",
             url: `${BASEURL}order/calculator/`,
@@ -328,7 +329,7 @@ const Change = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,

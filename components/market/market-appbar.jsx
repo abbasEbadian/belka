@@ -22,8 +22,7 @@ const MAppbar = styled(AppBar)(({ theme }) => ({
 }))
 
 
-function MarketAppbar({ currency= "بیتکوین/تتر" }) {
-    const [activeTab, setActiveTab] = useState(MARKET_TABS.SPOT)
+function MarketAppbar({  openDialog, selectedCoins }) {
     return (
         <MAppbar elevation={0} position='static'>
 
@@ -32,8 +31,8 @@ function MarketAppbar({ currency= "بیتکوین/تتر" }) {
                     <IconButton  sx={{borderRadius: 1}}>
                         <MenuOpenIcon color='simple' />
                     </IconButton>
-                    <Typography color="white" variant='subtitle2' >
-                        {currency}
+                    <Typography color="white" variant='subtitle2' onClick={() => openDialog()} role="button" >
+                        {selectedCoins?.coinFrom?.name}/{selectedCoins?.coinTo?.name}
                     </Typography>
                     <Typography color="error" variant='caption' dir='ltr'>
                         -4.10%

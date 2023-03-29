@@ -9,6 +9,7 @@ import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { baseUrl } from "../BaseUrl";
+import { BASEURL } from "../settings";
 const TradeMain = styled('div')`
     position: relative;
     .select-all {
@@ -317,7 +318,7 @@ const SellComponent = () => {
     };
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -360,7 +361,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}wallet/list/`,
                 method: "GET",
@@ -421,7 +422,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -486,7 +487,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -554,7 +555,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -615,7 +616,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -671,7 +672,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
@@ -728,7 +729,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,

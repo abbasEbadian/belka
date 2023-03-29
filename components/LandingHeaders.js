@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { BASEURL, SETTINGS } from './settings'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useQuery } from "react-query";
 
 
 const Headers = styled(AppBar)(({ theme }) => ({
@@ -24,42 +25,18 @@ const Nav = styled(Box)(({ theme }) => ({
     }
 }))
 const LandingHeaders = ({ page }) => {
-    const [LoginUser, setLoginUser] = useState(false);
     const [Show, setShow] = useState(false);
     const isMobile = useMediaQuery("(max-width: 992px)")
 
-    let token = "";
-    setTimeout(() => {
-        if (typeof window !== 'undefined') token = localStorage.getItem("token");
-    }, 2000);
-
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                url: `${BASEURL}account/details/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        // setLoginUser(true)
-                    } else {
-                        // setLoginUser(false)
-                    }
-                })
-                .catch((error) => { });
-        }, 2200);
-    }, []);
-
+    const { isAccountLoading, data: accountData, error, isError} = useQuery("get-account", () => {
+        return axios.get(`${BASEURL}account/details/`)
+    })
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [anchorEl2, setAnchorEl2] = React.useState(null);
     const open = Boolean(anchorEl);
     const open2 = Boolean(anchorEl2);
+
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -84,7 +61,7 @@ const LandingHeaders = ({ page }) => {
                         <Image src={"/images/logo2.png"} layout={"fill"} onClick={() => Router.push("/")} alt='logo' />
                     </Box>
 
-                    {!LoginUser ?
+                    {isError ?
                         <Stack direction={"row"} spacing={2} alignItems={"center"} flexGrow={1} justifyContent={"flex-end"}>
                             <Link href={"/login"}>
                                 <Button variant="outlined" startIcon={<Person />} size={!isMobile ? "large" : "small"}>
@@ -197,7 +174,6 @@ const LandingHeaders = ({ page }) => {
                                             onClose={handleClose2}
                                             sx={{ "&, ul": { padding: " 0 !important" }, "li": { paddingBlock: 1.6 } }}
                                         >
-
 
                                         </Menu>
                                     </Box>

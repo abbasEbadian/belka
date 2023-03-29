@@ -132,7 +132,7 @@ const CoinWithdraw = (props) => {
             url: `${BASEURL}wallet/withdrawal/otp/`,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
         axios(config)
@@ -175,7 +175,7 @@ const CoinWithdraw = (props) => {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
         axios(config)

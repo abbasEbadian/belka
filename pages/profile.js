@@ -322,7 +322,7 @@ export default function Profile() {
     console.log(stts);
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -358,7 +358,7 @@ export default function Profile() {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             url: `${BASEURL}account/details/`,
             method: "GET",
@@ -378,7 +378,7 @@ export default function Profile() {
         setLoading(true);
         let config = {
             headers: {
-                Authorization: `Bearer ${token}`,
+                
                 "Content-Type": "multipart/form-data",
             },
             method: "POST",
@@ -419,7 +419,7 @@ export default function Profile() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}account/details/`,
                 method: "GET",
@@ -439,7 +439,7 @@ export default function Profile() {
         let config2 = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             method: "GET",
             url: `${BASEURL}account/verify/phone/`,

@@ -162,7 +162,7 @@ const RialWithdraw = (props) => {
                 data: data,
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
             };
 
@@ -181,7 +181,7 @@ const RialWithdraw = (props) => {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             url: `${BASEURL}bank/list/`,
             method: "GET",
@@ -212,7 +212,7 @@ const RialWithdraw = (props) => {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
 
@@ -247,7 +247,7 @@ const RialWithdraw = (props) => {
             url: `${BASEURL}wallet/withdrawal/otp/`,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
         axios(config)
@@ -289,7 +289,7 @@ const RialWithdraw = (props) => {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
 

@@ -104,7 +104,7 @@ export default function Auth() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}account/details/`,
                 method: "GET",

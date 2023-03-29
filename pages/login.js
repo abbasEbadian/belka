@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
-import { SETTINGS } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Box, Typography, inputLabelClasses, formControlClasses } from "@mui/material";
 import Link from "next/link";
@@ -205,7 +205,7 @@ export default function Login() {
         };
         let config = {
             method: "POST",
-            url: `${SETTINGS.BASEURL}token/otp/`,
+            url: `${BASEURL}token/otp/`,
             data: data,
         };
 
@@ -301,13 +301,13 @@ export default function Login() {
                                     )}
                                 </Submit>
                                 <Link href="/forgetpassword">
-                                    <Typography variant="caption" my={1} role='button'>
+                                    <Typography variant="caption" my={1} role='button' color={"grey"}>
                                         رمز عبور خود را فراموش کردم (بازیابی
                                         گذرواژه)
                                     </Typography>
                                 </Link>
                                 <Link href="/register">
-                                    <Typography variant="caption" role='button'>
+                                    <Typography variant="caption" role='button' color={"grey"}>
                                         هنوز حساب کاربری ندارید ؟ (ثبت نام رایگان)
                                     </Typography>
                                 </Link>

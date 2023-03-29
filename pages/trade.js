@@ -4,13 +4,14 @@ import Sidebar from "../components/Sidebar";
 import { styled } from '@mui/material/styles';
 import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
-import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
-import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast  } from "react-toastify";
+import MarketPrices from '../components/market/market-prices';
+import { useFetchCoins, useFetchOrders, useFetchWallet } from "../components/hooks";
+
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -451,8 +452,6 @@ const MainTable = styled('div')`
 
 export default function Dashboard() {
     const stts = useContext(NightModeContext);
-    const [coins, setCoins] = useState([]);
-    const [wallet, setWallet] = useState([]);
     const [sellCustomPrice, setSellCustomPrice] = useState(false);
     const [buyCustomPrice, setBuyCustomPrice] = useState(false);
     const [shopActive, setShopActive] = useState("1");
@@ -493,9 +492,17 @@ export default function Dashboard() {
 
     const [activeTab, setActiveTab] = useState("buy");
     const [activeBtn, setActiveBtn] = useState(1);
+
+
     let token = "";
+
+
+    const { isLoading: isCoinLoading, data: coins=[]} = useFetchCoins()
+    const { isLoading: isWalletLoading, data: wallet=[]} = useFetchWallet()
+    const { isLoading: isOrderLoading, data: orderList=[]} = useFetchOrders()
+
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if (typeof window !== 'undefined') token = localStorage.getItem("token");
     }, 200);
     let toman = [];
     let usdt = [];
@@ -513,7 +520,7 @@ export default function Dashboard() {
     };
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 2000);
 
     setTimeout(() => {
@@ -535,7 +542,7 @@ export default function Dashboard() {
             .then((response) => {
                 localStorage.setItem("token", response.data.access);
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
     const fullscreenHandler = (e) => {
         setFullscreen(true);
@@ -551,43 +558,10 @@ export default function Dashboard() {
         setUsdtState(usdt);
     };
 
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                url: `${BASEURL}wallet/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setWallet(res.data);
-                        setBalanceHandler(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 300);
-    }, []);
 
 
-    useEffect(() => {
-        setInterval(() => {
-        let config = {
-            url: `${BASEURL}service/list/`,
-            method: "GET",
-        };
-        axios(config)
-            .then((res) => {
-                if (res.status == "200") {
-                    setCoins(res.data);
-                }
-            })
-            .catch((error) => {});
-        } , 3000 );
-    }, []);
+
+    
     const handleChange = (selectedCoin) => {
         setSelectedCoin(selectedCoin);
         tradingViewHandler(selectedCoin);
@@ -620,7 +594,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -652,7 +626,7 @@ export default function Dashboard() {
                         }
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoinTwo,
@@ -685,7 +659,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -718,7 +692,7 @@ export default function Dashboard() {
                         }
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoin,
@@ -754,7 +728,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -762,27 +736,11 @@ export default function Dashboard() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -815,7 +773,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -823,27 +781,11 @@ export default function Dashboard() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -871,7 +813,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
@@ -879,27 +821,11 @@ export default function Dashboard() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -928,7 +854,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
@@ -936,27 +862,11 @@ export default function Dashboard() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -964,8 +874,8 @@ export default function Dashboard() {
     let sellBalance =
         selectedCoin !== undefined
             ? wallet.find((i) => {
-                  return i?.service?.small_name_slug == selectedCoin.value;
-              })
+                return i?.service?.small_name_slug == selectedCoin.value;
+            })
             : "";
 
     const sellAll = (e) => {
@@ -974,21 +884,21 @@ export default function Dashboard() {
     const buyAll = (e) => {
         let selectedCoinMain = selectedCoinTwo !== undefined
             ? wallet.find((i) => {
-                  return i?.service?.small_name_slug == selectedCoinTwo.value;
-              })
-            : "";   
+                return i?.service?.small_name_slug == selectedCoinTwo.value;
+            })
+            : "";
         let fee = 0
-        if(shopActiveTwo == "1" ){
+        if (shopActiveTwo == "1") {
             fee = (parseFloat(usdtState?.balance) * (parseFloat(usdtState.service.trade_fee))) / 100;
-            var x = (parseFloat(usdtState?.balance) - (fee*2)) / (parseFloat(selectedCoinMain.service.buyPrice));
+            var x = (parseFloat(usdtState?.balance) - (fee * 2)) / (parseFloat(selectedCoinMain.service.buyPrice));
 
             setBuyAmount((x).toFixed(4));
 
-        }else{
+        } else {
             fee = (parseFloat(tomanState?.balance) * (parseFloat(tomanState.service.trade_fee))) / 100;
-            var x = (parseFloat(tomanState?.balance) - (fee*2)) / (parseFloat(selectedCoinMain.service.buyPrice) * parseFloat(usdtState.service.show_price_irt));
+            var x = (parseFloat(tomanState?.balance) - (fee * 2)) / (parseFloat(selectedCoinMain.service.buyPrice) * parseFloat(usdtState.service.show_price_irt));
             setBuyAmount(x.toFixed(4));
-           
+
 
         }
     };
@@ -999,38 +909,35 @@ export default function Dashboard() {
         setTradingCoin(e.value);
     };
 
- 
 
 
-  // Filter coin
-  let filterToman = wallet.filter((names) => names.service.name !== "تومان");
-  filterToman = filterToman.filter((names) => names.service.name !== "تتر");
-  let filterTether = wallet.filter((names) => names.service.name !== "تتر");
-  filterTether = filterTether.filter((names) => names.service.name !== "تومان");
-  const filterHandler = (e) => {
-      filterToman = wallet.filter((names) => names.service.name !== "تومان");
-      filterToman = filterToman.filter((names) => names.service.name !== "تتر");
-      filterTether = wallet.filter((names) => names.service.name !== "تتر");
-      filterTether = filterTether.filter((names) => names.service.name !== "تومان");
-  };
+
+    // Filter coin
+    let filterToman = wallet.filter((names) => names.service.name !== "تومان");
+    filterToman = filterToman.filter((names) => names.service.name !== "تتر");
+    let filterTether = wallet.filter((names) => names.service.name !== "تتر");
+    filterTether = filterTether.filter((names) => names.service.name !== "تومان");
+    const filterHandler = (e) => {
+        filterToman = wallet.filter((names) => names.service.name !== "تومان");
+        filterToman = filterToman.filter((names) => names.service.name !== "تتر");
+        filterTether = wallet.filter((names) => names.service.name !== "تتر");
+        filterTether = filterTether.filter((names) => names.service.name !== "تومان");
+    };
 
     let row = -1;
 
-    console.log(buyError);
-    console.log(sellError);
     const [sortMethod, setSortMethod] = useState(false);
     const sortHandler = (e) => {
         setSortMethod(!sortMethod);
         sortMethod
             ? coins.sort(
-                  (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
-              )
+                (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
+            )
             : coins.sort(
-                  (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
-              );
+                (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
+            );
     };
 
-	
     return (
         <Main
             className={
@@ -1038,9 +945,7 @@ export default function Dashboard() {
             }
         >
             <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title>صرافی متاورس | خرید و فروش</title>
+                <title>صرافی {SETTINGS.WEBSITE_NAME} | خرید و فروش</title>
             </Head>
             <Sidebar show-menu={menuHandler} active="2" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
@@ -1072,7 +977,7 @@ export default function Dashboard() {
                             <span>کارمزد ثابت</span>
                             <span>
                                 {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
+                                    sellFixFee.fix_fee !== undefined
                                     ? sellFixFee.fix_fee.toLocaleString()
                                     : ""}{" "}
                                 <span>
@@ -1084,7 +989,7 @@ export default function Dashboard() {
                             <span>کارمزد تراکنش</span>
                             <span>
                                 {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
+                                    sellFixFee.fix_fee !== undefined
                                     ? sellFixFee.fee.toLocaleString()
                                     : ""}{" "}
                                 <span>
@@ -1096,7 +1001,7 @@ export default function Dashboard() {
                             <span>مجموع کارمزد</span>
                             <span>
                                 {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
+                                    sellFixFee.fix_fee !== undefined
                                     ? sellFixFee.total_fee.toLocaleString()
                                     : ""}{" "}
                                 <span>
@@ -1330,7 +1235,7 @@ export default function Dashboard() {
                             )}
                         </div>
                     </TradeMain>
-                    <TradeBox>
+                    {/* <TradeBox>
                         <div
                             className={
                                 stts.night == "true"
@@ -1364,7 +1269,7 @@ export default function Dashboard() {
                                         )}
                                     </span>
                                     {shopActiveTwo == "1" &&
-                                    usdtState !== undefined ? (
+                                        usdtState !== undefined ? (
                                         usdtState.service !== undefined ? (
                                             <span className="ms-2">
                                                 {usdtState.service.name}
@@ -1373,7 +1278,7 @@ export default function Dashboard() {
                                             ""
                                         )
                                     ) : tomanState !== undefined &&
-                                      tomanState.service !== undefined ? (
+                                        tomanState.service !== undefined ? (
                                         <span className="ms-2">
                                             {tomanState.service.name}
                                         </span>
@@ -1515,7 +1420,7 @@ export default function Dashboard() {
                                                     type="text"
                                                     placeholder={
                                                         selectedCoinTwo !==
-                                                        undefined
+                                                            undefined
                                                             ? selectedCoinTwo.value
                                                             : ""
                                                     }
@@ -1541,30 +1446,30 @@ export default function Dashboard() {
                                     </div>
                                 )}
                             </div>
-						
-							
+
+
                             {buyAm ? (
-<div className="liveorderinfo">
-<span>قیمت هر واحد </span>
-<span>{selectedCoinTwo.value}</span>
+                                <div className="liveorderinfo">
+                                    <span>قیمت هر واحد </span>
+                                    <span>{selectedCoinTwo.value}</span>
 
-<span>{
-(shopActiveTwo == 1) ? (
-    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.buyPrice))
-    
-): (
+                                    <span>{
+                                        (shopActiveTwo == 1) ? (
+                                            new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.buyPrice))
 
-    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.show_price_irt)
-)
+                                        ) : (
 
-} </span> 
+                                            new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.show_price_irt)
+                                        )
 
-<span>{ (shopActiveTwo == 1) ? ( usdtState.service.name) : ( tomanState.service.name )  }
-</span>
+                                    } </span>
+
+                                    <span>{(shopActiveTwo == 1) ? (usdtState.service.name) : (tomanState.service.name)}
+                                    </span>
 
 
-										  </div>
-							):("")}
+                                </div>
+                            ) : ("")}
 
                             {!buyActive ? (
                                 <div className="text-danger mt-3 d-inline-block">
@@ -1575,7 +1480,7 @@ export default function Dashboard() {
                             )}
                             <div className="text-danger mt-3 d-inline-block">
                                 {buyMsg !==
-                                "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
+                                    "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                                     ? buyMsg
                                     : ""}
                             </div>
@@ -1625,7 +1530,7 @@ export default function Dashboard() {
                                 <span>
                                     <span>
                                         <span className="ms-2">
-                            
+
                                             {selectedCoin !== undefined
                                                 ? selectedCoin.value
                                                 : ""}{" "}
@@ -1755,27 +1660,27 @@ export default function Dashboard() {
                                 )}
                             </div>
                             {sellAm ? (
-<div className="liveorderinfo">
-<span>قیمت هر واحد </span>
-<span>{selectedCoin.value}</span>
+                                <div className="liveorderinfo">
+                                    <span>قیمت هر واحد </span>
+                                    <span>{selectedCoin.value}</span>
 
-<span>{
-(shopActive == 1) ? (
-    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))
-    
-): (
+                                    <span>{
+                                        (shopActive == 1) ? (
+                                            new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))
 
-    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.show_price_irt)
-)
+                                        ) : (
 
-} </span> 
+                                            new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.show_price_irt)
+                                        )
 
-<span>{ (shopActive == 1) ? ( usdtState.service.name) : ( tomanState.service.name )  }
-</span>
+                                    } </span>
+
+                                    <span>{(shopActive == 1) ? (usdtState.service.name) : (tomanState.service.name)}
+                                    </span>
 
 
-										  </div>
-							):("")}
+                                </div>
+                            ) : ("")}
                             {!sellActive ? (
                                 <div className="text-danger mt-3 d-inline-block">
                                     اعتبار نا کافی !
@@ -1785,7 +1690,7 @@ export default function Dashboard() {
                             )}
                             <div className="text-danger mt-3 d-inline-block">
                                 {sellMsg !==
-                                "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
+                                    "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                                     ? sellMsg
                                     : ""}
                             </div>
@@ -1859,7 +1764,8 @@ export default function Dashboard() {
                                 فروش
                             </button>
                         </div>
-                    </TradeBox>
+                    </TradeBox> */}
+                    <MarketPrices selectedCoins={ { }}/>
                     <MainTable>
                         <div className="select-shop">
                             <button
@@ -1909,7 +1815,7 @@ export default function Dashboard() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {coins.map((item) => {
+                                    {coins?.map((item) => {
                                         row++;
                                         if (item.name !== "تومان") {
                                             return (
@@ -1943,13 +1849,13 @@ export default function Dashboard() {
                                                             <td>
                                                                 {Math.trunc(
                                                                     item.buyPrice *
-                                                                        coins[0]
-                                                                            .buyPrice -
+                                                                    coins[0]
+                                                                        .buyPrice -
                                                                     item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100) *
-                                                                        coins[0]
-                                                                            .buyPrice
+                                                                    (item.trade_fee /
+                                                                        100) *
+                                                                    coins[0]
+                                                                        .buyPrice
                                                                 ).toLocaleString()}
                                                             </td>
                                                         </>
@@ -1958,8 +1864,8 @@ export default function Dashboard() {
                                                             <td>
                                                                 {(
                                                                     item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100) +
+                                                                    (item.trade_fee /
+                                                                        100) +
                                                                     item.buyPrice
                                                                 ).toLocaleString()}
                                                             </td>
@@ -1967,8 +1873,8 @@ export default function Dashboard() {
                                                                 {(
                                                                     item.buyPrice -
                                                                     item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100)
+                                                                    (item.trade_fee /
+                                                                        100)
                                                                 ).toLocaleString()}
                                                             </td>
                                                         </>
@@ -1978,43 +1884,43 @@ export default function Dashboard() {
                                                             className={
                                                                 item.quote_usd !==
                                                                     undefined &&
-                                                                item.quote_usd
-                                                                    .percent24h >
+                                                                    item.quote_usd
+                                                                        .percent24h >
                                                                     0
                                                                     ? "plus changes"
                                                                     : item.quote_usd !==
-                                                                          undefined &&
-                                                                      item
-                                                                          .quote_usd
-                                                                          .percent24h <
-                                                                          0
-                                                                    ? "nega changes"
-                                                                    : "zero changes"
+                                                                        undefined &&
+                                                                        item
+                                                                            .quote_usd
+                                                                            .percent24h <
+                                                                        0
+                                                                        ? "nega changes"
+                                                                        : "zero changes"
                                                             }
                                                         >
                                                             {item.quote_usd !==
                                                                 undefined &&
-                                                            item.quote_usd
-                                                                .percent24h > 0
+                                                                item.quote_usd
+                                                                    .percent24h > 0
                                                                 ? "+ " +
-                                                                  item.quote_usd
-                                                                      .percent24h
+                                                                item.quote_usd
+                                                                    .percent24h
                                                                 : item.quote_usd
-                                                                      .percent24h}
+                                                                    .percent24h}
                                                         </div>
                                                     </td>
                                                     <td>
                                                         {item.quote_usd !==
                                                             undefined &&
-                                                        item.quote_usd
-                                                            .percent24h > 0 ? (
+                                                            item.quote_usd
+                                                                .percent24h > 0 ? (
                                                             <img
                                                                 className="ch-img"
                                                                 src={
                                                                     "/images/green-chart" +
                                                                     (Math.floor(
                                                                         Math.random() *
-                                                                            6
+                                                                        6
                                                                     ) +
                                                                         1) +
                                                                     ".svg"
@@ -2030,7 +1936,7 @@ export default function Dashboard() {
                                                                     "/images/red-chart" +
                                                                     (Math.floor(
                                                                         Math.random() *
-                                                                            6
+                                                                        6
                                                                     ) +
                                                                         1) +
                                                                     ".svg"

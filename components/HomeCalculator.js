@@ -10,6 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SETTINGS } from "./settings";
 import { Box } from "@mui/material";
+import { useServiceStore } from "../store/store";
 
 
 
@@ -192,33 +193,19 @@ const Calc = styled(Box)`
 
 const HomeCalculator = () => {
 
-    const [coins, setCoins] = useState([]);
     const [sourceAmount, setSourceAmount] = useState(0)
     const [selectedOption, setSelectedOption] = useState();
     const [selectedOptionTwo, setSelectedOptionTwo] = useState();
 
+    const {services, getServices} = useServiceStore()
 
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
 
     useEffect(() => {
-        axios(config)
-            .then((res) => {
-                setCoins(res.data);
-
-
-            })
-            .catch((error) => { });
-    }, []);
+        getServices()
+    }, [getServices]);
 
     const docalc = (selectedOption) => {
-
         setSelectedOption(selectedOption);
-
-
-
     };
 
     const docalctwo = (selectedOptionTwo) => {
@@ -284,8 +271,8 @@ const HomeCalculator = () => {
                             onChange={docalc}
                             placeholder="انتخاب"
                             options={
-                                typeof coins === typeof [] ?(coins.length > 0
-                                    ? coins
+                                typeof services === typeof [] ?(services.length > 0
+                                    ? services
                                         .filter(i => i.name != "تومان")
                                         .map((i, index) => {
                                             return {
@@ -303,7 +290,7 @@ const HomeCalculator = () => {
                                                 key: index,
                                             };
                                         })
-                                    : coins.map((i, index) => {
+                                    : services.map((i, index) => {
                                         return {
                                             label: i,
                                             label: (
@@ -334,8 +321,8 @@ const HomeCalculator = () => {
                             onChange={docalctwo}
                             placeholder="انتخاب"
                             options={
-                                typeof coins === typeof [] ?(coins.length !== 0
-                                    ? coins.map((i, index) => {
+                                typeof services === typeof [] ?(services.length !== 0
+                                    ? services.map((i, index) => {
                                         return {
                                             label: i,
                                             label: (
@@ -351,7 +338,7 @@ const HomeCalculator = () => {
                                             key: index,
                                         };
                                     })
-                                    : coins.map((i, index) => {
+                                    : services.map((i, index) => {
                                         return {
                                             label: i,
                                             label: (

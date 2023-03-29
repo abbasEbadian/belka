@@ -211,7 +211,7 @@ const RialDeposit = (props) => {
                 data: data,
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
             };
 
@@ -226,7 +226,7 @@ const RialDeposit = (props) => {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             url: `${BASEURL}bank/list/`,
             method: "GET",
@@ -251,7 +251,7 @@ const RialDeposit = (props) => {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
 
@@ -291,7 +291,7 @@ const RialDeposit = (props) => {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
         };
 

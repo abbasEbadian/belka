@@ -2,7 +2,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import "bootstrap/dist/css/bootstrap.css";
 import { styled } from '@mui/material/styles';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Router from "next/router";
 import { BASEURL } from "../components/settings";
 import { toast, ToastContainer } from "react-toastify";
@@ -19,6 +19,10 @@ import { chartDatas } from "../components/Dashboard/ChartData";
 import { chartDatas2 } from "../components/Dashboard/ChartData";
 import { chartDatas3 } from "../components/Dashboard/ChartData";
 import { chartDatas4 } from "../components/Dashboard/ChartData";
+import { useQuery } from "react-query";
+import { useFetchCoins } from "../components/hooks/fetchCoins";
+import { useFetchWallet } from "../components/hooks/fetchWallet";
+import { useFetchOrders } from "../components/hooks/fetchOrders";
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -341,15 +345,12 @@ export const Chartsss4 = dynamic(() => import("react-apexcharts"), {
 export default function Dashboard() {
     console.log(typeof Chartsss);
     const [sourcePrice, setSourcePrice] = useState();
-    const [orderList, setOrderList] = useState([]);
-    const [coins, setCoins] = useState([]);
     const [showMenu, setShowMenu] = useState(true);
     const [selectedOption, setSelectedOption] = useState();
     const [selectedOptionTwo, setSelectedOptionTwo] = useState();
     const [calcRespons, setCalcRespons] = useState();
     const [loading, setLoading] = useState(false);
     const stts = useContext(NightModeContext);
-    const [wallet, setWallet] = useState([]);
     const [destinationPrice, setDestinationPrice] = useState("");
     const [chartActive, setChartActive] = useState(1);
     const handleChange = (selectedOption) => {
@@ -358,13 +359,14 @@ export default function Dashboard() {
     const handleChangeTwo = (selectedOptionTwo) => {
         setSelectedOptionTwo(selectedOptionTwo);
     };
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 2000);
+    
+    const { isLoading: isCoinLoading, data: coins=[]} = useFetchCoins()
+    const { isLoading: isWalletLoading, data: wallet=[]} = useFetchWallet()
+    const { isLoading: isOrderLoading, data: orderList=[]} = useFetchOrders()
+
     let refreshToken = "";
     setTimeout(() => {
-        refreshToken = localStorage && localStorage.getItem("refresh_token");
+        refreshToken =  typeof window !== "undefined" && localStorage.getItem("refresh_token");
     }, 10000);
 
     setTimeout(() => {
@@ -372,6 +374,7 @@ export default function Dashboard() {
             inter();
         }, 600000);
     }, 70000);
+
     const inter = () => {
         let data = {
             refresh: refreshToken,
@@ -389,88 +392,30 @@ export default function Dashboard() {
             .catch((error) => {});
     };
 
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
-    useEffect(() => {
+    
 
-        axios(config)
-            .then((res) => {
-                setCoins(res.data);
-        
-            })
-            .catch((error) => {});
 
-    }, []);
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                url: `${BASEURL}wallet/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setWallet(res.data);
-                        setBalanceHandler(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 3200);
-    }, []);
-    let order_config = {};
-    setTimeout(() => {
-        order_config = {
-            headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            url: `${BASEURL}order/list/`,
-            method: "GET",
-        };
-    }, 3000);
-    useEffect(() => {
-        setTimeout(() => {
-            axios(order_config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setOrderList(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 4000);
-    }, []);
+
+
 
     // Fee
-    let selectItem = [];
-    let selectTwoItem = [];
+    
 
-    selectItem = coins.find((i) => {
-        return selectedOption !== undefined ? i.id == selectedOption.value : "";
-    });
-    let selectItemWallet = wallet.find((i) => {
-        return selectedOptionTwo !== undefined
-            ? i.service.id == selectedOptionTwo.value
-            : "";
-    });
-    selectTwoItem = coins.find((i) => {
-        return selectedOptionTwo !== undefined
-            ? i.id == selectedOptionTwo.value
-            : "";
-    });
+    const  selectItem  = useMemo(() => {
+        return coins?.find((i) => {
+            return selectedOption !== undefined ? i.id == selectedOption.value : "";
+        })
+    }, [coins, selectedOption])
+
+    // let selectItemWallet = wallet.find((i) => {
+    //     return selectedOptionTwo !== undefined
+    //         ? i.service.id == selectedOptionTwo.value
+    //         : "";
+    // });
+    const selectTwoItem = useMemo(() => {
+        return coins?.find((i) =>
+          selectedOptionTwo !== undefined? i.id == selectedOptionTwo.value: ""
+    )}, [coins, selectedOptionTwo])
     //
     const menuHandler = () => {
         setShowMenu(!showMenu);
@@ -493,7 +438,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -546,7 +491,7 @@ export default function Dashboard() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -561,18 +506,18 @@ export default function Dashboard() {
                 .catch((error) => {});
         }, 2300);
     }, [sourcePrice, selectedOption, selectedOptionTwo]);
-    let newCoins = coins.filter(
-        (names) =>
-            selectTwoItem !== undefined && names.name !== selectTwoItem.name
-    );
-    let newCoinsTwo = coins.filter(
-        (names) => selectItem !== undefined && names.name !== selectItem.name
-    );
+    // let newCoins = coins.filter(
+    //     (names) =>
+    //         selectTwoItem !== undefined && names.name !== selectTwoItem.name
+    // );
+    // let newCoinsTwo = coins.filter(
+    //     (names) => selectItem !== undefined && names.name !== selectItem.name
+    // );
 
     let rowOfHistory = 0;
     let rowOfWall = 0;
 
-    wallet.sort((a, b) => Number(b.balance) - Number(a.balance));
+    
 
     return (
         <>
@@ -908,16 +853,8 @@ export default function Dashboard() {
                                 </History>
                             </div>
                             <div className="d-flexx">
-                                <BuyComponent
-                                    night={stts.night}
-                                    token={token}
-                                    coins={coins}
-                                />
-                                <SellComponent
-                                    night={stts.night}
-                                    token={token}
-                                    coins={coins}
-                                />
+                                <BuyComponent />
+                                <SellComponent />
                                 <Change />
                             </div>
                         </FlexMain>

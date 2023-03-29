@@ -71,7 +71,7 @@ const Content = styled('div')`
         }
     }
 `;
-const HistoryTable = styled.table`
+const HistoryTable = styled('table')`
     min-width: 600px;
     width: 100%;
     margin-top: 20px;
@@ -192,7 +192,7 @@ export default function History() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}transaction/list/`,
                 method: "GET",
@@ -209,7 +209,7 @@ export default function History() {
         order_config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             url: `${BASEURL}order/list/`,
             method: "GET",

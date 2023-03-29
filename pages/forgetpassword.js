@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 import ReactCodeInput from "react-code-input";
+import { Typography } from "@mui/material";
 
 const Main = styled('div')`
     width: 100%;
@@ -191,15 +192,7 @@ export default function ForgetPassword() {
                 if (response.status === 200) {
                     localStorage.setItem("mobile", mobile);
                     setActiveTab("2");
-                    toast.success("گذر واژه جدید شما برایتان اس ام اس گردید", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success("گذر واژه جدید شما برایتان اس ام اس گردید");
                     setTimeout(() => {
                         Router.push("/login");
                     }, 3000);
@@ -208,15 +201,7 @@ export default function ForgetPassword() {
             })
             .catch((error) => {
                 setLoading(false);
-                toast.error("خطایی رخ داده است", {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error("خطایی رخ داده است");
             });
     };
     const handlePinChange = (pinCode) => {
@@ -224,17 +209,7 @@ export default function ForgetPassword() {
     };
     return (
         <Main>
-            <ToastContainer
-                rtl={true}
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                pauseOnFocusLoss={false}
-                draggable
-                pauseOnHover={false}
-            />
+            
             <Head>
                 {" "}
                 <link rel="shortcut icon" href="/images/fav.png" />
@@ -247,7 +222,10 @@ export default function ForgetPassword() {
                         {activeTab == "1" ? (
                             <>
                                 <label htmlFor="name">
+                                    <Typography>
                                     شماره موبایل
+
+                                    </Typography>
                                     <input
                                         onChange={(e) => {
                                             setMobile(e.target.value);
@@ -280,12 +258,16 @@ export default function ForgetPassword() {
                         ) : (
                             <>
                                 <div className="d-flex justify-content-center text-center">
-                                    <label className="l-t-r">
+                                    <label className="l-t-r" dir="ltr">
+                                    <Typography>
                                         کد تایید
+                                    </Typography>
+
                                         <ReactCodeInput
+                                            
                                             onChange={handlePinChange}
                                             type="number"
-                                            fields={5}
+                                            fields={6}
                                             onKeyDown={(e) => {
                                                 e.key === "Enter"
                                                     ? handlePinChange()

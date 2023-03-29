@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { baseUrl } from "./BaseUrl";
 import axios from "axios";
+import { BASEURL } from "./settings";
 const HeaderMain = styled('div')`
     border-bottom: 1px solid #d4d2e24b;
     display: flex;
@@ -378,7 +379,7 @@ const Header = (props) => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}notification/unread_list/`,
                 method: "GET",
@@ -396,7 +397,7 @@ const Header = (props) => {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ${token}`,
+                
             },
             method: "POST",
             url: `${BASEURL}notification/readAll/`,
@@ -447,7 +448,7 @@ const Header = (props) => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    
                 },
                 url: `${BASEURL}account/details/`,
                 method: "GET",
