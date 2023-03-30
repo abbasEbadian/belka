@@ -58,7 +58,7 @@ const LandingHeaders = ({ page }) => {
                     md: 1
                 }}>
                     <Box position={"relative"} width={130} height={62}>
-                        <Image src={"/images/logo2.png"} layout={"fill"} onClick={() => Router.push("/")} alt='logo' />
+                        <Image src={"/images/logo2.png"} layout={"fill"} onClick={() => Router.push("/")}   alt='logo' />
                     </Box>
 
                     {isError ?
