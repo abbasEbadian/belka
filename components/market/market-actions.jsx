@@ -1,10 +1,10 @@
 import styled from '@emotion/styled'
-import { Add, Info, Remove, SyncAlt } from '@mui/icons-material'
+import { Add, ClearRounded, Info, Remove, SyncAlt } from '@mui/icons-material'
 import { Box, Button, MenuItem, Select, selectClasses, Stack, TextField, ToggleButtonGroup, Typography, ToggleButton, textFieldClasses, TextFieldClasses } from '@mui/material'
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useFetchCoins, useFetchOrders, useFetchWallet } from '../hooks'
-import { is_float } from '../utils'
+import debounce, { is_float } from '../utils' 
 
 const StyledStack = styled(Stack)(({ theme }) => ({
     ['button']: {
@@ -70,7 +70,9 @@ function MarketActions({ selectedCoins }) {
         amount2: 0,
         fraction: 25,
         volume: 0,
-        baseCoin: BASE_COINS['USDT']
+        baseCoin: BASE_COINS['USDT'],
+        amountTyping: false,
+        amount2Typing: false
     })
     const changePriceData = ({field, value}) => {
         if(field === 'baseCoin' && !value) return
@@ -78,6 +80,19 @@ function MarketActions({ selectedCoins }) {
             ...d,
             [field]: value
         }))
+    }
+
+    const amountTimeout = useRef(null)
+    const changePriceDataWithDebounce = ({field, value}) => {
+        value = String(value).trim()
+        if(!is_float(value)) return
+        clearTimeout(amountTimeout.current)
+        changePriceData({field: `${field}Typing`, value: true})
+        changePriceData({ field, value })
+
+        amountTimeout.current = setTimeout(() => {
+            changePriceData({field: `${field}Typing`, value: false })
+        }, 500)
     }
     const [currentAction, setCurrentAction] = useState(ACTION.BUY)
     const [limit, setLimit] = useState("Limit")
@@ -136,7 +151,7 @@ function MarketActions({ selectedCoins }) {
                 <StyledBox mt={2}>
                     <Stack direction={'row'} justifyContent="space-between">
                         <Button variant='text' color='dark'
-                            onClick={e => changePriceData({field: "amount", value: parseFloat(priceData.amount) + 1})}
+                            onClick={e => changePriceData({field: "amount", value: parseFloat(priceData.amount || 0) + 1})}
                         >
                             <Add />
                         </Button>
@@ -145,13 +160,14 @@ function MarketActions({ selectedCoins }) {
                             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', dir: "ltr"}}
                             size="small"
                             value={priceData.amount}
-                            onChange={e => changePriceData({field: "amount", value: e.target.value})}
+                            onChange={e => changePriceDataWithDebounce({field: "amount", value: e.target.value})}
                             onFocus={e => changePriceData({field: "amount", value: ""})}
                             error={!is_float(priceData.amount)}
                         />
 
+                        
                         <Button variant='text' color='dark'
-                            onClick={e => changePriceData({field: "amount", value: parseFloat(priceData.amount) - 1})}
+                            onClick={e => changePriceData({field: "amount", value: parseFloat(priceData.amount || 0) - 1})}
                         >
                             <Remove />
                         </Button>

@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import NightModeContext from "../components/Context";
+import BottomNav from "../components/BottomNav";
 import { theme } from "../components/settings";
 
 
@@ -105,6 +106,8 @@ function MyApp({ Component, pageProps }) {
                                 draggable
                                 pauseOnHover={false}
                             />
+
+                            <BottomNav />
                         </NightModeContext.Provider>
                     </ThemeProvider>
                 </CacheProvider>

@@ -5,7 +5,9 @@
  */
 export const is_float = (value) => {
     if(!value) return true
-    const isok  = [...value].every(e => !isNaN(e) || e === '.')
-    const one_dot = String(value).indexOf('.') === String(value).lastIndexOf(".")
-    return isok && one_dot
+    const isok  = !isNaN(Number(value))
+    // const one_dot = String(value).indexOf('.') === String(value).lastIndexOf(".")
+    return isok 
 }
+
+

@@ -48,7 +48,7 @@ const ContactMain = styled('div')`
     }
 `;
 const Content = styled('div')`
-    padding-top: 30px;
+    padding-top: 60px;
     padding-left: 20px;
     display: flex;
     justify-content: space-around;
