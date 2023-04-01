@@ -9,14 +9,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { baseUrl } from "./BaseUrl";
 import axios from "axios";
 import { BASEURL } from "./settings";
-const HeaderMain = styled('div')`
+import { Stack, Toolbar } from "@mui/material";
+import { useFetchUser } from "./hooks";
+const HeaderMain = styled(Toolbar)`
     border-bottom: 1px solid #d4d2e24b;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     height: 70px;
-    background: #fff;
     color: #fff;
     box-shadow: 5px 7px 26px -5px #bebdcc;
     -webkit-box-shadow: 5px 7px 26px -5px #bebdcc;
@@ -347,7 +348,6 @@ const Badge = styled('div')`
 const Header = (props) => {
     const [notifs, setNotifs] = useState([]);
     const [img, setImg] = useState(null);
-	const [user, setUser] = useState([]);
     const [showNotifBox, setShowNotifBox] = useState(false);
     const stts = useContext(NightModeContext);
     let isCheck = "";
@@ -367,12 +367,6 @@ const Header = (props) => {
         localStorage.removeItem("token");
         Router.push("/login");
     };
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 2000);
-
-
 
     useEffect(() => {
         setTimeout(() => {
@@ -405,15 +399,7 @@ const Header = (props) => {
 
         axios(config)
             .then((response) => {
-                toast.success(response.data.message, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.success(response.data.message);
             })
             .catch((error) => {});
     };
@@ -442,27 +428,10 @@ const Header = (props) => {
             document.msExitFullscreen();
         }
     }
-
+    const {isLoading: isLoadingUser, data: user = {}} = useFetchUser()
     useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}account/details/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setImg(res.data.avatar);
-						      setUser(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 2200);
-    }, []);
+        setImg(user?.avatar);
+    }, [user]);
 
     return (
         <HeaderMain
@@ -972,7 +941,7 @@ const Header = (props) => {
                         </g>{" "}
                     </g>{" "}
                 </svg>
-                <div className="d-flex align-items-center items">
+                <Stack direction={"row"} alignItems="center" columnGap={1}>
                     <label>
                         <input onChange={handleOnChange} type="checkbox" />
                         <div
@@ -1162,6 +1131,7 @@ const Header = (props) => {
                             </svg>
                         </div>
                     </label>
+
                     <svg
                         onClick={logOutHandler}
                         width="24"
@@ -1208,6 +1178,7 @@ const Header = (props) => {
                             strokeLinejoin="round"
                         />
                     </svg>
+
                     <div
                         onClick={() => {
                             Router.push("/profile");
@@ -1235,7 +1206,7 @@ const Header = (props) => {
                             </div>
                         )}
                     </div>
-                </div>
+                </Stack>
             </HeaderLeftMob>
         </HeaderMain>
     );

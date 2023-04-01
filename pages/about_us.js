@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
+import { SETTINGS } from "../components/settings";
 
 const Main = styled('div')`
     background-color: #111;
@@ -42,6 +43,7 @@ const Main = styled('div')`
 const ContactMain = styled('div')`
     width: 100%;
     margin-top: 50px;
+    
     font-family: IRANSansX, sans-serif;
     p {
         font-family: IRANSansX, sans-serif;
@@ -53,6 +55,9 @@ const Content = styled('div')`
     display: flex;
     justify-content: space-around;
     width: 100%;
+    *{
+        text-align: left;
+    }
     h4 {
         font-size: 18px;
         color: #fff;
@@ -87,23 +92,17 @@ const Content = styled('div')`
             margin-bottom: 30px;
         }
     }
-    p {
-        direction: rtl;
-    }
+  
 `;
 
+AboutUs.title = `صرافی ${SETTINGS.WEBSITE_NAME} | سوالات متداول`
 export default function AboutUs() {
     return (
         <Main>
-            <Head>
-                <title>صرافی متاورس | سوالات متداول</title>
-                <link rel="shortcut icon" href="/images/favicon.ico" />
-
-            </Head>
             <LandingHeaders page="about_us" />
             <ContactMain>
                 <Content>
-                    <div>
+                    <div dir="rtl">
                         <h2>(کسب درامد دلاری با ترید در دنیای ارزهای دیجیتال)</h2>
 
                         <p>متاورس یک پلتفرم خرید و فروش ارزهای دیجیتال است .شما از طریق متاورس میتوانید پرداخت های ارزی خود را به ریال تبدیل کنید و خرید آنلاین از سایت های بین المللی داشته باشید .</p>

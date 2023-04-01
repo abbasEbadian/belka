@@ -92,7 +92,6 @@ button:hover {
 }
 body,
 p {
-    color: #999;
     line-height: 28px;
     font-weight: 400;
     font-size: 16px;
@@ -126,9 +125,7 @@ ul {
     margin-left: auto;
     box-shadow: 0px 2px 8px rgba(50, 50, 50, 0.12);
 }
-.night-header {
-    background: #191d30 !important;
-}
+
 
 .pr-176 {
     padding-right: 240px !important;

@@ -10,19 +10,20 @@ export const BASEURL =  "https://api.belkacrypto.com/api/v2/"
 
 export const theme = createTheme({
   direction: 'rtl',
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 576,
+      md: 768,
+      lg: 992,
+      xl: 1200,
+      xxl: 1400
+    },
+  },
   palette: {
     mode: "dark",
 
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 576,
-        md: 768,
-        lg: 992,
-        xl: 1200,
-        xxl: 1400
-      },
-    },
+    
     grey: {
       100: "#111111",
       200: "#1d1d1d",
@@ -48,11 +49,11 @@ export const theme = createTheme({
     },
     text: {
       primary: "#fff",
-      secondary: "#999"
+      secondary: "#848c9c"
     },
     background: {
-      default: "#171d2b",
-      paper: "#101721"
+      default: "#101721",
+      paper: "#171d29"
     },
     neutral: {
       main: "#aaa",
@@ -79,9 +80,20 @@ export const theme = createTheme({
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
+    
 
   },
+  shape: {
+    borderRadius: "10px"
+  },
   components: {
+    MuiCard:{
+      styleOverrides:{
+        root:{
+          padding: "0.75rem 1.25rem"
+        }
+      }
+    },
     MuiButton: {
       variants: [
         {

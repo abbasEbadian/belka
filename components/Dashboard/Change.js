@@ -7,6 +7,7 @@ import NightModeContext from "../Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { BASEURL } from "../settings";
+import { useFetchCoins, useFetchOrders, useFetchWallet } from "../hooks";
  
 const Main = styled('div')`
     box-shadow: 5px 7px 12px -5px #9f9fbb;
@@ -130,15 +131,12 @@ const Main = styled('div')`
 `;
 const Change = () => {
     const [sourcePrice, setSourcePrice] = useState();
-    const [orderList, setOrderList] = useState([]);
-    const [coins, setCoins] = useState([]);
     const [showMenu, setShowMenu] = useState(false);
     const [selectedOption, setSelectedOption] = useState();
     const [selectedOptionTwo, setSelectedOptionTwo] = useState();
     const [calcRespons, setCalcRespons] = useState();
     const [loading, setLoading] = useState(false);
     const stts = useContext(NightModeContext);
-    const [wallet, setWallet] = useState([]);
     const [destinationPrice, setDestinationPrice] = useState("");
 
     const handleChange = (selectedOption) => {
@@ -147,98 +145,12 @@ const Change = () => {
     const handleChangeTwo = (selectedOptionTwo) => {
         setSelectedOptionTwo(selectedOptionTwo);
     };
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined'  )token = localStorage.getItem("token");
-    }, 2000);
-    let refreshToken = "";
-    setTimeout(() => {
-        refreshToken =  typeof window !== "undefined" && localStorage.getItem("refresh_token");
-    }, 10000);
 
-    setTimeout(() => {
-        setInterval(() => {
-            inter();
-        }, 600000);
-    }, 70000);
-    const inter = () => {
-        let data = {
-            refresh: refreshToken,
-        };
-        let config = {
-            method: "POST",
-            url: `${BASEURL}token/refresh/`,
-            data: data,
-        };
 
-        axios(config)
-            .then((response) => {
-                localStorage.setItem("token", response.data.access);
-            })
-            .catch((error) => {});
-    };
-
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
-    useEffect(() => {
-        axios(config)
-            .then((res) => {
-                setCoins(res.data);
-            })
-            .catch((error) => {});
-    }, []);
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}wallet/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setWallet(res.data);
-                        setBalanceHandler(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 3200);
-    }, []);
-    let order_config = {};
-    setTimeout(() => {
-        order_config = {
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-            url: `${BASEURL}order/list/`,
-            method: "GET",
-        };
-    }, 3000);
-    useEffect(() => {
-        setTimeout(() => {
-            axios(order_config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setOrderList(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 3200);
-    }, []);
+    
+    const {data: coins = []} = useFetchCoins()
+    const {data: wallet = []} = useFetchWallet()
+    
 
     // Fee
     let selectItem = [];
@@ -294,15 +206,7 @@ const Change = () => {
                 setLoading(false);
                 setCalcRespons(response.data);
                 setDestinationPrice(response.data.destination_price);
-                toast.success("نتیجه  : "  + response.data.destination_price, {
-                    position: "bottom-center",
-                    autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.success("نتیجه  : "  + response.data.destination_price);
             })
             .catch((error) => {});
 

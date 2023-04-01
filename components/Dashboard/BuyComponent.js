@@ -1,16 +1,18 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
 import { styled } from '@mui/material/styles';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
 import NightModeContext from "../Context";
 import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import { baseUrl } from "../BaseUrl";
 import { BASEURL } from "../settings";
-const TradeMain = styled('div')`
+import { Autocomplete, Box, Card, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { useFetchCoins, useFetchWallet } from "../hooks";
+
+const TradeMain = styled(Card)`
     position: relative;
     .poabs {
         position: absolute;
@@ -35,23 +37,17 @@ const TradeMain = styled('div')`
         font-size: 16px;
         color: #fff;
     }
-    box-shadow: 5px 7px 12px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 12px -5px #9f9fbb;
+   
     height: 460px;
     width: 47%;
     @media (max-width: 699px) {
         margin-right: 0 !important  ;
         width: 100%;
     }
-    background-color: #fff;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    margin-right: 20px;
     .head {
         padding: 0.75rem 1.25rem;
         font-size: 15px;
         font-weight: 600;
-        color: #000;
     }
     .fos-13 {
         font-size: 14px;
@@ -78,7 +74,6 @@ const TradeMain = styled('div')`
 const TradeBox = styled('div')`
     .head {
         font-size: 15px;
-        color: #000;
         font-weight: 600;
     }
     .bazar-be {
@@ -190,36 +185,12 @@ const TradeBox = styled('div')`
         padding-bottom: 14px;
         border-bottom: 1px solid rgba(173, 173, 173, 0.1);
     }
-    input {
-        width: 151px;
-        height: 38px;
-        background: #e4e3ef;
-        border: 1px solid rgb(153, 153, 153);
-        box-sizing: border-box;
-        border-radius: 8px;
-        padding: 8px;
-    }
+    
     .dir-left {
         direction: ltr;
         width: 100%;
         height: 38px;
         border-radius: 5px;
-    }
-    span {
-        color: #323232;
-        font-weight: normal;
-        margin-top: 0px;
-        font-size: 16px;
-        line-height: 16px;
-    }
-    button {
-        height: 42px;
-        background: #08c18d;
-        border-radius: 8px;
-        margin-top: 16px;
-        font-weight: 600;
-        font-size: 16px;
-        color: #fff;
     }
 .liveorderinfo{
     display:flex;
@@ -254,8 +225,6 @@ const SelectCoin = styled('div')`
 `;
 const BuyComponent = () => {
     const stts = useContext(NightModeContext);
-    const [coins, setCoins] = useState([]);
-    const [wallet, setWallet] = useState([]);
     const [sellCustomPrice, setSellCustomPrice] = useState(false);
     const [buyCustomPrice, setBuyCustomPrice] = useState(false);
     const [shopActive, setShopActive] = useState("1");
@@ -298,7 +267,7 @@ const BuyComponent = () => {
 
     let token = "";
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if (typeof window !== 'undefined') token = localStorage.getItem("token");
     }, 200);
     let toman = [];
     let usdt = [];
@@ -338,7 +307,7 @@ const BuyComponent = () => {
             .then((response) => {
                 localStorage.setItem("token", response.data.access);
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
     const fullscreenHandler = (e) => {
         setFullscreen(true);
@@ -354,40 +323,20 @@ const BuyComponent = () => {
         setUsdtState(usdt);
     };
 
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}wallet/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setWallet(res.data);
-                        setBalanceHandler(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 300);
-    }, []);
 
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
-    useEffect(() => {
-        axios(config)
-            .then((res) => {
-                if (res.status == "200") {
-                    setCoins(res.data);
-                }
-            })
-            .catch((error) => {});
-    }, []);
+    const { data: coins } = useFetchCoins()
+    const { data: wallet } = useFetchWallet()
+
+    const filterToman = useMemo(() => {
+        setBalanceHandler(wallet);
+        return wallet.filter((names) => names.service.name !== "تومان")
+            .filter((names) => names.service.name !== "تتر");
+    }, [wallet, shopActiveTwo])
+    const filterTether = useMemo(() => {
+        setBalanceHandler(wallet);
+        return wallet.filter((names) => names.service.name !== "تتر");
+        filter((names) => names.service.name !== "تومان")
+    }, [wallet, shopActiveTwo])
     const handleChange = (selectedCoin) => {
         setSelectedCoin(selectedCoin);
         tradingViewHandler(selectedCoin);
@@ -420,7 +369,7 @@ const BuyComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -428,7 +377,7 @@ const BuyComponent = () => {
             };
             axios(config)
                 .then((response) => {
-			
+
                     setBuyAmountWithOutFee(response.data.amount_with_out_fee);
                     setBuyM(response.data.source_price);
                     setbuyMsg(response.data.message);
@@ -453,7 +402,7 @@ const BuyComponent = () => {
                         }
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoinTwo,
@@ -484,14 +433,14 @@ const BuyComponent = () => {
             data.append("changed", "source");
 
             let config = {
-               
+
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
                 data: data,
             };
             axios(config)
                 .then((response) => {
-					
+
                     setSellAmountWithOutFee(response.data.amount_with_out_fee);
                     setSellAm(response.data.destination_price);
                     setSellMsg(response.data.message);
@@ -517,7 +466,7 @@ const BuyComponent = () => {
                         }
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoin,
@@ -550,34 +499,18 @@ const BuyComponent = () => {
                 type: "buy",
             };
             let config = {
-               
+
                 method: "POST",
                 url: `${BASEURL}order/create/`,
                 data: data,
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -608,34 +541,18 @@ const BuyComponent = () => {
                 type: "sell",
             };
             let config = {
-               
+
                 method: "POST",
                 url: `${BASEURL}order/create/`,
                 data: data,
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -661,36 +578,19 @@ const BuyComponent = () => {
                 type: "buy",
             };
             let config = {
-              
+
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
                 data: data,
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    setLoading(false);
+                    toast.success(response.data.message);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                    setLoading(false);
-                });
+                    toast.error("خطایی وجود دارد");
+                })
+                .finally(f => setLoading(false))
         }, 330);
     };
     const scheduleSellHandler = (e) => {
@@ -717,7 +617,7 @@ const BuyComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
@@ -725,27 +625,11 @@ const BuyComponent = () => {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -753,31 +637,31 @@ const BuyComponent = () => {
     let sellBalance =
         selectedCoin !== undefined
             ? wallet.find((i) => {
-                  return i.service.small_name_slug == selectedCoin.value;
-              })
+                return i.service.small_name_slug == selectedCoin.value;
+            })
             : "";
 
     const sellAll = (e) => {
         setSellAmount(sellBalance !== undefined ? sellBalance.balance : "");
     };
-      const buyAll = (e) => {
+    const buyAll = (e) => {
         let selectedCoinMain = selectedCoinTwo !== undefined
             ? wallet.find((i) => {
-                  return i?.service?.small_name_slug == selectedCoinTwo.value;
-              })
-            : "";   
+                return i?.service?.small_name_slug == selectedCoinTwo.value;
+            })
+            : "";
         let fee = 0
-        if(shopActiveTwo == "1" ){
+        if (shopActiveTwo == "1") {
             fee = (parseFloat(usdtState?.balance) * (parseFloat(usdtState.service.trade_fee))) / 100;
-            var x = (parseFloat(usdtState?.balance) - (fee*2)) / (parseFloat(selectedCoinMain.service.buyPrice));
+            var x = (parseFloat(usdtState?.balance) - (fee * 2)) / (parseFloat(selectedCoinMain.service.buyPrice));
 
             setBuyAmount((x).toFixed(4));
 
-        }else{
+        } else {
             fee = (parseFloat(tomanState?.balance) * (parseFloat(tomanState.service.trade_fee))) / 100;
-            var x = (parseFloat(tomanState?.balance) - (fee*2)) / (parseFloat(selectedCoinMain.service.buyPrice) * parseFloat(usdtState.service.show_price_irt));
+            var x = (parseFloat(tomanState?.balance) - (fee * 2)) / (parseFloat(selectedCoinMain.service.buyPrice) * parseFloat(usdtState.service.show_price_irt));
             setBuyAmount(x.toFixed(4));
-           
+
 
         }
     };
@@ -789,30 +673,19 @@ const BuyComponent = () => {
         setTradingCoin(e.value);
     };
 
-    // Filter coin
-    let filterToman = wallet.filter((names) => names.service.name !== "تومان");
-    filterToman = filterToman.filter((names) => names.service.name !== "تتر");
-    let filterTether = wallet.filter((names) => names.service.name !== "تتر");
-    filterTether = filterTether.filter((names) => names.service.name !== "تومان");
-    const filterHandler = (e) => {
-        filterToman = wallet.filter((names) => names.service.name !== "تومان");
-        filterToman = filterToman.filter((names) => names.service.name !== "تتر");
-        filterTether = wallet.filter((names) => names.service.name !== "تتر");
-        filterTether = filterTether.filter((names) => names.service.name !== "تومان");
-    };
 
-    
+
+
 
 
 
     return (
-        <TradeMain className={stts.night == "true" ? "bg-gray no-shadow" : ""}>
+        <TradeMain>
             {buyShowModal ? (
                 <div className="my-modal">
-                    <div
-                        onClick={() => {
-                            setBuyShowModal(false);
-                        }}
+                    <div onClick={() => {
+                        setBuyShowModal(false);
+                    }}
                         className="w-100 c-p d-flex"
                     >
                         X
@@ -911,27 +784,27 @@ const BuyComponent = () => {
                 ""
             )}
             <TradeBox>
-                <div className="head">خرید ارز دیجیتال</div>
-                <div className="box-content">
+                <Typography variant="body1" >خرید ارز دیجیتال</Typography>
+                <Box>
                     <Inventory
                         className={stts.night == "true" ? "color-white-2" : ""}
                     >
-                        <span>موجودی شما :</span>
-                        <span>
+                        <Typography variant="caption2" color={"text.secondary"}>موجودی شما :</Typography>
+                        <Typography variant="caption2" color={"text.secondary"}>
                             <span>
                                 {shopActiveTwo == "1" ? (
                                     usdtState !== undefined ? (
-                                        <span className="ms-2">
-                                   
+                                        <Typography color={"success.main"} component="span">
+
                                             {Intl.NumberFormat("en-US").format(usdtState.balance)}{" "}
-                                        </span>
+                                        </Typography>
                                     ) : (
                                         ""
                                     )
                                 ) : tomanState !== undefined ? (
-                                    <span className="ms-2">
+                                    <Typography color={"success.main"} component="span">
                                         {Intl.NumberFormat("en-US").format(tomanState.balance)}{" "}
-                                    </span>
+                                    </Typography>
                                 ) : (
                                     ""
                                 )}
@@ -945,108 +818,101 @@ const BuyComponent = () => {
                                     ""
                                 )
                             ) : tomanState !== undefined &&
-                              tomanState.service !== undefined ? (
+                                tomanState.service !== undefined ? (
                                 <span className="ms-2">
                                     {tomanState.service.name}
                                 </span>
                             ) : (
                                 ""
                             )}
-                        </span>
+                        </Typography>
                     </Inventory>
-                    <div className="d-flex align-items-center">
-                        <span className="bazar-be">بازار به :</span>
-                        <div className="shop-select">
-                            <button
-                                onClick={() => {
-                                    filterHandler();
-                                    setShopActiveTwo("1");
-                                }}
-                                className={
-                                    shopActiveTwo === "1" ? "btn-active" : ""
-                                }
-                            >
-                                تتر
-                            </button>
-                            <button
-                                onClick={() => {
-                                    filterHandler();
-                                    setShopActiveTwo("2");
-                                }}
-                                className={
-                                    shopActiveTwo === "2" ? "btn-active" : ""
-                                }
-                            >
-                                تومان
-                            </button>
-                        </div>
-                    </div>
-                    <SelectCoin className=" mt-4">
-                        <h5
-                            className={
-                                stts.night == "true" ? "color-white-2" : ""
-                            }
+
+                    <Stack direction={"row"} alignItems='center' mt={2}>
+                        <Typography pr={1}>
+                            بازار به:
+                        </Typography>
+
+                        <ToggleButtonGroup
+                            value={shopActiveTwo}
+                            exclusive
+                            color='error'
+                            size='small'
+                            onChange={(e, value) => {
+                                setShopActiveTwo(value);
+                            }}
                         >
+
+                            <ToggleButton
+                                color='info'
+                                value={"1"}
+                                sx={{ px: 2 }}
+                                size="small"
+                            >
+                                <Typography variant="subtitle2">  تتر </Typography>
+                            </ToggleButton>
+                            <ToggleButton
+                                color='info'
+                                value={"2"}
+                                sx={{ px: 2 }}
+                                size="small"
+                            >
+                                <Typography variant="subtitle2">  تومان </Typography>
+                            </ToggleButton>
+
+
+                        </ToggleButtonGroup>
+                    </Stack>
+
+                    <SelectCoin className=" mt-4">
+                        <Typography color={"text.secondary"} variant='subtitle2' sx={{ mb: 1 }}>
                             انتخاب ارز
-                        </h5>
-                        {shopActiveTwo == "2" ? (
-                            <Select
+                        </Typography>
+                            
+                            <Autocomplete
+                                size="small"
+                                options={wallet.filter(x => ["usdt", "irt"].indexOf(x.small_name_slug ) === -1)}
+                                autoHighlight
                                 value={selectedCoinTwo}
                                 onChange={handleChangeTwo}
-                                placeholder="انتخاب"
-                                options={filterToman.map((i, index) => {
-                             
-                                    return {
-                                        label: i,
-                                        label: (
-                                            <div>
-                                                <img src={i.service.image} alt="" />
-                                                {i.service.name}
-                                            </div>
-                                        ),
-                                        value: i.service.small_name_slug,
-                                        key: index,
-                                        id: i.service.id,
-                                    };
-                                })}
+
+                                getOptionLabel={(option) => option.service.name}
+                                renderOption={(props, option) => (
+                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                        <img src={option.service.image} alt="" width={32} />
+                                        {option.service.name} 
+                                    </Box>
+                                )}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        placeholder="انتخاب"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                        }}
+                                    />
+                                )}
                             />
-                        ) : shopActiveTwo == "1" ? (
-                            <Select
-                                value={selectedCoinTwo}
-                                onChange={handleChangeTwo}
-                                placeholder="انتخاب"
-                                options={filterTether.map((i, index) => {
-                                    return {
-                                        label: i,
-                                        label: (
-                                            <div>
-                                                <img src={i.service.image} alt="" />
-                                                {i.service.name}
-                                            </div>
-                                        ),
-                                        value: i.service.small_name_slug,
-                                        key: index,
-                                        id: i.service.id,
-                                    };
-                                })}
-                            />
-                        ) : (
-                            ""
-                        )}
+                        
                     </SelectCoin>
                     <div className=" mt-2 ">
                         {!buyCustomPrice ? (
                             <div className="position-relative mt-4">
-                                <span className="fos-14">مقدار</span>
-                                { <button
-                                            className="select-all"
-                                            onClick={buyAll}
-                                        >
-                                            کل موجودی
-                                        </button> }
-                                <input
-                                    className="dir-left"
+                                <Typography color={"text.secondary"} variant='subtitle2' sx={{ mb: 1 }}>
+                                    مقدار
+                                </Typography>
+                                {<button
+                                    className="select-all"
+                                    onClick={buyAll}
+                                >
+                                    کل موجودی
+                                </button>}
+                                <TextField
+                                    size="small"
+                                    fullWidth
                                     onChange={(e) => {
+                                        console.log(e.target.value)
                                         setBuyAmount(e.target.value);
                                     }}
                                     type="text"
@@ -1064,7 +930,7 @@ const BuyComponent = () => {
                                 <div className="mt-3 ms-2 mb-3">
                                     <div>
                                         <span>مقدار</span>
-                                        <input
+                                        <TextField
                                             onChange={(e) => {
                                                 setBuyScheduleAmount(
                                                     e.target.value
@@ -1100,28 +966,28 @@ const BuyComponent = () => {
                             </div>
                         )}
                     </div>
-						{buyAm ? (
-<div className="liveorderinfo">
-<span>قیمت هر واحد </span>
-<span>{selectedCoinTwo.value}</span>
+                    {buyAm ? (
+                        <div className="liveorderinfo">
+                            <span>قیمت هر واحد </span>
+                            <span>{selectedCoinTwo.value}</span>
 
-<span>{
-(shopActiveTwo == 1) ? (
-    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.buyPrice))
-    
-): (
+                            <span>{
+                                (shopActiveTwo == 1) ? (
+                                    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.buyPrice))
 
-    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.show_price_irt)
-)
+                                ) : (
 
-} </span> 
+                                    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoinTwo.id)[0].service.show_price_irt)
+                                )
 
-<span>{ (shopActiveTwo == 1) ? ( usdtState.service.name) : ( tomanState.service.name )  }
-</span>
+                            } </span>
+
+                            <span>{(shopActiveTwo == 1) ? (usdtState.service.name) : (tomanState.service.name)}
+                            </span>
 
 
-										  </div>
-							):("")}
+                        </div>
+                    ) : ("")}
                     {!buyActive ? (
                         <div className="text-danger mt-2 d-inline-block">
                             اعتبار نا کافی !
@@ -1131,7 +997,7 @@ const BuyComponent = () => {
                     )}
                     <div className="text-danger mt-2 d-inline-block">
                         {buyMsg !==
-                        "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
+                            "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                             ? buyMsg
                             : ""}
                     </div>
@@ -1145,7 +1011,7 @@ const BuyComponent = () => {
                     >
                         خرید
                     </button>
-                </div>
+                </Box>
             </TradeBox>
         </TradeMain>
     );

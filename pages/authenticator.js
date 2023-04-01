@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -56,8 +56,8 @@ const ChangeMain = styled('div')`
     @media (max-width: 786px) {
         width: 90%;
     }
-    box-shadow: 5px 7px 26px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
+    box-shadow: 5px 7px 26px -5px #9f9fbb55;
+    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb55;
 `;
 
 const ChangeHead = styled('div')`
@@ -120,6 +120,7 @@ const ChangeContent = styled('div')`
     }
 `;
 
+Authenticator.title = `صرافی ${SETTINGS.WEBSITE_NAME} | تعییر رمز`
 export default function Authenticator() {
     const stts = useContext(NightModeContext);
     const [User, setUser] = useState(false);
@@ -234,11 +235,11 @@ export default function Authenticator() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Head>
+            {/* <Head>
                 {" "}
                 <link rel="shortcut icon" href="/images/fav.png" />
-                <title>صرافی متاورس | تعییر رمز</title>
-            </Head>
+                <title> </title>
+            </Head> */}
             <Sidebar show-menu={menuHandler} active="7" show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />

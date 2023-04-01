@@ -257,7 +257,7 @@ export default function Login() {
                                 <OutlinedInput
                                     fullWidth
                                     size="small"
-                                    type="number"
+                                    type="text"
                                     value={mobile}
                                     onChange={(e) => {
                                         setMobile(e.target.value);

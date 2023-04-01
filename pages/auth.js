@@ -8,7 +8,7 @@ import Router from "next/router";
 import Image from "next/image";
 import Wizard from "../components/Auth/Wizard";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 
 const Main = styled('div')`
@@ -70,6 +70,7 @@ const AuthMain = styled('div')`
     }
 `;
 
+Auth.title = ` صرافی ${SETTINGS.WEBSITE_NAME} | احراز هویت`
 export default function Auth() {
     const stts = useContext(NightModeContext);
 
@@ -125,11 +126,6 @@ export default function Auth() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title> صرافی متاورس | احراز هویت</title>
-            </Head>
 
             <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>

@@ -8,9 +8,10 @@ import NightModeContext from "../Context";
 import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-import { baseUrl } from "../BaseUrl";
 import { BASEURL } from "../settings";
-const TradeMain = styled('div')`
+import { Card, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+
+const TradeMain = styled(Card)`
     position: relative;
     .select-all {
         width: 100px;
@@ -35,24 +36,12 @@ const TradeMain = styled('div')`
     :disabled {
         opacity: 0.6;
     }
-    box-shadow: 5px 7px 12px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 12px -5px #9f9fbb;
     height: 460px;
     width: 47%;
     @media (max-width: 699px) {
         width: 100%;
         margin-right: 0 !important  ;
 
-    }
-    background-color: #fff;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    .head {
-        padding: 0.75rem 1.25rem;
-        color: #000;
-        font-size: 15px;
-        font-weight: 600;
     }
     .fos-13 {
         font-size: 14px;
@@ -212,23 +201,8 @@ const TradeBox = styled('div')`
         height: 38px;
         border-radius: 5px;
     }
-    span {
-        color: #323232;
-        font-weight: normal;
-        margin-top: 0px;
-        font-size: 16px;
-        line-height: 16px;
-    }
-    button {
-        width: 100%;
-        height: 42px;
-        background: #08c18d;
-        border-radius: 8px;
-        margin-top: 16px;
-        font-weight: 600;
-        font-size: 16px;
-        color: #fff;
-    }
+    
+   
 `;
 const Inventory = styled('div')`
     border-bottom: 1px solid rgb(172, 172, 172);
@@ -300,7 +274,7 @@ const SellComponent = () => {
 
     let token = "";
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if (typeof window !== 'undefined') token = localStorage.getItem("token");
     }, 200);
     let toman = [];
     let usdt = [];
@@ -340,7 +314,7 @@ const SellComponent = () => {
             .then((response) => {
                 localStorage.setItem("token", response.data.access);
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
     const fullscreenHandler = (e) => {
         setFullscreen(true);
@@ -361,7 +335,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 url: `${BASEURL}wallet/list/`,
                 method: "GET",
@@ -373,7 +347,7 @@ const SellComponent = () => {
                         setBalanceHandler(res.data);
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, []);
 
@@ -388,7 +362,7 @@ const SellComponent = () => {
                     setCoins(res.data);
                 }
             })
-            .catch((error) => {});
+            .catch((error) => { });
     }, []);
     const handleChange = (selectedCoin) => {
         setSelectedCoin(selectedCoin);
@@ -422,7 +396,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -454,7 +428,7 @@ const SellComponent = () => {
                         }
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoinTwo,
@@ -487,7 +461,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -520,7 +494,7 @@ const SellComponent = () => {
                         }
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoin,
@@ -555,7 +529,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -563,27 +537,11 @@ const SellComponent = () => {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -616,7 +574,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -624,27 +582,11 @@ const SellComponent = () => {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -672,7 +614,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
@@ -680,27 +622,11 @@ const SellComponent = () => {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -729,7 +655,7 @@ const SellComponent = () => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}schedule/create/`,
@@ -737,27 +663,11 @@ const SellComponent = () => {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -765,15 +675,15 @@ const SellComponent = () => {
     let sellBalance =
         selectedCoin !== undefined
             ? wallet.find((i) => {
-                  return i.service.small_name_slug == selectedCoin.value;
-              })
+                return i.service.small_name_slug == selectedCoin.value;
+            })
             : "";
 
     const sellAll = (e) => {
         setSellAmount(sellBalance !== undefined ? sellBalance.balance : "");
     };
-      const buyAll = (e) => {
-     
+    const buyAll = (e) => {
+
     };
 
 
@@ -784,7 +694,7 @@ const SellComponent = () => {
     };
 
 
-    
+
     let filterToman = wallet.filter((names) => names.service.name !== "تومان");
     filterToman = filterToman.filter((names) => names.service.name !== "تتر");
     let filterTether = wallet.filter((names) => names.service.name !== "تتر");
@@ -795,10 +705,10 @@ const SellComponent = () => {
         filterTether = wallet.filter((names) => names.service.name !== "تتر");
         filterTether = filterTether.filter((names) => names.service.name !== "تومان");
     };
-    
+
 
     return (
-        <TradeMain className={stts.night == "true" ? "bg-gray no-shadow" : ""}>
+        <TradeMain >
             {sellShowModal ? (
                 <div className="my-modal">
                     <div
@@ -827,7 +737,7 @@ const SellComponent = () => {
                         <span>کارمزد ثابت</span>
                         <span>
                             {sellFixFee !== undefined &&
-                            sellFixFee.fix_fee !== undefined
+                                sellFixFee.fix_fee !== undefined
                                 ? sellFixFee.fix_fee.toFixed(3)
                                 : ""}{" "}
                             <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
@@ -837,7 +747,7 @@ const SellComponent = () => {
                         <span>کارمزد تراکنش</span>
                         <span>
                             {sellFixFee !== undefined &&
-                            sellFixFee.fix_fee !== undefined
+                                sellFixFee.fix_fee !== undefined
                                 ? sellFixFee.fee.toFixed(3)
                                 : ""}{" "}
                             <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
@@ -847,7 +757,7 @@ const SellComponent = () => {
                         <span>مجموع کارمزد</span>
                         <span>
                             {sellFixFee !== undefined &&
-                            sellFixFee.fix_fee !== undefined
+                                sellFixFee.fix_fee !== undefined
                                 ? sellFixFee.total_fee.toFixed(3)
                                 : ""}{" "}
                             <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
@@ -901,26 +811,24 @@ const SellComponent = () => {
                 ""
             )}
             <TradeBox>
-                <div className="head">فروش ارز دیجیتال</div>
+                <Typography variant="body1">فروش ارز دیجیتال</Typography>
                 <div className="box-content">
-                    <Inventory
-                        className={stts.night == "true" ? "color-white-2" : ""}
-                    >
-                        <span>موجودی شما :</span>
-                        <span>
+                    <Inventory>
+                        <Typography variant="caption2" color={"text.secondary"}>موجودی شما :</Typography>
+                        <Typography variant="caption2" color={"text.secondary"}>
                             <span>
-                            {shopActiveTwo == "1" ? (
+                                {shopActiveTwo == "1" ? (
                                     usdtState !== undefined ? (
                                         <span className="ms-2">
-                 
 
-{
-     (selectedCoin !== undefined) ? (
-        
-      (wallet.filter((names) => names.service.id === selectedCoin.id)[0].balance) 
-     ) : ("")
-}
-                 
+
+                                            {
+                                                (selectedCoin !== undefined) ? (
+
+                                                    (wallet.filter((names) => names.service.id === selectedCoin.id)[0].balance)
+                                                ) : ("")
+                                            }
+
                                         </span>
                                     ) : (
                                         ""
@@ -928,54 +836,59 @@ const SellComponent = () => {
                                 ) : tomanState !== undefined ? (
                                     <span className="ms-2">
                                         {
-                                             (selectedCoin !== undefined) ? (
-        
-                                                new Intl.NumberFormat().format(       (wallet.filter((names) => names.service.id === selectedCoin.id)[0].balance)  * parseFloat(usdtState.service.show_price_irt) *     parseFloat(new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))))
-                                               ) : ("")
+                                            (selectedCoin !== undefined) ? (
+
+                                                new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].balance) * parseFloat(usdtState.service.show_price_irt) * parseFloat(new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))))
+                                            ) : ("")
                                         }
-                                      
+
                                     </span>
                                 ) : (
                                     ""
                                 )}
                             </span>
-                        </span>
+                        </Typography>
                     </Inventory>
-                    <div className="d-flex align-items-center">
-                        <span className="bazar-be">بازار به :</span>
-                        <div className="shop-select">
-                            <button
-                                onClick={() => {
-                                    filterHandler();
-                                    setShopActiveTwo("1");
-                                }}
-                                className={
-                                    shopActiveTwo === "1" ? "btn-active" : ""
-                                }
-                            >
-                                تتر
-                            </button>
-                            <button
-                                onClick={() => {
-                                    filterHandler();
-                                    setShopActiveTwo("2");
-                                }}
-                                className={
-                                    shopActiveTwo === "2" ? "btn-active" : ""
-                                }
-                            >
-                                تومان
-                            </button>
-                        </div>
-                    </div>
-                    <SelectCoin className=" mt-4">
-                        <h5
-                            className={
-                                stts.night == "true" ? "color-white-2" : ""
-                            }
+                    <Stack direction={"row"} alignItems='center' mt={2}>
+                        <Typography pr={1}>
+                            بازار به: 
+                        </Typography>
+
+                        <ToggleButtonGroup
+                            value={shopActiveTwo}
+                            exclusive
+                            color='error'
+                            size='small'
+                            onChange={(e, value) => {
+                                filterHandler();
+                                setShopActiveTwo(value);
+                            }}
                         >
+                            
+                                <ToggleButton 
+                                    color='info'
+                                    value={"1"}  
+                                    sx={{px: 2}}
+                                    size="small"
+                                    >
+                                    <Typography variant="subtitle2">  تتر </Typography>
+                                </ToggleButton>
+                                <ToggleButton 
+                                    color='info'
+                                    value={"2"}  
+                                    sx={{px: 2}}
+                                    size="small"
+                                    >
+                                    <Typography variant="subtitle2">  تومان </Typography>
+                                </ToggleButton>
+                            
+                        
+                        </ToggleButtonGroup>
+                    </Stack>
+                    <SelectCoin className=" mt-4">
+                        <Typography color={"text.secondary"} variant='subtitle2' sx={{mb: 1}}>
                             انتخاب ارز
-                        </h5>
+                        </Typography>
                         {shopActive == "2" ? (
                             <Select
                                 value={selectedCoin}
@@ -1021,7 +934,9 @@ const SellComponent = () => {
                     <div className=" mt-2">
                         {!sellCustomPrice ? (
                             <div className="position-relative mt-4">
-                                <span>مقدار</span>
+                                 <Typography color={"text.secondary"} variant='subtitle2' sx={{mb: 1}}>
+                                            مقدار
+                                        </Typography>
                                 <button
                                     className="select-all"
                                     onClick={sellAll}
@@ -1048,27 +963,27 @@ const SellComponent = () => {
                         )}
                     </div>
                     {sellAm ? (
-<div className="liveorderinfo">
-<span>قیمت هر واحد </span>
-<span>{selectedCoin.value}</span>
+                        <div className="liveorderinfo">
+                            <span>قیمت هر واحد </span>
+                            <span>{selectedCoin.value}</span>
 
-<span>{
-(shopActiveTwo == 1) ? (
-    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))
-    
-): (
+                            <span>{
+                                (shopActiveTwo == 1) ? (
+                                    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))
 
-    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.show_price_irt)
-)
+                                ) : (
 
-} </span> 
+                                    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.show_price_irt)
+                                )
 
-<span>{ (shopActiveTwo == 1) ? ( usdtState.service.name) : ( tomanState.service.name )  }
-</span>
+                            } </span>
+
+                            <span>{(shopActiveTwo == 1) ? (usdtState.service.name) : (tomanState.service.name)}
+                            </span>
 
 
-										  </div>
-							):("")}
+                        </div>
+                    ) : ("")}
                     {!sellActive ? (
                         <div className="text-danger mt-2 d-inline-block">
                             اعتبار نا کافی !
@@ -1078,7 +993,7 @@ const SellComponent = () => {
                     )}
                     <div className="text-danger mt-2 d-inline-block">
                         {sellMsg !==
-                        "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
+                            "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                             ? sellMsg
                             : ""}
                     </div>

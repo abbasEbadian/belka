@@ -111,13 +111,13 @@ const StepOne = styled('div')`
             width: 100%;
         }
     }
-    box-shadow: 5px 7px 26px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
+    box-shadow: 5px 7px 26px -5px #9f9fbb55;
+    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb55;
 `;
 
 const StepTwo = styled('div')`
-    box-shadow: 5px 7px 26px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
+    box-shadow: 5px 7px 26px -5px #9f9fbb55;
+    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb55;
     width: 625px;
     height: 565px;
     background: #ffffff;

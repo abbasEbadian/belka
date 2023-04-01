@@ -21,10 +21,13 @@ const cssCache = createCache({ key: 'css', prepend: true });
 
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { AuthGuard } from "../components/AuthGaurd";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import axios from 'axios';
+import Head from 'next/head';
+import Loading from '../components/Loading';
+import Login from './login';
+import Router from 'next/router';
 
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token')
@@ -32,11 +35,28 @@ axios.interceptors.request.use((config) => {
         config.headers["Authorization"] = `Bearer ${token}`
     return config
 })
+axios.interceptors.response.use((config) =>{
+    
+    return config
+},
+    (error) => {
+        if(error?.response?.status === 401 && localStorage.getItem('token')){
+            localStorage.removeItem('token');
+            // window.location.reload()
+        }
+            
+        return Promise.reject(error)
+    }
+)
 
-
+const getToken = () => {
+    return typeof window !== 'undefined' && localStorage.getItem("token") || undefined
+}
 function MyApp({ Component, pageProps }) {
     const [night, setNight] = useState(true);
-    const [online, setOnline] = useState(true);
+
+    const [checkingAuth, setCheckingAuth] = useState(true)
+    const [authenticated, setAuthenticated] = useState(false)
 
     const setStatus = (i) => {
         setNight(i);
@@ -62,16 +82,15 @@ function MyApp({ Component, pageProps }) {
         })();
     }, []);
 
-    useEffect(() => {
-        window.addEventListener("offline", (e) => {
-            setOnline(false)
-        });
-
-        window.addEventListener("online", (e) => {
-            setOnline(true)
-        });
-    }, [])
     const [queryClient] = React.useState(() => new QueryClient());
+
+    useEffect(() => {
+        setTimeout(() => {
+            if(!getToken()) Router.push('/login')
+            setAuthenticated(getToken())
+            setCheckingAuth(false)
+        }, [2000])
+    }, [])
     return (
         <QueryClientProvider client={queryClient}>
             <CacheProvider value={cssCache}>
@@ -84,16 +103,24 @@ function MyApp({ Component, pageProps }) {
                                 setStatus,
                             }}
                         >
-                            { online?
-                                    Component.protected ?
-                                        <AuthGuard>
-                                            <Component {...pageProps} />
-                                        </AuthGuard>
-                                        :
-                                        <Component {...pageProps} />
-                                    :
-                                    <h1> OFFLINE !</h1>
+                            {
+                                Component.title? <Head>
+                                    <title> {Component.title} </title>
+                                </Head>:null
                             }
+                            {
+                                checkingAuth?
+                                <Loading/>:
+                                (
+                                    Component.protected && !authenticated?
+                                    <Login />: 
+                                    <Component {...pageProps} />
+                                )
+                               
+                            }
+                                       
+
+                            
                             
                             <ToastContainer
                                 rtl={true}
