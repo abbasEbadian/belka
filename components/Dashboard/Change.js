@@ -77,9 +77,13 @@ const Main = styled('div')`
         display: flex;
         border-radius: 8px;
         border: 1.5px solid #dbdbdb;
+        flex-direction: row-reverse;
         img {
             width: 22px;
             margin-left: 10px;
+        }
+        [class*="control"]{
+            height: 39px;
         }
     }
     .css-1s2u09g-control,
@@ -169,10 +173,6 @@ const Change = () => {
             ? i.id == selectedOptionTwo.value
             : "";
     });
-    //
-    const menuHandler = () => {
-        setShowMenu(!showMenu);
-    };
 
     const changeHandler = (e) => {
         setLoading(true);

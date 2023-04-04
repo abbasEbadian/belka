@@ -1,7 +1,7 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
 import { styled } from '@mui/material/styles';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
 import NightModeContext from "../Context";
@@ -9,7 +9,8 @@ import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { BASEURL } from "../settings";
-import { Card, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputAdornment, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { useFetchCoins, useFetchWallet } from "../hooks";
 
 const TradeMain = styled(Card)`
     position: relative;
@@ -80,130 +81,7 @@ const TradeMain = styled(Card)`
         margin-top : 10px;
     }
 `;
-const TradeBox = styled('div')`
-    .head {
-        color: #000;
-        font-size: 15px;
-        font-weight: 600;
-    }
-    .bazar-be {
-        font-size: 14px;
-    }
-    .box-head {
-        width: 100%;
-        height: 80px;
-        font-weight: 600;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .btnss {
-        border-bottom: 1px solid #eee;
-        padding: 16px 0;
-    }
-    @media (max-width: 992px) {
-        .buy-head,
-        .buy-head-active,
-        .sell-head,
-        .sell-head-active {
-            width: 120px !important;
-            height: 45px !important;
-        }
-    }
-    .buy-head {
-        cursor: pointer;
-        margin: 0 16px;
-        color: #00a04f;
-        width: 150px;
-        height: 50px;
-        background: transparent;
-        border: 1px solid #ccc;
-        border-radius: 14px;
-    }
-    .buy-head-active {
-        cursor: pointer;
-        margin: 0 16px;
-        color: #fff;
-        width: 150px;
-        height: 50px;
-        border: none;
-        border-radius: 14px;
-        background-color: #08c18d;
-        background: #08c18d !important;
-    }
-    .sell-head {
-        cursor: pointer;
-        margin: 0 16px;
-        color: #e03131;
-        background: transparent;
-        width: 150px;
-        height: 50px;
-        border: 1px solid #ccc;
-        border-radius: 14px;
-    }
 
-    .sell-head-active {
-        cursor: pointer;
-        margin: 0 16px;
-        width: 150px;
-        height: 50px;
-        border: none;
-        border-radius: 14px;
-        background: linear-gradient(160deg, #dc143c, #dd3557);
-        color: #fff;
-    }
-
-    .box-content {
-        padding: 0 16px;
-        .shop-select {
-            margin-top: 0px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            .btn-active {
-                color: #08c18d;
-            }
-            button {
-                width: 50px;
-                height: 30px;
-                font-size: 14px;
-                background-color: transparent;
-                border: 1px solid rgb(163, 163, 163) !important;
-                border-radius: 0 !important;
-                color: #777777;
-                :first-child {
-                    border-top-right-radius: 5px !important;
-                    border-bottom-right-radius: 5px !important;
-                }
-                :last-child {
-                    border-top-left-radius: 5px !important;
-                    border-bottom-left-radius: 5px !important;
-                }
-            }
-        }
-    }
-    .border-b {
-        padding-bottom: 14px;
-        border-bottom: 1px solid rgba(173, 173, 173, 0.1);
-    }
-    input {
-        width: 151px;
-        height: 38px;
-        background: #e4e3ef;
-        border: 1px solid rgb(153, 153, 153);
-        box-sizing: border-box;
-        border-radius: 8px;
-        padding: 8px;
-    }
-    .dir-left {
-        direction: ltr;
-        width: 100%;
-        height: 38px;
-        border-radius: 5px;
-    }
-    
-   
-`;
 const Inventory = styled('div')`
     border-bottom: 1px solid rgb(172, 172, 172);
     display: flex;
@@ -229,323 +107,107 @@ const SelectCoin = styled('div')`
     }
 `;
 const SellComponent = () => {
-    const stts = useContext(NightModeContext);
-    const [coins, setCoins] = useState([]);
-    const [wallet, setWallet] = useState([]);
-    const [sellCustomPrice, setSellCustomPrice] = useState(false);
-    const [buyCustomPrice, setBuyCustomPrice] = useState(false);
     const [shopActive, setShopActive] = useState("1");
-    const [shopActiveTwo, setShopActiveTwo] = useState("1");
-    const [fullscreen, setFullscreen] = useState(false);
-    const [usdtState, setUsdtState] = useState("");
-    const [tomanState, setTomanState] = useState("");
+
     const [selectedCoin, setSelectedCoin] = useState();
-    const [selectedCoinTwo, setSelectedCoinTwo] = useState();
-    const [buyAmount, setBuyAmount] = useState();
     const [sellAmount, setSellAmount] = useState();
-    const [buyAmountWithOutFee, setBuyAmountWithOutFee] = useState();
     const [sellAmountWithOutFee, setSellAmountWithOutFee] = useState();
     const [loading, setLoading] = useState(false);
 
-    //
-    const [sellScheduleAmount, setSellScheduleAmount] = useState();
-    const [sellSchedulePrice, setSellSchedulePrice] = useState();
-    const [buyAm, setBuyM] = useState();
     const [sellAm, setSellAm] = useState();
-    const [buyScheduleAmount, setBuyScheduleAmount] = useState();
-    const [buySchedulePrice, setBuySchedulePrice] = useState();
-    const [buyActive, setBuyActive] = useState(true);
     const [sellActive, setSellActive] = useState(false);
     const [sellShowModal, setSellShowModal] = useState(false);
-    const [buyShowModal, setBuyShowModal] = useState(false);
-    //
+
 
     const [sellMsg, setSellMsg] = useState("");
-    const [buyMsg, setbuyMsg] = useState("");
 
     // fee
     const [sellFixFee, setSellFixFee] = useState([]);
-    const [buyFixFee, setBuyFixFee] = useState([]);
 
-    const [buyError, setBuyError] = useState(false);
     const [sellError, setSellError] = useState(false);
 
-    const [activeTab, setActiveTab] = useState("buy");
 
-    let token = "";
-    setTimeout(() => {
-        if (typeof window !== 'undefined') token = localStorage.getItem("token");
-    }, 200);
-    let toman = [];
-    let usdt = [];
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
-    const [showMenu, setShowMenu] = useState(true);
-    const menuHandler = () => {
-        setShowMenu(!showMenu);
+
+    const { data: wallet } = useFetchWallet()
+
+
+
+
+    const [usdtState = {}, tomanState = {}] = useMemo(() => {
+        return [
+            wallet.find(c => c.service.small_name_slug === 'USDT'),
+            wallet.find(c => c.service.small_name_slug === 'IRT'),
+        ]
+    }, [wallet])
+
+
+    const handleChange = (event, selectedCoin) => {
+        setSelectedCoin(selectedCoin);
     };
-    let refreshToken = "";
-    setTimeout(() => {
-        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
-    }, 2000);
 
-    setTimeout(() => {
-        setInterval(() => {
-            inter();
-        }, 600000);
-    }, 10000);
-    const inter = () => {
-        let data = {
-            refresh: refreshToken,
-        };
-        let config = {
-            method: "POST",
-            url: `${BASEURL}token/refresh/`,
-            data: data,
-        };
+    const openSellModal = () => { setSellShowModal(true) }
+    const closeSellModal = () => { setSellShowModal(true) }
 
-        axios(config)
+    const compute = () => {
+        let data = new FormData();
+        data.append(
+            "source",
+            selectedCoin !== undefined ? selectedCoin.id : ""
+        );
+        data.append(
+            "destination",
+            usdtState !== undefined &&
+                usdtState.service !== null &&
+                usdtState.length !== 0
+                ? shopActive == "1"
+                    ? usdtState.service.id
+                    : tomanState.service.id
+                : ""
+        );
+        data.append("source-price", sellAmount);
+        data.append("destination-price", 0);
+        data.append("changed", "source");
+
+        axios.post(`${BASEURL}order/calculator/`, data)
             .then((response) => {
-                localStorage.setItem("token", response.data.access);
-            })
-            .catch((error) => { });
-    };
-    const fullscreenHandler = (e) => {
-        setFullscreen(true);
-    };
-    const setBalanceHandler = (e) => {
-        toman = e.find((i) => {
-            return i.service.name == "تومان";
-        });
-        setTomanState(toman);
-        usdt = e.find((i) => {
-            return i.service.name == "تتر";
-        });
-        setUsdtState(usdt);
-    };
+                setSellAmountWithOutFee(response.data.amount_with_out_fee);
+                setSellAm(response.data.destination_price);
+                setSellMsg(response.data.message);
+                if (response.data.error !== 0) {
+                    setSellError(true);
+                }
+                if (response.data.error == 0) {
+                    setSellError(false);
+                }
+                setSellFixFee(response.data);
 
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-
-                },
-                url: `${BASEURL}wallet/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setWallet(res.data);
-                        setBalanceHandler(res.data);
+                if (shopActive == "2") {
+                    if (sellAmount > sellBalance.balance) {
+                        setSellActive(false);
+                    } else {
+                        setSellActive(true);
                     }
-                })
-                .catch((error) => { });
-        }, 300);
-    }, []);
-
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
-    useEffect(() => {
-        axios(config)
-            .then((res) => {
-                if (res.status == "200") {
-                    setCoins(res.data);
+                } else {
+                    if (sellAmount > sellBalance.balance) {
+                        setSellActive(false);
+                    } else {
+                        setSellActive(true);
+                    }
                 }
             })
             .catch((error) => { });
-    }, []);
-    const handleChange = (selectedCoin) => {
-        setSelectedCoin(selectedCoin);
-        tradingViewHandler(selectedCoin);
-    };
-    const handleChangeTwo = (selectedCoinTwo) => {
-        setSelectedCoinTwo(selectedCoinTwo);
-        tradingViewHandler(selectedCoinTwo);
-    };
+    }
     useEffect(() => {
-        setTimeout(() => {
-            let data = new FormData();
-            data.append(
-                "destination",
-                selectedCoinTwo !== undefined ? selectedCoinTwo.id : ""
-            );
-            data.append(
-                "source",
-                usdtState !== undefined &&
-                    usdtState.service !== null &&
-                    usdtState.length !== 0
-                    ? shopActiveTwo == "1"
-                        ? usdtState.service.id
-                        : tomanState.service.id
-                    : ""
-            );
-            data.append("source-price", 0);
-            data.append("destination-price", buyAmount);
-            data.append("changed", "destination");
-
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-
-                },
-                method: "POST",
-                url: `${BASEURL}order/calculator/`,
-                data: data,
-            };
-            axios(config)
-                .then((response) => {
-                    setBuyAmountWithOutFee(response.data.amount_with_out_fee);
-                    setBuyM(response.data.source_price);
-                    setbuyMsg(response.data.message);
-                    if (response.data.error !== 0) {
-                        setBuyError(true);
-                    }
-                    if (response.data.error == 0) {
-                        setBuyError(false);
-                    }
-                    setBuyFixFee(response.data);
-                    if (shopActiveTwo == "1") {
-                        if (response.data.source_price > usdtState.balance) {
-                            setBuyActive(false);
-                        } else {
-                            setBuyActive(true);
-                        }
-                    } else {
-                        if (response.data.source_price > tomanState.balance) {
-                            setBuyActive(false);
-                        } else {
-                            setBuyActive(true);
-                        }
-                    }
-                })
-                .catch((error) => { });
-        }, 300);
-    }, [
-        selectedCoinTwo,
-        shopActiveTwo,
-        buyAmount,
-        buySchedulePrice,
-        buyScheduleAmount,
-    ]);
-    useEffect(() => {
-        setTimeout(() => {
-            let data = new FormData();
-            data.append(
-                "source",
-                selectedCoin !== undefined ? selectedCoin.id : ""
-            );
-            data.append(
-                "destination",
-                usdtState !== undefined &&
-                    usdtState.service !== null &&
-                    usdtState.length !== 0
-                    ? shopActive == "1"
-                        ? usdtState.service.id
-                        : tomanState.service.id
-                    : ""
-            );
-            data.append("source-price", sellAmount);
-            data.append("destination-price", 0);
-            data.append("changed", "source");
-
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-
-                },
-                method: "POST",
-                url: `${BASEURL}order/calculator/`,
-                data: data,
-            };
-            axios(config)
-                .then((response) => {
-                    setSellAmountWithOutFee(response.data.amount_with_out_fee);
-                    setSellAm(response.data.destination_price);
-                    setSellMsg(response.data.message);
-                    if (response.data.error !== 0) {
-                        setSellError(true);
-                    }
-                    if (response.data.error == 0) {
-                        setSellError(false);
-                    }
-                    setSellFixFee(response.data);
-
-                    if (shopActive == "2") {
-                        if (sellAmount > sellBalance.balance) {
-                            setSellActive(false);
-                        } else {
-                            setSellActive(true);
-                        }
-                    } else {
-                        if (sellAmount > sellBalance.balance) {
-                            setSellActive(false);
-                        } else {
-                            setSellActive(true);
-                        }
-                    }
-                })
-                .catch((error) => { });
-        }, 300);
+        if (Object.keys(tomanState).length === 0 || Object.keys(usdtState).length === 0) return
+        compute()
     }, [
         selectedCoin,
         shopActive,
         sellAmount,
-        buySchedulePrice,
-        buyScheduleAmount,
+        usdtState,
+        tomanState
     ]);
-    const buyHandler = (e) => {
-        setLoading(true);
-        setBuyShowModal(false);
-        setTimeout(() => {
-            let data = {
-                changed: "destination",
-                description: "",
-                source_asset:
-                    usdtState.service !== undefined
-                        ? shopActiveTwo == "1"
-                            ? usdtState.service.id
-                            : tomanState.service.id
-                        : "",
-                amount: parseInt(buyAmount),
-                pmethod: "wallet",
-                destination_asset: parseInt(
-                    selectedCoinTwo !== undefined ? selectedCoinTwo.id : ""
-                ),
-                source_price: parseInt(
-                    buyAmountWithOutFee !== undefined ? buyAmountWithOutFee : ""
-                ),
-                type: "buy",
-            };
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
 
-                },
-                method: "POST",
-                url: `${BASEURL}order/create/`,
-                data: data,
-            };
-            axios(config)
-                .then((response) => {
-                    toast.success(response.data.message);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    toast.error("خطایی وجود دارد");
-                    setLoading(false);
-                });
-        }, 330);
-    };
     const sellHandler = (e) => {
         setLoading(true);
         setSellShowModal(false);
@@ -591,87 +253,7 @@ const SellComponent = () => {
                 });
         }, 330);
     };
-    const scheduleBuyHandler = (e) => {
-        setLoading(true);
-        setBuyShowModal(false);
-        setTimeout(() => {
-            let data = {
-                pair:
-                    usdtState.service !== undefined
-                        ? shopActiveTwo == "1"
-                            ? usdtState.service.id
-                            : tomanState.service.id
-                        : "",
-                amount: parseInt(buyScheduleAmount),
-                asset: parseInt(
-                    selectedCoinTwo !== undefined ? selectedCoinTwo.id : ""
-                ),
-                price: parseInt(
-                    buySchedulePrice !== undefined ? buySchedulePrice : ""
-                ),
-                type: "buy",
-            };
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
 
-                },
-                method: "POST",
-                url: `${BASEURL}schedule/create/`,
-                data: data,
-            };
-            axios(config)
-                .then((response) => {
-                    toast.success(response.data.message);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    toast.error("خطایی وجود دارد");
-                    setLoading(false);
-                });
-        }, 330);
-    };
-    const scheduleSellHandler = (e) => {
-        setLoading(true);
-        setSellShowModal(false);
-
-        setTimeout(() => {
-            let data = {
-                pair:
-                    usdtState.service !== undefined
-                        ? shopActiveTwo == "1"
-                            ? usdtState.service.id
-                            : tomanState.service.id
-                        : "",
-                amount: parseInt(sellScheduleAmount),
-                asset: parseInt(
-                    selectedCoin !== undefined ? selectedCoin.id : ""
-                ),
-                price: parseInt(
-                    sellSchedulePrice !== undefined ? sellSchedulePrice : ""
-                ),
-                type: "sell",
-            };
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-
-                },
-                method: "POST",
-                url: `${BASEURL}schedule/create/`,
-                data: data,
-            };
-            axios(config)
-                .then((response) => {
-                    toast.success(response.data.message);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    toast.error("خطایی وجود دارد");
-                    setLoading(false);
-                });
-        }, 330);
-    };
     let sellBalance =
         selectedCoin !== undefined
             ? wallet.find((i) => {
@@ -682,285 +264,122 @@ const SellComponent = () => {
     const sellAll = (e) => {
         setSellAmount(sellBalance !== undefined ? sellBalance.balance : "");
     };
-    const buyAll = (e) => {
 
-    };
-
-
-    // tradingview
-    const [tradingCoin, setTradingCoin] = useState("BTC");
-    const tradingViewHandler = (e) => {
-        setTradingCoin(e.value);
-    };
-
-
-
-    let filterToman = wallet.filter((names) => names.service.name !== "تومان");
-    filterToman = filterToman.filter((names) => names.service.name !== "تتر");
-    let filterTether = wallet.filter((names) => names.service.name !== "تتر");
-    filterTether = filterTether.filter((names) => names.service.name !== "تومان");
-    const filterHandler = (e) => {
-        filterToman = wallet.filter((names) => names.service.name !== "تومان");
-        filterToman = filterToman.filter((names) => names.service.name !== "تتر");
-        filterTether = wallet.filter((names) => names.service.name !== "تتر");
-        filterTether = filterTether.filter((names) => names.service.name !== "تومان");
-    };
 
 
     return (
         <TradeMain >
-            {sellShowModal ? (
-                <div className="my-modal">
-                    <div
-                        onClick={() => {
-                            setSellShowModal(false);
-                        }}
-                        className="w-100 c-p d-flex"
-                    >
-                        X
-                    </div>
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>شما فروشنده هستید</span>
-                        <span>
-                            {sellAmount}{" "}
-                            {selectedCoin !== undefined
-                                ? selectedCoin.value
-                                : ""}
-                        </span>
-                    </div>
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>واحد دریافتی </span>
-                        <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
-                    </div>
-
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>کارمزد ثابت</span>
-                        <span>
-                            {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
-                                ? sellFixFee.fix_fee.toFixed(3)
-                                : ""}{" "}
-                            <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
-                        </span>
-                    </div>
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>کارمزد تراکنش</span>
-                        <span>
-                            {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
-                                ? sellFixFee.fee.toFixed(3)
-                                : ""}{" "}
-                            <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
-                        </span>
-                    </div>
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>مجموع کارمزد</span>
-                        <span>
-                            {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
-                                ? sellFixFee.total_fee.toFixed(3)
-                                : ""}{" "}
-                            <span>{shopActiveTwo == "1" ? "تتر" : "تومان"}</span>
-                        </span>
-                    </div>
-
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>مبلغ تراکنش</span>
-                        <span>
-                            {sellAmount}{" "}
-                            {selectedCoin !== undefined
-                                ? selectedCoin.value
-                                : ""}
-                        </span>
-                    </div>
-
-                    <div className="d-flex mb-3 justify-content-between">
-                        <span>
-                            میزان دریافتی شما
-                            <small>(این مقدار حدودی است)</small>
-                        </span>
-                        <span>
-                            {sellAm} {shopActiveTwo == "1" ? "تتر" : "تومان"}
-                        </span>
-                    </div>
-                    {sellCustomPrice ? (
-                        <button
-                            onClick={scheduleSellHandler}
-                            className="sell-btn"
-                            disabled={!sellActive || sellError}
-                        >
-                            فروش
-                            {selectedCoin !== undefined
-                                ? selectedCoin.value
-                                : ""}
-                        </button>
-                    ) : (
-                        <button
-                            onClick={sellHandler}
-                            className="sell-btn"
-                            disabled={!sellActive || sellError}
-                        >
-                            فروش
-                            {selectedCoin !== undefined
-                                ? selectedCoin.value
-                                : ""}
-                        </button>
-                    )}
-                </div>
-            ) : (
-                ""
-            )}
-            <TradeBox>
+            <Stack height={"100%"}>
                 <Typography variant="body1">فروش ارز دیجیتال</Typography>
-                <div className="box-content">
+                <div>
                     <Inventory>
                         <Typography variant="caption2" color={"text.secondary"}>موجودی شما :</Typography>
                         <Typography variant="caption2" color={"text.secondary"}>
-                            <span>
-                                {shopActiveTwo == "1" ? (
-                                    usdtState !== undefined ? (
-                                        <span className="ms-2">
-
-
-                                            {
-                                                (selectedCoin !== undefined) ? (
-
-                                                    (wallet.filter((names) => names.service.id === selectedCoin.id)[0].balance)
-                                                ) : ("")
-                                            }
-
-                                        </span>
-                                    ) : (
-                                        ""
-                                    )
-                                ) : tomanState !== undefined ? (
-                                    <span className="ms-2">
-                                        {
-                                            (selectedCoin !== undefined) ? (
-
-                                                new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].balance) * parseFloat(usdtState.service.show_price_irt) * parseFloat(new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))))
-                                            ) : ("")
-                                        }
-
-                                    </span>
-                                ) : (
-                                    ""
-                                )}
-                            </span>
+                            <Typography variant="caption2" color="error" component={'span'}> {selectedCoin?.balance}  </Typography>
+                            {" "} {selectedCoin?.service?.name}
                         </Typography>
                     </Inventory>
                     <Stack direction={"row"} alignItems='center' mt={2}>
                         <Typography pr={1}>
-                            بازار به: 
+                            بازار به:
                         </Typography>
 
                         <ToggleButtonGroup
-                            value={shopActiveTwo}
+                            value={shopActive}
                             exclusive
                             color='error'
                             size='small'
                             onChange={(e, value) => {
-                                filterHandler();
-                                setShopActiveTwo(value);
+                                setShopActive(value);
                             }}
                         >
-                            
-                                <ToggleButton 
-                                    color='info'
-                                    value={"1"}  
-                                    sx={{px: 2}}
-                                    size="small"
-                                    >
-                                    <Typography variant="subtitle2">  تتر </Typography>
-                                </ToggleButton>
-                                <ToggleButton 
-                                    color='info'
-                                    value={"2"}  
-                                    sx={{px: 2}}
-                                    size="small"
-                                    >
-                                    <Typography variant="subtitle2">  تومان </Typography>
-                                </ToggleButton>
-                            
-                        
+
+                            <ToggleButton
+                                color='info'
+                                value={"1"}
+                                sx={{ px: 2 }}
+                                size="small"
+                            >
+                                <Typography variant="subtitle2">  تتر </Typography>
+                            </ToggleButton>
+                            <ToggleButton
+                                color='info'
+                                value={"2"}
+                                sx={{ px: 2 }}
+                                size="small"
+                            >
+                                <Typography variant="subtitle2">  تومان </Typography>
+                            </ToggleButton>
+
+
                         </ToggleButtonGroup>
                     </Stack>
                     <SelectCoin className=" mt-4">
-                        <Typography color={"text.secondary"} variant='subtitle2' sx={{mb: 1}}>
+                        <Typography color={"text.secondary"} variant='subtitle2' sx={{ mb: 1 }}>
                             انتخاب ارز
                         </Typography>
-                        {shopActive == "2" ? (
-                            <Select
-                                value={selectedCoin}
-                                onChange={handleChange}
-                                placeholder="انتخاب"
-                                options={filterToman.map((i, index) => {
-                                    return {
-                                        label: i,
-                                        label: (
-                                            <div>
-                                                <img src={i.service.image} alt="" />
-                                                {i.service.name}
-                                            </div>
-                                        ),
-                                        value: i.service.small_name_slug,
-                                        key: index,
-                                        id: i.service.id,
-                                    };
-                                })}
-                            />
-                        ) : (
-                            <Select
-                                value={selectedCoin}
-                                onChange={handleChange}
-                                placeholder="انتخاب"
-                                options={filterTether.map((i, index) => {
-                                    return {
-                                        label: i,
-                                        label: (
-                                            <div>
-                                                <img src={i.service.image} alt="" />
-                                                {i.service.name}
-                                            </div>
-                                        ),
-                                        value: i.service.small_name_slug,
-                                        key: index,
-                                        id: i.service.id,
-                                    };
-                                })}
-                            />
-                        )}
+                        <Autocomplete
+                            size="small"
+                            options={wallet.filter(x => ["USDT", "IRT"].indexOf(x.service.small_name_slug) === -1)}
+                            value={selectedCoin}
+                            onChange={handleChange}
+
+                            getOptionLabel={(option) => option.service.name}
+                            renderOption={(props, option) => (
+                                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props} display="flex" alignItems={'center'}>
+                                    <img src={option.service.image} alt="" width={32} />
+                                    {option.service.name}
+
+                                    <Typography variant="caption" color={"success"} sx={{ ml: "auto" }}>
+                                        {option.balance} {" "} {option.service.name}
+                                    </Typography>
+                                </Box>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    placeholder="انتخاب"
+                                    inputProps={{
+                                        ...params.inputProps,
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
+                                />
+                            )}
+                        />
+
                     </SelectCoin>
                     <div className=" mt-2">
-                        {!sellCustomPrice ? (
-                            <div className="position-relative mt-4">
-                                 <Typography color={"text.secondary"} variant='subtitle2' sx={{mb: 1}}>
-                                            مقدار
-                                        </Typography>
-                                <button
-                                    className="select-all"
-                                    onClick={sellAll}
-                                >
-                                    کل موجودی
-                                </button>
-                                <input
-                                    className="dir-left"
-                                    onChange={(e) => {
-                                        setSellAmount(e.target.value);
-                                    }}
-                                    value={sellAmount}
-                                    type="text"
-                                    placeholder={
-                                        selectedCoin !== undefined
-                                            ? selectedCoin.value
-                                            : ""
-                                    }
-                                    name="price"
-                                />
-                            </div>
-                        ) : (
-                            ""
-                        )}
+
+                        <div className="position-relative mt-4">
+                            <Typography color={"text.secondary"} variant='subtitle2' sx={{ mb: 1 }}>
+                                مقدار
+                            </Typography>
+                            <TextField
+                                placeholder={
+                                    selectedCoin !== undefined
+                                        ? selectedCoin.value
+                                        : ""
+                                }
+                                name="price"
+                                type="text"
+                                fullWidth
+                                value={sellAmount}
+                                size="small"
+                                onChange={(e) => {
+                                    setSellAmount(e.target.value);
+                                }}
+                                sx={{ "> *": { flexDirection: "row-reverse" } }}
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">
+                                        <Button onClick={sellAll} sx={{ fontSize: 12 }} color="info">
+                                            کل موجودی
+                                        </Button>
+                                    </InputAdornment>,
+                                }}
+                            />
+
+                        </div>
+
                     </div>
                     {sellAm ? (
                         <div className="liveorderinfo">
@@ -968,47 +387,149 @@ const SellComponent = () => {
                             <span>{selectedCoin.value}</span>
 
                             <span>{
-                                (shopActiveTwo == 1) ? (
-                                    new Intl.NumberFormat().format((wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.sellPrice))
+                                (shopActive == 1) ? (
+                                    new Intl.NumberFormat().format(selectedCoin?.service.sellPrice)
 
                                 ) : (
 
-                                    new Intl.NumberFormat().format(wallet.filter((names) => names.service.id === selectedCoin.id)[0].service.show_price_irt)
+                                    new Intl.NumberFormat().format(selectedCoin?.service.show_price_irt)
                                 )
 
                             } </span>
 
-                            <span>{(shopActiveTwo == 1) ? (usdtState.service.name) : (tomanState.service.name)}
+                            <span>{(shopActive == 1) ? (usdtState.service.name) : (tomanState.service.name)}
                             </span>
 
 
                         </div>
                     ) : ("")}
                     {!sellActive ? (
-                        <div className="text-danger mt-2 d-inline-block">
+                        <Typography variant="caption" color='error' mt={1}>
                             اعتبار نا کافی !
-                        </div>
+                        </Typography>
                     ) : (
                         ""
                     )}
-                    <div className="text-danger mt-2 d-inline-block">
+                    <Typography variant="caption" color='error' mt={1}>
                         {sellMsg !==
                             "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                             ? sellMsg
                             : ""}
-                    </div>
-                    <button
-                        className="sell-btn poabs"
-                        onClick={() => {
-                            setBuyShowModal(false);
-                            setSellShowModal(true);
-                        }}
-                        disabled={!sellActive || sellError}
-                    >
-                        فروش
-                    </button>
+                    </Typography>
                 </div>
-            </TradeBox>
+                <Button
+                    sx={{ mt: 'auto' }}
+                    fullWidth
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={openSellModal}
+                    disabled={!sellActive || sellError}
+                >
+                    فروش
+                </Button>
+            </Stack>
+            <Dialog
+                open={sellShowModal}
+                onClose={openSellModal}
+
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Use Google's location service?"}
+                </DialogTitle>
+                <DialogContent>
+                    <div className="my-modal">
+                        <div
+                            onClick={() => {
+                                setSellShowModal(false);
+                            }}
+                            className="w-100 c-p d-flex"
+                        >
+                            X
+                        </div>
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>شما فروشنده هستید</Typography>
+                            <span>
+                                {sellAmount}{" "}
+                                {selectedCoin !== undefined
+                                    ? selectedCoin.value
+                                    : ""}
+                            </span>
+                        </div>
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>واحد دریافتی </Typography>
+                            <span>{shopActive == "1" ? "تتر" : "تومان"}</span>
+                        </div>
+
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>کارمزد ثابت</Typography>
+                            <span>
+                                {sellFixFee !== undefined &&
+                                    sellFixFee.fix_fee !== undefined
+                                    ? sellFixFee.fix_fee.toFixed(3)
+                                    : ""}{" "}
+                                <span>{shopActive == "1" ? "تتر" : "تومان"}</span>
+                            </span>
+                        </div>
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>کارمزد تراکنش</Typography>
+                            <span>
+                                {sellFixFee !== undefined &&
+                                    sellFixFee.fix_fee !== undefined
+                                    ? sellFixFee.fee.toFixed(3)
+                                    : ""}{" "}
+                                <span>{shopActive == "1" ? "تتر" : "تومان"}</span>
+                            </span>
+                        </div>
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>مجموع کارمزد</Typography>
+                            <span>
+                                {sellFixFee !== undefined &&
+                                    sellFixFee.fix_fee !== undefined
+                                    ? sellFixFee.total_fee.toFixed(3)
+                                    : ""}{" "}
+                                <span>{shopActive == "1" ? "تتر" : "تومان"}</span>
+                            </span>
+                        </div>
+
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>مبلغ تراکنش</Typography>
+                            <span>
+                                {sellAmount}{" "}
+                                {selectedCoin !== undefined
+                                    ? selectedCoin.value
+                                    : ""}
+                            </span>
+                        </div>
+
+                        <div className="d-flex mb-3 justify-content-between">
+                            <Typography variant='caption'>
+                                میزان دریافتی شما
+                                <small>( حدودی )</small>
+                            </Typography>
+                            <span>
+                                {sellAm} {shopActive == "1" ? "تتر" : "تومان"}
+                            </span>
+                        </div>
+                        <Button
+                            variant='contained'
+                            size='small'
+                            color='error'
+                            fullWidth
+                            onClick={sellHandler}
+                            disabled={!sellActive || sellError}
+                        >
+                            فروش
+                            {selectedCoin !== undefined
+                                ? selectedCoin?.value
+                                : ""}
+                        </Button>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeSellModal}>Disagree</Button>
+                </DialogActions>
+            </Dialog>
         </TradeMain>
     );
 };

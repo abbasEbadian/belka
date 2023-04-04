@@ -138,7 +138,6 @@ const RialWithdraw = (props) => {
     const wallet = props.wallet;
     const itemTo = props.itemTo;
     const [value, setValue] = useState();
-    const [bankId, setBankId] = useState();
     const [selectedOption, setSelectedOption] = useState();
     const [cards, setCards] = useState([]);
     const [bankNames, setBankNames] = useState("");
@@ -151,28 +150,7 @@ const RialWithdraw = (props) => {
     };
     const [getOtp, setGetOtp] = useState(false);
     const [otp, setOtp] = useState("");
-    useEffect(() => {
-        setTimeout(() => {
-            let data = {
-                wallet: itemTo.id,
-            };
-            let config = {
-                method: "GET",
-                url: `${BASEURL}bank/name/list/`,
-                data: data,
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-            };
-
-            axios(config)
-                .then((response) => {
-                    setBankNames(response.data);
-                })
-                .catch((error) => {});
-        }, 2000);
-    }, []);
+    
     let token = "";
     if( typeof window !=='undefined' )token = localStorage.getItem("token");
     let cc = [];
@@ -218,26 +196,10 @@ const RialWithdraw = (props) => {
 
         axios(config)
             .then((response) => {
-                toast.error(response.data.message, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error(response.data.message);
             })
             .catch((error) => {
-                toast.error(error, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error(error);
             });
     };
 
@@ -254,24 +216,8 @@ const RialWithdraw = (props) => {
             .then((response) => {
                 setGetOtp(true);
                 response.data.error > 0
-                    ? toast.error(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      })
-                    : toast.success(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
+                    ? toast.error(response.data.message)
+                    : toast.success(response.data.message);
             })
             .catch((error) => {});
     };
@@ -296,27 +242,12 @@ const RialWithdraw = (props) => {
         axios(config)
             .then((response) => {
                 response.data.error > 0
-                    ? toast.error(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      })
-                    : toast.success(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
+                    ? toast.error(response.data.message)
+                    : toast.success(response.data.message);
             })
             .catch((error) => {});
     };
+    
     return (
         <>
             <Main>

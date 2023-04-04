@@ -8,9 +8,11 @@ import axios from "axios";
 import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
-import { toast  } from "react-toastify";
+import { toast } from "react-toastify";
 import MarketPrices from '../components/market/market-prices';
 import { useFetchCoins, useFetchOrders, useFetchWallet } from "../components/hooks";
+import HistoryTableTrade from "../components/History/HistoryTableTrade";
+import { Divider, Typography } from "@mui/material";
 
 
 const Main = styled('div')`
@@ -450,6 +452,7 @@ const MainTable = styled('div')`
     }
 `;
 
+Dashboard.title = `صرافی ${SETTINGS.WEBSITE_NAME} | خرید و فروش`
 export default function Dashboard() {
     const stts = useContext(NightModeContext);
     const [sellCustomPrice, setSellCustomPrice] = useState(false);
@@ -497,9 +500,9 @@ export default function Dashboard() {
     let token = "";
 
 
-    const { isLoading: isCoinLoading, data: coins=[]} = useFetchCoins()
-    const { isLoading: isWalletLoading, data: wallet=[]} = useFetchWallet()
-    const { isLoading: isOrderLoading, data: orderList=[]} = useFetchOrders()
+    const { isLoading: isCoinLoading, data: coins = [] } = useFetchCoins()
+    const { isLoading: isWalletLoading, data: wallet = [] } = useFetchWallet()
+    const { isLoading: isOrderLoading, data: orderList = [] } = useFetchOrders()
 
     setTimeout(() => {
         if (typeof window !== 'undefined') token = localStorage.getItem("token");
@@ -561,7 +564,7 @@ export default function Dashboard() {
 
 
 
-    
+
     const handleChange = (selectedCoin) => {
         setSelectedCoin(selectedCoin);
         tradingViewHandler(selectedCoin);
@@ -944,9 +947,6 @@ export default function Dashboard() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Head>
-                <title>صرافی {SETTINGS.WEBSITE_NAME} | خرید و فروش</title>
-            </Head>
             <Sidebar show-menu={menuHandler} active="2" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 {sellShowModal ? (
@@ -1765,196 +1765,13 @@ export default function Dashboard() {
                             </button>
                         </div>
                     </TradeBox> */}
-                    <MarketPrices selectedCoins={ { }}/>
-                    <MainTable>
-                        <div className="select-shop">
-                            <button
-                                onClick={() => {
-                                    setActiveBtn(1);
-                                }}
-                                className={activeBtn == 1 && "active"}
-                            >
-                                تومان
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setActiveBtn(2);
-                                }}
-                                className={activeBtn == 2 && "active"}
-                            >
-                                تتر
-                            </button>
-                        </div>
-                        <div className="scrollable">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>نام ارز</th>
-                                        <th>قیمت خرید</th>
-                                        <th>قیمت فروش</th>
-                                        <th onClick={sortHandler}>
-                                            تغییرات 24 ساعت
-                                            <svg
-                                                className="arrows"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                width="9.18"
-                                                height="18"
-                                                viewBox="0 0 9.18 18"
-                                            >
-                                                <path
-                                                    id="ic_unfold_more_24px"
-                                                    d="M12,5.83,15.17,9l1.41-1.41L12,3,7.41,7.59,8.83,9Zm0,12.34L8.83,15,7.42,16.41,12,21l4.59-4.59L15.17,15Z"
-                                                    transform="translate(-7.41 -3)"
-                                                />
-                                            </svg>
-                                        </th>
-                                        <th className="align-middle res-d-none">
-                                            نمودار هفتگی
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {coins?.map((item) => {
-                                        row++;
-                                        if (item.name !== "تومان") {
-                                            return (
-                                                <tr key={item.id}>
-                                                    <td>{row}</td>
-                                                    <td>
-                                                        <img
-                                                            src={item.image}
-                                                            width={25}
-                                                            alt=""
-                                                        />
-                                                        <span>
-                                                            {
-                                                                item.small_name_slug
-                                                            }
-                                                        </span>
-                                                        <span>{item.name}</span>
-                                                    </td>
-                                                    {activeBtn == 1 ? (
-                                                        <>
-                                                            <td>
-                                                                {Math.trunc(
-                                                                    (item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100) +
-                                                                        item.buyPrice) *
-                                                                    coins[0]
-                                                                        .buyPrice
-                                                                ).toLocaleString()}
-                                                            </td>
-                                                            <td>
-                                                                {Math.trunc(
-                                                                    item.buyPrice *
-                                                                    coins[0]
-                                                                        .buyPrice -
-                                                                    item.buyPrice *
-                                                                    (item.trade_fee /
-                                                                        100) *
-                                                                    coins[0]
-                                                                        .buyPrice
-                                                                ).toLocaleString()}
-                                                            </td>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <td>
-                                                                {(
-                                                                    item.buyPrice *
-                                                                    (item.trade_fee /
-                                                                        100) +
-                                                                    item.buyPrice
-                                                                ).toLocaleString()}
-                                                            </td>
-                                                            <td>
-                                                                {(
-                                                                    item.buyPrice -
-                                                                    item.buyPrice *
-                                                                    (item.trade_fee /
-                                                                        100)
-                                                                ).toLocaleString()}
-                                                            </td>
-                                                        </>
-                                                    )}
-                                                    <td>
-                                                        <div
-                                                            className={
-                                                                item.quote_usd !==
-                                                                    undefined &&
-                                                                    item.quote_usd
-                                                                        .percent24h >
-                                                                    0
-                                                                    ? "plus changes"
-                                                                    : item.quote_usd !==
-                                                                        undefined &&
-                                                                        item
-                                                                            .quote_usd
-                                                                            .percent24h <
-                                                                        0
-                                                                        ? "nega changes"
-                                                                        : "zero changes"
-                                                            }
-                                                        >
-                                                            {item.quote_usd !==
-                                                                undefined &&
-                                                                item.quote_usd
-                                                                    .percent24h > 0
-                                                                ? "+ " +
-                                                                item.quote_usd
-                                                                    .percent24h
-                                                                : item.quote_usd
-                                                                    .percent24h}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        {item.quote_usd !==
-                                                            undefined &&
-                                                            item.quote_usd
-                                                                .percent24h > 0 ? (
-                                                            <img
-                                                                className="ch-img"
-                                                                src={
-                                                                    "/images/green-chart" +
-                                                                    (Math.floor(
-                                                                        Math.random() *
-                                                                        6
-                                                                    ) +
-                                                                        1) +
-                                                                    ".svg"
-                                                                }
-                                                                alt=""
-                                                                width={160}
-                                                                height={60}
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                className="ch-img"
-                                                                src={
-                                                                    "/images/red-chart" +
-                                                                    (Math.floor(
-                                                                        Math.random() *
-                                                                        6
-                                                                    ) +
-                                                                        1) +
-                                                                    ".svg"
-                                                                }
-                                                                alt=""
-                                                                width={160}
-                                                                height={60}
-                                                            />
-                                                        )}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                    </MainTable>
+                    <MarketPrices selectedCoins={{}} />
+                    
+                    <Typography >
+                        تراکنش ها
+                    </Typography>
+                    <Divider sx={{ my: 2}}/>
+                    <HistoryTableTrade data={orderList}/>
                 </div>
             </Content>
         </Main>

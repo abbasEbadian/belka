@@ -6,14 +6,15 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { Box, Button, Divider, InputAdornment, Stack, TextField, Typography } from "@mui/material";
 
 const Main = styled('div')`
-    background-color: #e4e3ef;
+   
     width: 100%;
     min-height: 100vh;
     .arrows {
@@ -154,65 +155,8 @@ const Content = styled('div')`
     @media (max-width: 786px) {
     }
 `;
-const TradeMain = styled('div')`
-    padding: 16px 0 0 0;
-    min-height: 400px;
-    z-index: 99;
-    width: calc(100vw - 100px);
-    margin-right: auto;
-    margin-left: auto;
 
-    @media (max-width: 992px) {
-        width: 90%;
-        iframe {
-            margin-right: 0 !important;
-        }
-    }
-    .full-screen {
-        background-color: #fff;
-        width: 150px;
-        height: 34px;
-        border-radius: 10px;
-        font-size: 15px;
-    }
-    .go-to-fullscreen {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        left: 0;
-        top: 0;
-        z-index: 1;
-        margin: 0 !important;
-    }
-    .exit-fullscreen {
-        position: fixed;
-        top: 4px;
-        left: 5px;
-        height: 30px;
-        background-color: #ce2900;
-        color: #fff;
-        z-index: 1000;
-        border-radius: 10px;
-        padding: 0 10px;
-        font-size: 12px;
-    }
-    border: none !important;
-    iframe {
-        width: 100%;
-        min-height: 585px;
-        z-index: 1;
-        border: none !important;
-        border-radius: 16px;
-        margin: 0 10px;
-    }
-    @media (min-height: 700px) {
-        iframe {
-            height: 534px;
-        }
-    }
-`;
-
-const TradeBox = styled('div')`
+const TradeBox = styled(Box)`
     width: calc(100vw);
     margin-right: auto;
     margin-left: auto;
@@ -234,7 +178,7 @@ const TradeBox = styled('div')`
         padding: 16px;
         width: 48%;
         border-radius: 10px;
-        background-color: #DCDCDC;
+        background-color: #222833;
         box-shadow: 0px 2px 8px rgba(50, 50, 50, 0.12);
         box-shadow: 0 0 10px rgba(28, 39, 60, 0.1);
         .bazar-be {
@@ -277,15 +221,7 @@ const TradeBox = styled('div')`
         padding-bottom: 14px;
         border-bottom: 1px solid rgba(173, 173, 173, 0.1);
     }
-    input {
-        width: 151px;
-        height: 38px;
-        background: #e4e3ef;
-        border: 1px solid rgb(153, 153, 153);
-        box-sizing: border-box;
-        border-radius: 8px;
-        padding: 8px;
-    }
+    
     .dir-left {
         direction: ltr;
         width: 100%;
@@ -298,16 +234,7 @@ const TradeBox = styled('div')`
         font-size: 16px;
         line-height: 16px;
     }
-    button {
-        width: 100%;
-        height: 42px;
-        background: #00a04f;
-        border-radius: 8px;
-        margin-top: 16px;
-        font-weight: 600;
-        font-size: 16px;
-        color: #fff;
-    }
+   
 `;
 
 const Inventory = styled('div')`
@@ -318,19 +245,7 @@ const Inventory = styled('div')`
     padding: 16px 0;
 `;
 
-const SelectCoin = styled('div')`
-    width: 100% !important;
-    h5 {
-        font-size: 16px;
-        font-weight: 400;
-        margin-top: 10px;
-        color: #323232;
-    }
-    img {
-        width: 22px;
-        margin-left: 5px;
-    }
-`;
+
 const MainTable = styled('div')`
     position: relative;
     margin-top: 100px;
@@ -443,6 +358,7 @@ const MainTable = styled('div')`
     }
 `;
 
+Change.title = `صرافی ${SETTINGS.WEBSITE_NAME} | خرید و فروش`
 export default function Change() {
     const stts = useContext(NightModeContext);
     const [coins, setCoins] = useState([]);
@@ -489,7 +405,7 @@ export default function Change() {
     const [activeBtn, setActiveBtn] = useState(1);
     let token = "";
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if (typeof window !== 'undefined') token = localStorage.getItem("token");
     }, 200);
     let toman = [];
     let usdt = [];
@@ -505,32 +421,8 @@ export default function Change() {
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
-    let refreshToken = "";
-    setTimeout(() => {
-        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
-    }, 2000);
-
-    setTimeout(() => {
-        setInterval(() => {
-            inter();
-        }, 600000);
-    }, 10000);
-    const inter = () => {
-        let data = {
-            refresh: refreshToken,
-        };
-        let config = {
-            method: "POST",
-            url: `${BASEURL}token/refresh/`,
-            data: data,
-        };
-
-        axios(config)
-            .then((response) => {
-                localStorage.setItem("token", response.data.access);
-            })
-            .catch((error) => {});
-    };
+    
+    
     const fullscreenHandler = (e) => {
         setFullscreen(true);
     };
@@ -550,7 +442,7 @@ export default function Change() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 url: `${BASEURL}wallet/list/`,
                 method: "GET",
@@ -562,7 +454,7 @@ export default function Change() {
                         setBalanceHandler(res.data);
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, []);
 
@@ -572,14 +464,14 @@ export default function Change() {
     };
     useEffect(() => {
         setInterval(() => {
-        axios(config)
-            .then((res) => {
-                if (res.status == "200") {
-                    setCoins(typeof res.data === typeof []? res.data: []);
-                }
-            })
-            .catch((error) => {});
-        } ,3000);
+            axios(config)
+                .then((res) => {
+                    if (res.status == "200") {
+                        setCoins(typeof res.data === typeof [] ? res.data : []);
+                    }
+                })
+                .catch((error) => { });
+        }, 3000);
     }, []);
     const handleChange = (selectedCoin) => {
         setSelectedCoin(selectedCoin);
@@ -607,7 +499,7 @@ export default function Change() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -631,7 +523,7 @@ export default function Change() {
                         setBuyActive(true);
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoinTwo,
@@ -658,7 +550,7 @@ export default function Change() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/calculator/`,
@@ -666,7 +558,7 @@ export default function Change() {
             };
             axios(config)
                 .then((response) => {
-                   
+
                     setSellAmountWithOutFee(response.data.destination_price);
                     setSellAm(response.data.destination_price);
                     setSellMsg(response.data.message);
@@ -684,7 +576,7 @@ export default function Change() {
                         setSellActive(true);
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 300);
     }, [
         selectedCoin,
@@ -700,7 +592,7 @@ export default function Change() {
             let data = {
                 changed: "source",
                 description: "",
-                source_asset:tomanState.service.id,
+                source_asset: tomanState.service.id,
                 destination_asset: usdtState.service.id,
                 amount: parseInt(buyAmount),
                 pmethod: "wallet",
@@ -713,7 +605,7 @@ export default function Change() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -721,27 +613,11 @@ export default function Change() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -767,7 +643,7 @@ export default function Change() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}order/create/`,
@@ -775,27 +651,11 @@ export default function Change() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                     setLoading(false);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                     setLoading(false);
                 });
         }, 330);
@@ -803,8 +663,8 @@ export default function Change() {
     let sellBalance =
         selectedCoin !== undefined
             ? wallet.find((i) => {
-                  return i.service.small_name_slug == selectedCoin.value;
-              })
+                return i.service.small_name_slug == selectedCoin.value;
+            })
             : "";
 
     const sellAll = (e) => {
@@ -815,7 +675,7 @@ export default function Change() {
         fee = (parseFloat(tomanState?.balance) * (parseFloat(tomanState.service.trade_fee))) / 100;
         setBuyAmount(((parseFloat(tomanState?.balance) - fee)));
     };
-    
+
     const USDTAll = (e) => {
         let fee = 0
         fee = (parseFloat(usdtState?.balance) * (parseFloat(usdtState.service.trade_fee))) / 100;
@@ -836,7 +696,7 @@ export default function Change() {
         filterTether = coins.filter((names) => names.name !== "تتر");
     };
     let row = -1;
- 
+
 
 
     const [sortMethod, setSortMethod] = useState(false);
@@ -844,23 +704,17 @@ export default function Change() {
         setSortMethod(!sortMethod);
         sortMethod
             ? coins.sort(
-                  (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
-              )
+                (a, b) => a.quote_usd.percent24h - b.quote_usd.percent24h
+            )
             : coins.sort(
-                  (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
-              );
+                (a, b) => b.quote_usd.percent24h - a.quote_usd.percent24h
+            );
     };
     return (
         <Main
-            className={
-                stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
-            }
+            className={"max-w-1992"}
         >
-            <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title>صرافی متاورس | خرید و فروش</title>
-            </Head>
+
             <Sidebar show-menu={menuHandler} active="10" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 {sellShowModal ? (
@@ -889,11 +743,11 @@ export default function Change() {
                             <span>کارمزد ثابت</span>
                             <span>
                                 {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
+                                    sellFixFee.fix_fee !== undefined
                                     ? sellFixFee.fix_fee.toLocaleString()
                                     : ""}{" "}
                                 <span>
-                                تتر
+                                    تتر
                                 </span>
                             </span>
                         </div>
@@ -901,11 +755,11 @@ export default function Change() {
                             <span>کارمزد تراکنش</span>
                             <span>
                                 {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
+                                    sellFixFee.fix_fee !== undefined
                                     ? sellFixFee.fee.toLocaleString()
                                     : ""}{" "}
                                 <span>
-                                تتر
+                                    تتر
                                 </span>
                             </span>
                         </div>
@@ -913,7 +767,7 @@ export default function Change() {
                             <span>مجموع کارمزد</span>
                             <span>
                                 {sellFixFee !== undefined &&
-                                sellFixFee.fix_fee !== undefined
+                                    sellFixFee.fix_fee !== undefined
                                     ? sellFixFee.total_fee.toLocaleString()
                                     : ""}{" "}
                                 <span>
@@ -936,7 +790,7 @@ export default function Change() {
                             </span>
                             <span>
                                 {Intl.NumberFormat("en-US").format(sellFixFee.destination_price)}{" "}
-                             تومان  
+                                تومان
                             </span>
                         </div>
                         {sellCustomPrice ? (
@@ -1027,8 +881,8 @@ export default function Change() {
                         <div className="d-flex mb-3 justify-content-between">
                             <span>مبلغ تراکنش</span>
                             <span>
-                            {Intl.NumberFormat("en-US").format(buyAm)}
-                            {" "} تومان
+                                {Intl.NumberFormat("en-US").format(buyAm)}
+                                {" "} تومان
                             </span>
                         </div>
                         <div className="d-flex mb-3 justify-content-between">
@@ -1037,7 +891,7 @@ export default function Change() {
                                 <small>(این مقدار حدودی است)</small>
                             </span>
                             <span>
-                            {Intl.NumberFormat("en-US").format(buyFixFee.destination_price)}
+                                {Intl.NumberFormat("en-US").format(buyFixFee.destination_price)}
                                 {" "}
                                 تتر
                             </span>
@@ -1075,61 +929,50 @@ export default function Change() {
                     {/* Buy */}
                     <TradeBox>
                         <div
-                            className={
-                                stts.night == "true"
-                                    ? "bg-gray box-content"
-                                    : " box-content "
-                            }
+                            className={" box-content "}
                         >
                             <div className="buy-head">خرید تتر</div>
-                            <Inventory
-                                className={
-                                    stts.night == "true" ? "color-white-2" : ""
-                                }
-                            >
-                                <span>موجودی شما :</span>
-                                <span>
-                                    <span>
-                                        <span className="ms-2">
-                                            {Intl.NumberFormat("en-US").format(tomanState?.balance)}
-                                        </span>
-                                    </span>
-                                    <span className="ms-2">
-                                            {tomanState?.service?.name}
-                                    </span>
-                                </span>
+                            <Inventory>
+                                <Typography color={"text.secondary"} variant="subtitle2">موجودی شما :</Typography>
+                                <Box display={"flex"} >
+                                    <Typography color={"text.secondary"} variant="subtitle2" className="ms-2">
+                                        {Intl.NumberFormat("en-US").format(tomanState?.balance)}
+                                    </Typography>
+                                    <Typography color={"text.secondary"} variant="subtitle2" className="ms-2">
+                                        {tomanState?.service?.name}
+                                    </Typography>
+                                </Box>
                             </Inventory>
-                        
-                            <div className=" mt-3">
-                            <div className="position-relative">
-                                        <span>مقدار</span>
-                                        <button
-                                            className="select-all"
-                                            onClick={IRTAll}
-                                        >
-                                            کل موجودی
-                                        </button>
-                                        <input
-                                            className="dir-left"
-                                            onChange={(e) => {
-                                                setBuyAmount(e.target.value);
-                                            }}
-                                            value={ (buyAmount) ? buyAmount :("")}
-                                            type="text"
-                                            placeholder="IRT"
-                                            name="price"
-                                        />
-                                    </div>
-                            </div>
-                     
-  <span>  قیمت واحد  : 
-                         {  usdtState && usdtState.service.show_price_irt > 0 ? (
 
-usdtState.service.show_price_irt.toLocaleString()
+                            <Box marginTop={2}>
+                                <Typography color={"text.secondary"} variant="subtitle2">مقدار</Typography>
+                                <TextField
+                                    fullWidth
+                                    value={buyAmount}
+                                    size="small"
+                                    onChange={(e) => {
+                                        setBuyAmount(e.target.value);
+                                    }}
+                                    placeholder="IRT"
+                                    sx={{ "> *": { flexDirection: "row-reverse" } }}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start">
+                                            <Button onClick={IRTAll} sx={{ fontSize: 12 }} color="info">
+                                                کل موجودی
+                                            </Button>
+                                        </InputAdornment>,
+                                    }}
+                                />
+                            </Box>
+                            <Divider transparent sx={{ mt: 2 }} />
+                            <Typography color={"text.secondary"} variant="subtitle2">  قیمت واحد  :
+                                {usdtState && usdtState.service.show_price_irt > 0 ? (
 
-                         ):("")  } تومان
+                                    usdtState.service.show_price_irt.toLocaleString()
 
-</span>
+                                ) : ("")} تومان
+
+                            </Typography>
                             {!buyActive ? (
                                 <div className="text-danger mt-3 d-inline-block">
                                     اعتبار نا کافی !
@@ -1139,11 +982,11 @@ usdtState.service.show_price_irt.toLocaleString()
                             )}
                             <div className="text-danger mt-3 d-inline-block">
                                 {buyMsg !==
-                                "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
+                                    "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                                     ? buyMsg
                                     : ""}
                             </div>
-                           
+
                             <button
                                 className="buy-btn"
                                 onClick={() => {
@@ -1156,65 +999,59 @@ usdtState.service.show_price_irt.toLocaleString()
                             </button>
                         </div>
                         <div
-                            className={
-                                stts.night == "true"
-                                    ? "bg-gray box-content"
-                                    : " box-content "
-                            }
+                            className={" box-content "}
                         >
                             <div className="sell-head">فروش تتر</div>
 
-                            <Inventory
-                                className={
-                                    stts.night == "true" ? "color-white-2" : ""
-                                }
-                            >
-                                <span>موجودی شما :</span>
+                            <Inventory>
+                                <Typography color={"text.secondary"} variant="subtitle2">موجودی شما :</Typography>
                                 <span>
-                                    <span>
-                                        <span className="ms-2">
+                                    <Stack direction='row' >
+                                        <Typography color={"text.secondary"} variant="subtitle2" className="ms-2">
                                             {Intl.NumberFormat("en-US").format(usdtState?.balance)}
-                                        </span>
-                                        <span className="ms-2">
+                                        </Typography>
+                                        <Typography color={"text.secondary"} variant="subtitle2" className="ms-2">
                                             {usdtState?.service?.name}
-                                    </span>
-                                    </span>
+                                        </Typography>
+                                    </Stack>
                                 </span>
                             </Inventory>
-                            
+
                             <div className=" mt-3">
                                 {!sellCustomPrice ? (
                                     <div className="position-relative">
-                                        <span>مقدار</span>
-                                        <button
-                                            className="select-all"
-                                            onClick={USDTAll}
-                                        >
-                                            کل موجودی
-                                        </button>
-                                        <input
-                                            className="dir-left"
+                                        <Typography color={"text.secondary"} variant="subtitle2">مقدار</Typography>
+                                        <TextField
+                                            fullWidth
+                                            value={sellAmount}
+                                            size="small"
                                             onChange={(e) => {
                                                 setSellAmount(e.target.value);
                                             }}
-                                            value={(sellAmount) ? sellAmount :("")}
-                                            type="text"
-                                            placeholder={"USDT"}
-                                            name="price"
+                                            placeholder="USDT"
+                                            sx={{ "> *": { flexDirection: "row-reverse" } }}
+                                            InputProps={{
+                                                startAdornment: <InputAdornment position="start">
+                                                    <Button onClick={USDTAll} sx={{ fontSize: 12 }} color="info">
+                                                        کل موجودی
+                                                    </Button>
+                                                </InputAdornment>,
+                                            }}
                                         />
                                     </div>
                                 ) : (
                                     ""
                                 )}
                             </div>
-                            <span>  قیمت واحد  : 
-                         {  usdtState && usdtState.service.show_price_irt > 0 ? (
+                            <Divider transparent sx={{ mt: 2 }} />
+                            <Typography color={"text.secondary"} variant="subtitle2">  قیمت واحد  :
+                                {usdtState && usdtState.service.show_price_irt > 0 ? (
 
-usdtState.service.show_price_irt.toLocaleString()
- 
-                         ):("")  } تومان
+                                    usdtState.service.show_price_irt.toLocaleString()
 
-</span>
+                                ) : ("")} تومان
+
+                            </Typography>
                             {!sellActive ? (
                                 <div className="text-danger mt-3 d-inline-block">
                                     اعتبار نا کافی !
@@ -1224,11 +1061,11 @@ usdtState.service.show_price_irt.toLocaleString()
                             )}
                             <div className="text-danger mt-3 d-inline-block">
                                 {sellMsg !==
-                                "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
+                                    "مشکل دریافت اطلاعات، لطفا مجددا تلاش نمایید."
                                     ? sellMsg
                                     : ""}
                             </div>
-                            
+
 
                             <button
                                 className="sell-btn"
@@ -1325,13 +1162,13 @@ usdtState.service.show_price_irt.toLocaleString()
                                                             <td>
                                                                 {(
                                                                     item.buyPrice *
-                                                                        coins[0]
-                                                                            .buyPrice -
+                                                                    coins[0]
+                                                                        .buyPrice -
                                                                     item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100) *
-                                                                        coins[0]
-                                                                            .buyPrice
+                                                                    (item.trade_fee /
+                                                                        100) *
+                                                                    coins[0]
+                                                                        .buyPrice
                                                                 ).toLocaleString()}
                                                             </td>
                                                         </>
@@ -1340,8 +1177,8 @@ usdtState.service.show_price_irt.toLocaleString()
                                                             <td>
                                                                 {(
                                                                     item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100) +
+                                                                    (item.trade_fee /
+                                                                        100) +
                                                                     item.buyPrice
                                                                 ).toLocaleString()}
                                                             </td>
@@ -1349,8 +1186,8 @@ usdtState.service.show_price_irt.toLocaleString()
                                                                 {(
                                                                     item.buyPrice -
                                                                     item.buyPrice *
-                                                                        (item.trade_fee /
-                                                                            100)
+                                                                    (item.trade_fee /
+                                                                        100)
                                                                 ).toLocaleString()}
                                                             </td>
                                                         </>
@@ -1360,43 +1197,43 @@ usdtState.service.show_price_irt.toLocaleString()
                                                             className={
                                                                 item.quote_usd !==
                                                                     undefined &&
-                                                                item.quote_usd
-                                                                    .percent24h >
+                                                                    item.quote_usd
+                                                                        .percent24h >
                                                                     0
                                                                     ? "plus changes"
                                                                     : item.quote_usd !==
-                                                                          undefined &&
-                                                                      item
-                                                                          .quote_usd
-                                                                          .percent24h <
-                                                                          0
-                                                                    ? "nega changes"
-                                                                    : "zero changes"
+                                                                        undefined &&
+                                                                        item
+                                                                            .quote_usd
+                                                                            .percent24h <
+                                                                        0
+                                                                        ? "nega changes"
+                                                                        : "zero changes"
                                                             }
                                                         >
                                                             {item.quote_usd !==
                                                                 undefined &&
-                                                            item.quote_usd
-                                                                .percent24h > 0
+                                                                item.quote_usd
+                                                                    .percent24h > 0
                                                                 ? "+ " +
-                                                                  item.quote_usd
-                                                                      .percent24h
+                                                                item.quote_usd
+                                                                    .percent24h
                                                                 : item.quote_usd
-                                                                      .percent24h}
+                                                                    .percent24h}
                                                         </div>
                                                     </td>
                                                     <td>
                                                         {item.quote_usd !==
                                                             undefined &&
-                                                        item.quote_usd
-                                                            .percent24h > 0 ? (
+                                                            item.quote_usd
+                                                                .percent24h > 0 ? (
                                                             <img
                                                                 className="ch-img"
                                                                 src={
                                                                     "/images/green-chart" +
                                                                     (Math.floor(
                                                                         Math.random() *
-                                                                            6
+                                                                        6
                                                                     ) +
                                                                         1) +
                                                                     ".svg"
@@ -1412,7 +1249,7 @@ usdtState.service.show_price_irt.toLocaleString()
                                                                     "/images/red-chart" +
                                                                     (Math.floor(
                                                                         Math.random() *
-                                                                            6
+                                                                        6
                                                                     ) +
                                                                         1) +
                                                                     ".svg"

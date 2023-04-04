@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { styled } from '@mui/material/styles';
 import QRCode from "react-qr-code";
-import { baseUrl } from "../BaseUrl";
 import axios from "axios";
 
 const Main = styled('div')`
@@ -186,24 +185,15 @@ const TxId = styled('div')`
     }
 `;
 
-const CoinDeposit = (props) => {
-    const wallet = props.wallet;
-    const itemTo = props.itemTo;
+const CoinDeposit = ({ wallet: item,  setShowCoinDeposit, showCoinDeposit}) => {
     const [adress, setAdress] = useState("");
     const [done, setDone] = useState(false);
     const [selectNetwork, setSelectNetwork] = useState(false);
     const [txId, setTxId] = useState("");
     const [loading, setLoading] = useState(false);
 
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 1000);
-    let item = wallet.find((i) => {
-        if (i.service !== undefined) {
-            return i.service.small_name_slug == itemTo.small_name_slug;
-        }
-    });
+
+
     const netHandler = (n) => {
         setLoading(true);
 
@@ -249,33 +239,15 @@ const CoinDeposit = (props) => {
             axios(config)
                 .then((response) => {
                     response.data.error != 0
-                        ? toast.error(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          })
-                        : toast.success(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          });
+                        ? toast.error(response.data.message)
+                        : toast.success(response.data.message);
                 })
                 .catch((error) => {});
         }, 2100);
     };
     return (
         <Main>
-            <div
-                className={props.stts.night == "true" ? "bg-gray box" : " box"}
-            >
+            <div>
                 {selectNetwork ? (
                     !done ? (
                         <>
@@ -283,7 +255,6 @@ const CoinDeposit = (props) => {
                                 <span>واریز به کیف پول شما</span>
                                 <svg
                                     onClick={() => {
-                                        props.setBlur(false);
                                         props.setShowCoinDeposit(false);
                                     }}
                                     className="c-p"
@@ -324,15 +295,7 @@ const CoinDeposit = (props) => {
                                                 navigator.clipboard.writeText(
                                                     adress
                                                 );
-                                                toast.success("آدرس کپی شد", {
-                                                    position: "top-center",
-                                                    autoClose: 5000,
-                                                    hideProgressBar: false,
-                                                    closeOnClick: true,
-                                                    pauseOnHover: true,
-                                                    draggable: true,
-                                                    progress: undefined,
-                                                });
+                                                toast.success("آدرس کپی شد");
                                             }}
                                             className="c-p m-w-20 ms-1"
                                             width="24"
@@ -401,7 +364,6 @@ const CoinDeposit = (props) => {
                                 <span>واریز به کیف پول شما</span>
                                 <svg
                                     onClick={() => {
-                                        props.setBlur(false);
                                         props.setShowCoinDeposit(false);
                                     }}
                                     className="c-p"
@@ -460,7 +422,6 @@ const CoinDeposit = (props) => {
                             <span>واریز به کیف پول شما</span>
                             <svg
                                 onClick={() => {
-                                    props.setBlur(false);
                                     props.setShowCoinDeposit(false);
                                 }}
                                 className="c-p"
@@ -497,7 +458,7 @@ const CoinDeposit = (props) => {
                                 }}
                             >
                                 <option value=""> انتخاب کنید </option>
-                                {itemTo.network.map((i) => {
+                                {item.network?.map((i) => {
                                     return (
                                         <option key={i.id} value={i.id}>
                                             {i.name}

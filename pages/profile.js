@@ -1,20 +1,21 @@
 import Router from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { styled } from '@mui/material/styles';
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
-import Image from "next/image";
 import axios from "axios";
 import NightModeContext from "../components/Context";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Head from "next/head";
+
+import { useFetchUser } from "../components/hooks";
+import { Card, CircularProgress } from "@mui/material";
+import { ChevronLeft, CreditCard, Edit, Shield } from "@mui/icons-material";
 const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
-    background-color: #edf8fc;
     width: 100%;
     min-height: 100vh;
     padding-bottom: 70px;
@@ -106,11 +107,7 @@ const Content = styled('div')`
     }
 `;
 const ProfMain = styled('div')`
-    .b-shad {
-        box-shadow: 5px 7px 26px -5px #9f9fbb;
-        -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
-        border-radius: 16px;
-    }
+   
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -123,11 +120,11 @@ const ProfMain = styled('div')`
         color: #fff !important;
     }
 `;
-const RightBox = styled('div')`
+const RightBox = styled(Card)`
     position: relative;
     width: 711px;
     height: 100%;
-    background-color: #fff;
+    
     border-radius: 16px 16px 0 0;
     display: flex;
     flex-direction: column;
@@ -204,21 +201,21 @@ const RightBox = styled('div')`
         }
     }
 `;
-const LeftBox = styled('div')`
+const LeftBox = styled(Card)`
     width: 711px;
     padding: 32px;
     padding-top: 50px;
-    background-color: #fff;
     border-radius: 0 0 16px 16px;
 
     label {
         display: block;
-        margin-right: 8px;
+        flex: 1 0 48%;
     }
-
-    .w-162 {
-        width: 160px;
+    .d-flex{
+        row-gap: 32px;
+        column-gap: 16px;
     }
+   
     @media (max-width: 1250px) {
         .edit-prof-svg {
             left: 52%;
@@ -229,7 +226,6 @@ const LeftBox = styled('div')`
         padding: 16px;
         label {
             width: 100%;
-            margin-right: 0;
         }
         .edit-prof-svg {
             left: 56%;
@@ -280,225 +276,78 @@ const Success = styled('div')`
     }
 `;
 
-const Inp = styled.input`
+const Inp = styled('input')`
     background: #ffffff;
     border: 1.5px solid #dbdbdb;
     border-radius: 8px;
-    height: 44px;
+    height: 39px;
     padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    width: 210px;
-    margin-left: 8px;
+    width: 100%;
     @media (max-width: 786px) {
         width: 100% !important;
     }
 `;
 
-const SubBtn = styled('button')`
-    width: 228px;
-    height: 39px;
-    background: linear-gradient(90deg, #128cbd -1.72%, #3dbdc8 100%);
-    border-radius: 32px;
-    margin-right: auto !important;
-    margin-left: auto !important;
-    color: #fff;
-`;
 
+
+Profile.title =  ` صرافی ${SETTINGS.WEBSITE_NAME} | پروفایل`
 export default function Profile() {
-    const [profile, setProfile] = useState(null);
-    const [user, setUser] = useState([]);
-    const [img, setImg] = useState(null);
     const [loading, setLoading] = useState(false);
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
     const stts = useContext(NightModeContext);
-    console.log(stts);
-    let refreshToken = "";
-    setTimeout(() => {
-        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
-    }, 2000);
 
-    setTimeout(() => {
-        setInterval(() => {
-            inter();
-        }, 600000);
-    }, 70000);
-    const inter = () => {
-        let data = {
-            refresh: refreshToken,
-        };
-        let config = {
-            method: "POST",
-            url: `${BASEURL}token/refresh/`,
-            data: data,
-        };
-
-        axios(config)
-            .then((response) => {
-                localStorage.setItem("token", response.data.access);
-            })
-            .catch((error) => {});
-    };
     const [showMenu, setShowMenu] = useState(true);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 2000);
-    const changed = (e) => {
-        let config = {
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-            url: `${BASEURL}account/details/`,
-            method: "GET",
-        };
-        axios(config)
-            .then((res) => {
-                if (res.status == "200") {
-                    setImg(res.data.avatar);
-                    setUser(res.data);
-                }
-            })
-            .catch((error) => {});
-    };
+
+    const { refetch: getUser, data: user ={}} = useFetchUser()
+    const img = useMemo( () => {
+        return user?.avatar
+    }, [user])
+   
+
     const profileChange = (e) => {
         let data = new FormData();
         data.append("file", e);
         setLoading(true);
-        let config = {
-            headers: {
-                
-                "Content-Type": "multipart/form-data",
-            },
-            method: "POST",
-            url: `${BASEURL}account/avatar/`,
-            data: data,
-        };
-        axios(config)
+        axios.post(`${BASEURL}account/avatar/`, data)
             .then((response) => {
-                setLoading(false);
-                toast.success(response.data.message, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.success(response.data.message);
                 changed();
             })
             .catch((error) => {
-                setLoading(false);
 
-                toast.error("خطایی وجود دارد", {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error("خطایی وجود دارد");
                 changed();
-            });
+            })
+            .finally(d => setLoading(false))
     };
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}account/details/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setImg(res.data.avatar);
-                        setUser(res.data);
-				
-                    }
-                })
-                .catch((error) => {});
-        }, 2200);
-    }, []);
+
     const otpHandler = (e) => {
         let config2 = {
             headers: {
                 "Content-type": "application/json",
-                
+
             },
             method: "GET",
             url: `${BASEURL}account/verify/phone/`,
         };
         axios(config2)
-            .then((response) => {})
+            .then((response) => { })
             .catch((error) => {
-                toast.error("خطایی وجود دارد", {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error("خطایی وجود دارد");
             });
     };
     return (
         <>
-            <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title> صرافی متاورس | پروفایل</title>
-            </Head>
             <div className="max-w-1992">
                 <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
-                <ToastContainer
-                    rtl={true}
-                    position="top-center"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    pauseOnFocusLoss={false}
-                    draggable
-                    pauseOnHover={false}
-                />
-                <Content
-                    className={
-                        showMenu
-                            ? stts.night == "true"
-                                ? "pr-176 bg-dark-2"
-                                : "pr-176 "
-                            : stts.night == "true"
-                            ? "bg-dark-2 pr-80"
-                            : " pr-80"
-                    }
-                >
+
+                <Content className={showMenu ? "pr-176 " : " pr-80"} >
                     <Header show-menu={menuHandler} />
                     <ProfMain>
                         <div className="b-shad">
-                            <RightBox
-                                className={
-                                    stts.night == "true"
-                                        ? "bg-gray no-shadow"
-                                        : ""
-                                }
-                            >
+                            <RightBox                            >
                                 <div className="d-flex align-items-center justify-content-between flex-wrap">
                                     <label htmlFor="file">
                                         {img !== null ? (
@@ -519,21 +368,12 @@ export default function Profile() {
                                                             height={78}
                                                             alt="profile"
                                                         />
-                                                        <div className="lds-ring">
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                            <div></div>
-                                                        </div>
+                                                        <CircularProgress size="small"/>
                                                     </div>
                                                 )}
 
                                                 <svg
-                                                    className={
-                                                        stts.night == "true"
-                                                            ? "svg-white edit-prof-svg"
-                                                            : " edit-prof-svg"
-                                                    }
+                                                    className={" edit-prof-svg"}
                                                     width="32"
                                                     height="32"
                                                     viewBox="0 0 32 32"
@@ -608,7 +448,7 @@ export default function Profile() {
                                             profileChange(e.target.files["0"]);
                                         }}
                                     />
-                                    {(user.authentication_status != "accepted"  && user.authentication_status ) ? (
+                                    {(user.authentication_status != "accepted" && user.authentication_status) ? (
                                         <Alert>
                                             <svg
                                                 width="25"
@@ -633,20 +473,20 @@ export default function Profile() {
                                             </svg>
                                             جهت احراز هویت اطلاعات حساب کاربری
                                             خود را همراه با مدارک بارگذاری کنید.
-											
-									
-											  <div className="d-grid">
-                                    <button
-                                    onClick={() => {
-                                        Router.push("/auth");
-                                    }}
-                                    className="auth-btn slide-bck-center btn-warning mx-auto"
-                                >
-                                    احراز هویت
-                                </button>
-                                </div>
+
+
+                                            <div className="d-grid">
+                                                <button
+                                                    onClick={() => {
+                                                        Router.push("/auth");
+                                                    }}
+                                                    className="auth-btn slide-bck-center btn-warning mx-auto"
+                                                >
+                                                    احراز هویت
+                                                </button>
+                                            </div>
                                         </Alert>
-											
+
                                     ) : (
                                         <Success>
                                             اکانت شما تایید شده است .
@@ -655,57 +495,10 @@ export default function Profile() {
                                 </div>
                                 <div className="edit-prof d-flex align-items-center">
                                     <div className="d-flex align-items-center">
-                                        <svg
-                                            className={
-                                                stts.night == "true"
-                                                    ? "svg-white"
-                                                    : ""
-                                            }
-                                            width="32"
-                                            height="32"
-                                            viewBox="0 0 32 32"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                clipRule="evenodd"
-                                                d="M7.05732 20.8253L20.8253 7.05733C21.3453 6.53733 22.1893 6.53733 22.7093 7.05733L24.944 9.29199C25.464 9.81199 25.464 10.656 24.944 11.176L11.1747 24.9427C10.9253 25.1933 10.5867 25.3333 10.2333 25.3333H6.66666V21.7667C6.66666 21.4133 6.80666 21.0747 7.05732 20.8253Z"
-                                                stroke="#323232"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                            <path
-                                                d="M18.3333 9.54666L22.4533 13.6667"
-                                                stroke="#323232"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </svg>
+                                        <Edit sx={{ mr: 2}}/>
                                         <span>ویرایش پروفایل</span>
                                     </div>
-                                    <svg
-                                        className={
-                                            stts.night == "true"
-                                                ? "svg-white"
-                                                : ""
-                                        }
-                                        width="8"
-                                        height="14"
-                                        viewBox="0 0 8 14"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M6.66666 1.66667L1.33333 7.00001L6.66666 12.3333"
-                                            stroke="#323232"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
+                                    <ChevronLeft />
                                 </div>
                                 <div
                                     className="setting c-p"
@@ -713,19 +506,7 @@ export default function Profile() {
                                         Router.push("/cards");
                                     }}
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="20"
-                                        height="16"
-                                        viewBox="0 0 20 16"
-                                        fill="#777777"
-                                    >
-                                        <path
-                                            id="ic_credit_card_24px"
-                                            d="M20,4H4A1.985,1.985,0,0,0,2.01,6L2,18a1.993,1.993,0,0,0,2,2H20a1.993,1.993,0,0,0,2-2V6A1.993,1.993,0,0,0,20,4Zm0,14H4V12H20ZM20,8H4V6H20Z"
-                                            transform="translate(-2 -4)"
-                                        />
-                                    </svg>
+                                    <CreditCard sx={{ mr: 2}}/>
 
                                     <span>کارت های بانکی</span>
                                 </div>
@@ -735,53 +516,7 @@ export default function Profile() {
                                         Router.push("/change_password");
                                     }}
                                 >
-                                    <svg
-                                        width="34"
-                                        height="34"
-                                        viewBox="0 0 34 34"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M14.512 16.8199C14.5847 16.8926 14.6065 17.002 14.5671 17.097C14.5278 17.192 14.4351 17.254 14.3322 17.254C14.2294 17.254 14.1367 17.192 14.0973 17.097C14.058 17.002 14.0797 16.8926 14.1524 16.8199C14.2518 16.7209 14.4126 16.7209 14.512 16.8199"
-                                            stroke="#777777"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            d="M15.6661 23.6694H6.32891C5.62131 23.6696 4.94264 23.3886 4.44229 22.8883C3.94194 22.3879 3.66094 21.7093 3.66113 21.0017V12.9983C3.66094 12.2907 3.94194 11.6121 4.44229 11.1117C4.94264 10.6114 5.62131 10.3304 6.32891 10.3306H15.6661"
-                                            stroke="#777777"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            d="M9.17647 16.8199C9.24919 16.8926 9.27094 17.002 9.23159 17.097C9.19223 17.192 9.09952 17.254 8.99669 17.254C8.89385 17.254 8.80114 17.192 8.76179 17.097C8.72243 17.002 8.74419 16.8926 8.81691 16.8199C8.9163 16.7209 9.07708 16.7209 9.17647 16.8199"
-                                            stroke="#777777"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <rect
-                                            x="19.6678"
-                                            y="14.9992"
-                                            width="10.6711"
-                                            height="8.67028"
-                                            rx="1.65"
-                                            stroke="#777777"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <path
-                                            d="M21.7079 14.9992V12.2922C21.7079 10.4721 23.1833 8.99667 25.0033 8.99667V8.99667C25.8774 8.99667 26.7156 9.34387 27.3336 9.96189C27.9516 10.5799 28.2988 11.4181 28.2988 12.2922V12.2922V15.0217"
-                                            stroke="#777777"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
+                                   <Shield sx={{ mr: 2}}/>
 
                                     <span>امنیت</span>
                                 </div>
@@ -794,16 +529,10 @@ export default function Profile() {
                                     >
                                         احراز هویت
                                     </button>
-                                ) : ("") }
+                                ) : ("")}
                             </RightBox>
-                            <LeftBox
-                                className={
-                                    stts.night == "true"
-                                        ? "bg-gray no-shadow"
-                                        : ""
-                                }
-                            >
-                                <div className="d-flex flex-wrap justify-content-center">
+                            <LeftBox >
+                                <div className="d-flex flex-wrap justify-content-center ">
                                     <label>
                                         <div>نام و نام خانوادگی</div>
                                         <Inp
@@ -843,7 +572,7 @@ export default function Profile() {
                                             value={
                                                 user.personal_data !== undefined
                                                     ? user.personal_data
-                                                          .birth_certificate_id
+                                                        .birth_certificate_id
                                                     : ""
                                             }
                                             disabled
@@ -855,7 +584,7 @@ export default function Profile() {
                                             value={
                                                 user.personal_data !== undefined
                                                     ? user.personal_data.address
-                                                          .phone
+                                                        .phone
                                                     : ""
                                             }
                                             disabled
@@ -869,14 +598,12 @@ export default function Profile() {
                                             value={
                                                 user.personal_data !== undefined
                                                     ? user.personal_data.address
-                                                          .post_code
+                                                        .post_code
                                                     : ""
                                             }
                                             disabled
                                         />
                                     </label>
-                                </div>
-
                                 <label>
                                     <div>آدرس</div>
                                     <Inp
@@ -889,6 +616,8 @@ export default function Profile() {
                                         }
                                     />
                                 </label>
+                                </div>
+
                                 <div className="w-100 d-flex justify-content-center mt-3">
                                     <button
                                         className="btn btn-warning px-5"

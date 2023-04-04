@@ -5,6 +5,8 @@ import { styled } from '@mui/material/styles';
 import QRCode from "react-qr-code";
 import { baseUrl } from "../BaseUrl";
 import axios from "axios";
+import { BASEURL } from "../settings";
+import { useFetchBanks } from "../hooks/fetchBanks";
 
 const Main = styled('div')`
     z-index: 10;
@@ -183,62 +185,22 @@ const Limits = styled('div')`
 const RialDeposit = (props) => {
     const wallet = props.wallet;
     const itemTo = props.itemTo;
-    const [adress, setAdress] = useState("");
     const [value, setValue] = useState("");
-    const [cards, setCards] = useState([]);
     const [cardNumber, setCardNumber] = useState("");
     const [shaba, setShaba] = useState("");
     const [bank, setBank] = useState("");
-    const [bankNames, setBankNames] = useState("");
     const [cardId, setCardId] = useState();
     let token = "";
     if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    console.log(wallet);
     let item = wallet.find((i) => {
         if (i.service !== undefined) {
             return i.service.small_name_slug == itemTo.small_name_slug;
         }
     });
-    console.log(item);
-    useEffect(() => {
-        setTimeout(() => {
-            let data = {
-                wallet: item.id,
-            };
-            let config = {
-                method: "GET",
-                url: `${BASEURL}bank/name/list/`,
-                data: data,
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-            };
+    const {data: bankNames} = useFetchBanks()
+    const {data: cards} = useFetchCards()
 
-            axios(config)
-                .then((response) => {
-                    setBankNames(response.data);
-                })
-                .catch((error) => {});
-        }, 2000);
-    }, []);
-    useEffect(() => {
-        let config = {
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-            url: `${BASEURL}bank/list/`,
-            method: "GET",
-        };
-        axios(config)
-            .then((res) => {
-                if (res.status == "200") {
-                    setCards(res.data);
-                }
-            })
-            .catch((error) => {});
-    }, []);
+   
     const addCardHandler = (e) => {
         let data = {
             card: cardNumber,
@@ -257,26 +219,10 @@ const RialDeposit = (props) => {
 
         axios(config)
             .then((response) => {
-                toast.error(response.data.message, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error(response.data.message);
             })
             .catch((error) => {
-                toast.error(error, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error(error);
             });
     };
 
@@ -298,15 +244,7 @@ const RialDeposit = (props) => {
         axios(config)
             .then((response) => {
                 response.data.error != 0
-                    ? toast.error(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      })
+                    ? toast.error(response.data.message)
                     : window.open(response.data.link);
             })
             .catch((error) => {});
@@ -383,66 +321,18 @@ const RialDeposit = (props) => {
                             <span>تومان</span>
                         </InputBox>
                         <div className="price-boxs">
-                            <PriceBox
-                                className={
-                                    props.stts.night == "true"
-                                        ? "color-white-2"
-                                        : ""
-                                }
-                                onClick={() => {
-                                    setValue(5000000);
-                                }}
-                            >
-                                5,000,000
-                            </PriceBox>
-                            <PriceBox
-                                className={
-                                    props.stts.night == "true"
-                                        ? "color-white-2"
-                                        : ""
-                                }
-                                onClick={() => {
-                                    setValue(10000000);
-                                }}
-                            >
-                                10,000,000
-                            </PriceBox>
-                            <PriceBox
-                                className={
-                                    props.stts.night == "true"
-                                        ? "color-white-2"
-                                        : ""
-                                }
-                                onClick={() => {
-                                    setValue(15000000);
-                                }}
-                            >
-                                15,000,000
-                            </PriceBox>
-                            <PriceBox
-                                className={
-                                    props.stts.night == "true"
-                                        ? "color-white-2"
-                                        : ""
-                                }
-                                onClick={() => {
-                                    setValue(20000000);
-                                }}
-                            >
-                                20,000,000
-                            </PriceBox>
-                            <PriceBox
-                                className={
-                                    props.stts.night == "true"
-                                        ? "color-white-2"
-                                        : ""
-                                }
-                                onClick={() => {
-                                    setValue(50000000);
-                                }}
-                            >
-                                50,000,000
-                            </PriceBox>
+                            {
+                                [5000000, 10000000, 15000000, 20000000, 50000000].map(price => {
+                                    return <PriceBox
+                                        onClick={() => {
+                                            setValue(price);
+                                        }}
+                                    >
+                                        {Number(price).toLocaleString()}
+                                    </PriceBox>
+                                })
+                            }
+                            
                         </div>
                         <div
                             className={

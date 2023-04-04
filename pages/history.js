@@ -4,13 +4,14 @@ import Sidebar from "../components/Sidebar";
 import { styled } from '@mui/material/styles';
 import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
-import Router from "next/router";
-import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
-import moment from "jalali-moment";
+import { useFetchOrders } from "../components/hooks";
+import HistoryTableTrade from "../components/History/HistoryTableTrade";
+import HistoryTableHistory from "../components/History/HistoryTableHistory";
+import { Divider, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+
 const Main = styled('div')`
-    background-color: #e4e3ef;
     width: 100%;
     min-height: 100vh;
     .scrollable {
@@ -18,7 +19,7 @@ const Main = styled('div')`
         overflow: auto;
     }
     .tabs {
-        background-color: #fff;
+
         display: flex;
         align-items: center;
         border-radius: 10px;
@@ -80,7 +81,6 @@ const HistoryTable = styled('table')`
     thead tr {
         width: 100%;
         border: none;
-        background: #fff;
         border-radius: 8px;
         height: 80px;
         font-size: 15px;
@@ -120,7 +120,6 @@ const HistoryTable = styled('table')`
         overflow: auto;
 
         border-top: none !important;
-        background-color: #fff;
         width: 100%;
     }
     .change-num {
@@ -150,352 +149,60 @@ const HistoryTable = styled('table')`
         }
     }
 `;
-
+History.title = `صرافی ${SETTINGS.WEBSITE_NAME} | تاریخچه معاملات`
 export default function History() {
-    const stts = useContext(NightModeContext);
     const [showMenu, setShowMenu] = useState(true);
-    const [orders, setOrders] = useState([]);
     const [transactions, setTransactions] = useState([]);
-    const [coins, setCoins] = useState([]);
     const [tabActive, setTabActive] = useState("trade");
-    let config = {
-        url: `${BASEURL}service/list/`,
-        method: "GET",
-    };
-    useEffect(() => {
-        axios(config)
-            .then((res) => {
-                setCoins(res.data);
-            })
-            .catch((error) => {});
-    }, []);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
-    console.log(transactions);
-    let token = "";
-    let trans = [];
 
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 1000);
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}transaction/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    setTransactions(res.data);
-                })
-                .catch((error) => {});
-        }, 1200);
-    }, []);
-    let order_config = {};
-    setTimeout(() => {
-        order_config = {
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-            url: `${BASEURL}order/list/`,
-            method: "GET",
-        };
-    }, 3000);
-    useEffect(() => {
-        setTimeout(() => {
-            axios(order_config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setOrders(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 4000);
-    }, []);
 
-    console.log(orders);
+    const { data: orders } = useFetchOrders()
+
 
     return (
         <Main
-            className={
-                stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
-            }
+            className={"max-w-1992"}
         >
-            <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title>صرافی متاورس | تاریخچه معاملات</title>
-            </Head>
-
             <Sidebar show-menu={menuHandler} active="4" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 <Header show-menu={menuHandler} />
                 <div className="p-32">
-                    <div
-                        className={stts.night == "true" ? "tabs-dark" : "tabs"}
+                    <ToggleButtonGroup
+                        value={tabActive}
+                        exclusive
+                        color='error'
+                        size='small'
+                        onChange={(e, value) => {
+                            setTabActive(value);
+                        }}
                     >
-                        <span
-                            className={
-                                tabActive == "trade" ? "active-span" : ""
-                            }
-                            onClick={() => {
-                                setTabActive("trade");
-                            }}
+
+                        <ToggleButton
+                            color='info'
+                            value={"trade"}
+                            sx={{ px: 2 }}
                         >
-                            معاملات
-                        </span>
-                        <span
-                            className={
-                                tabActive == "history" ? "active-span" : ""
-                            }
-                            onClick={() => {
-                                setTabActive("history");
-                            }}
+                            <Typography variant="subtitle2">  معاملات </Typography>
+                        </ToggleButton>
+                        <ToggleButton
+                            color='info'
+                            value={"history"}
+                            sx={{ px: 2 }}
+                            size="small"
                         >
-                            واریز و برداشت
-                        </span>
-                    </div>
+                            <Typography variant="subtitle2">  واریز و برداشت </Typography>
+                        </ToggleButton>
+
+
+                    </ToggleButtonGroup>
+                    <Divider sx={{my: 2}} />
                     {tabActive == "trade" ? (
-                        <div className="scrollable">
-                            <HistoryTable
-                                className={
-                                    stts.night == "true" ? " table" : " table"
-                                }
-                            >
-                                <thead>
-                                    <tr className="align-middle ">
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center">
-                                                شماره تراکنش
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                تاریخ معامله
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center">
-                                                نوع معامله
-                                            </div>
-                                        </th>
-
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                پرداخت
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                دریافت
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                وضعیت
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {orders.length !== 0
-                                        ? orders.map((item) => {
-                                              return (
-                                                  <tr key={item.id}>
-                                                      <td
-                                                          scope="row"
-                                                          className="pt-12"
-                                                      >
-                                                          {item.id}
-                                                      </td>
-
-                                                      <td className="align-middle">
-                                                          {item.published}
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          {item.destination_asset ==
-                                                              "USDT" ||
-                                                          item.destination_asset ==
-                                                              "IRT" ? (
-                                                              <div className="text-danger">
-                                                                  فروش
-                                                              </div>
-                                                          ) : item.source_asset ==
-                                                                "USDT" ||
-                                                            item.source_asset ==
-                                                                "IRT" ? (
-                                                              <div className="text-success-2">
-                                                                  خرید
-                                                              </div>
-                                                          ) : (
-                                                              <div className="text-warning">
-                                                                  تبدیل
-                                                              </div>
-                                                          )}
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          {new Intl.NumberFormat().format((item.source_amount))}{" "}
-															  {item.source_asset}
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          {
-                                                           new Intl.NumberFormat().format(( item.destination_amount))
-                                                          }{" "}
-                                                          {  item.destination_asset}
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          {item.status ==
-                                                              "accepted" ||
-                                                          item.status ==
-                                                              "delivered" ? (
-                                                              <div className="text-success-2">
-                                                                  انجام شده
-                                                              </div>
-                                                          ) : item.status ==
-                                                            "pending" ? (
-                                                              <span>
-                                                                  در انتظار
-                                                              </span>
-                                                          ) : (
-                                                              <div className="text-danger">
-                                                                  رد شده
-                                                              </div>
-                                                          )}
-                                                      </td>
-                                                  </tr>
-                                              );
-                                          })
-                                        : ""}
-                                </tbody>
-                            </HistoryTable>
-                        </div>
+                        <HistoryTableTrade data={orders} />
                     ) : (
-                        <div className="scrollable">
-                            <HistoryTable
-                                className={
-                                    stts.night == "true" ? "table" : " table"
-                                }
-                            >
-                                <thead>
-                                    <tr className="align-middle ">
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center">
-                                                شماره تراکنش
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center">
-                                                تاریخ تراکنش
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                نوع تراکنش
-                                            </div>
-                                        </th>
-										     <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                ارز 
-                                            </div>
-                                        </th>
-										
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                مقدار تراکنش
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                وضعیت تراکنش
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                               کد رهگیری
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {transactions.lenght !== 0
-                                        ? transactions.map((item) => {
-                                              return (
-                                                  <tr key={item.id}>
-                                                      <td
-                                                          scope="row"
-                                                          className="pt-12"
-                                                      >
-                                                          {item.id}
-                                                      </td>
-
-                                                      <td className="align-middle">
-                                                          {item.published}
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          {item.type ==
-                                                          "deposit" ? (
-                                                              <div className="text-success-2">
-                                                                  واریز
-                                                              </div>
-                                                          ) : (
-                                                              <div className="text-danger">
-                                                                  برداشت
-                                                              </div>
-                                                          )}
-                                                      </td>
-													      <td className="align-middle">
-                                                          <span>
-                                                              {item.service.name}
-                                                          </span>
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          <span>
-                                                              {item.amount}
-                                                          </span>
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          {item.status ==
-                                                          "accepted" ? (
-                                                              <div className="text-success-2">
-                                                                  انجام شده
-                                                              </div>
-                                                          ) : item.status ==
-                                                            "pending" ? (
-                                                              <span>
-                                                                  در انتظار
-                                                              </span>
-                                                          ) : (
-                                                              <div className="text-danger">
-                                                                  رد شده
-                                                              </div>
-                                                          )}
-                                                      </td>
-                                                      <td className="align-middle">
-                                                          <span>
-                                                              {item.status_details}
-                                                          </span>
-                                                      </td>
-                                                  </tr>
-                                              );
-                                          })
-                                        : ""}
-                                </tbody>
-                            </HistoryTable>
-                        </div>
+                        <HistoryTableHistory data={orders} />
                     )}
                 </div>
             </Content>

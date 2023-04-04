@@ -6,7 +6,7 @@ export const SETTINGS = Object.freeze({
   WEBSITE_NAME_ENG_NO_SPACE: "BelkaCrypto",
 
 })
-export const BASEURL =  "https://api.belkacrypto.com/api/v2/"
+export const BASEURL = "https://api.belkacrypto.com/api/v2/"
 
 export const theme = createTheme({
   direction: 'rtl',
@@ -23,7 +23,7 @@ export const theme = createTheme({
   palette: {
     mode: "dark",
 
-    
+
     grey: {
       100: "#111111",
       200: "#1d1d1d",
@@ -59,37 +59,52 @@ export const theme = createTheme({
       main: "#aaa",
       dark: "#888"
     },
-    simple:{
+    simple: {
       main: "#fff",
       contrastText: "#FFF"
     },
-    common:{
+    common: {
       white: "#FFF",
       black: "#000"
     },
-    success:{
+    success: {
       light: alpha("#00bd8d", 0.2),
       main: "#00bd8d",
       dark: "#00bd8d66",
       contrastText: "#FFF"
     },
-    dark:{
+    dark: {
       light: "#303748",
       main: "#1f2533",
       dark: "#1f2533aa"
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
-    
+
 
   },
   shape: {
-    borderRadius: "10px"
+    borderRadius: 10
   },
   components: {
-    MuiCard:{
-      styleOverrides:{
-        root:{
+    MuiTextField:{
+      defaultProps: {
+        size: "small"
+      }
+    },
+    MuiDivider: {
+      variants: [
+        {
+          props: { transparent: true },
+          style: {
+            border: 0
+          }
+        }
+      ]
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
           padding: "0.75rem 1.25rem"
         }
       }
@@ -97,7 +112,7 @@ export const theme = createTheme({
     MuiButton: {
       variants: [
         {
-          props: {variant: 'chip'},
+          props: { variant: 'chip' },
           style: {
             padding: "2px 4px",
             minWidth: 'unset',
@@ -110,6 +125,7 @@ export const theme = createTheme({
       ],
       styleOverrides: {
         root: ({ ownerState }) => ({
+          borderRadius: 4,
           ...(ownerState.size === 'medium' && {
             padding: '8px 14px',
             "[class*=startIcon]": {

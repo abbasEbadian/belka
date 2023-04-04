@@ -139,7 +139,7 @@ function MyApp({ Component, pageProps }) {
                     </ThemeProvider>
                 </CacheProvider>
             </CacheProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
         </QueryClientProvider>
     );

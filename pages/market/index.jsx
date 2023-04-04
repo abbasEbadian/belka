@@ -46,13 +46,14 @@ export default function Market( { services }) {
 
       <MarketPrices selectedCoins={selectedCoins}/>
 
+      Coin
       <CoinSelectDialog
         open={coinSelectDialogOpen}
         setOpen={setCoinSelectDialogOpen}
         selectedCoins={selectedCoins}
         changeCoin={changeCoin}
       />
-      <MarketOrders />
+      {/* <MarketOrders /> */}
       <BottomNav />
     </Box>
   )

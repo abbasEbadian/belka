@@ -4,24 +4,19 @@ import Image from "next/image";
 import Router from "next/router";
 import NightModeContext from "./Context";
 import { Dashboard, History, Person, PersonAdd, Shield, SwapHoriz, SwapVert, Wallet } from "@mui/icons-material";
+import { Box, Paper } from "@mui/material";
 
-const SidebarMain = styled('div')`
+const SidebarMain = styled(Paper)`
     z-index: 100000;
     position: fixed;
     width: 240px;
     height: 100vh;
-    background: linear-gradient(
-        to bottom,
-        var(--primary-bg-color) 0%,
-        #764ba2 100%
-    );
+    
     transition: 0.1s all;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 20px;
-    color: #fff;
-    background: linear-gradient(to bottom,#555 0%,#f9fafb 100%);
     .fill-w {
         fill: #fff;
     }
@@ -31,7 +26,6 @@ const SidebarHeader = styled('div')`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     .svg-white {
@@ -94,20 +88,14 @@ const Sidebar = (props) => {
     const stts = useContext(NightModeContext);
 
     return (
-        <SidebarMain
-            className={
-                props.show
-                    ? stts.night == "true"
-                        ? "bg-gray "
-                        : ""
-                    : stts.night == "true"
-                    ? "w-0 bg-gray "
-                    : "w-0"
-            }
-        >
+        <SidebarMain  className={
+            props.show
+                ? ""
+                : "w-0"
+        }>
             <div>
                 <SidebarHeader
-                    className={stts.night == "true" ? "bg-gray bor-l-b" : ""}
+                    className={stts.night == "true" ? "bor-l-b" : ""}
                 >   
                 {props["show"] && stts.night == "true" &&
                      <img

@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import QRCode from "react-qr-code";
 import { baseUrl } from "../BaseUrl";
 import axios from "axios";
+import { BASEURL } from "../settings";
 
 const Main = styled('div')`
     z-index: 10;
@@ -118,47 +119,25 @@ const CoinWithdraw = (props) => {
 
     let token = "";
     setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
+        if (typeof window !== 'undefined') token = localStorage.getItem("token");
     }, 1000);
+
     let item = wallet.find((i) => {
         if (i.service !== undefined) {
             return i.service.small_name_slug == itemTo.small_name_slug;
         }
     });
-    console.log(item);
+
     const withdrawOtpHandler = (e) => {
-        let config = {
-            method: "GET",
-            url: `${BASEURL}wallet/withdrawal/otp/`,
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-        };
-        axios(config)
+
+        axios.get(`${BASEURL}wallet/withdrawal/otp/`)
             .then((response) => {
                 setGetOtp(true);
                 response.data.error > 0
-                    ? toast.error(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      })
-                    : toast.success(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
+                    ? toast.error(response.data.message)
+                    : toast.success(response.data.message);
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
 
     const withdrawHandler = (e) => {
@@ -169,41 +148,17 @@ const CoinWithdraw = (props) => {
             otp,
             wallet: adress,
         };
-        let config = {
-            method: "POST",
-            url: `${BASEURL}wallet/withdrawal/`,
-            data: data,
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-        };
-        axios(config)
+
+        axios.post(`${BASEURL}wallet/withdrawal/`, { data })
             .then((response) => {
                 if (response.data.error > 0) {
-                    toast.error(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error(response.data.message);
                 } else {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                 }
                 // setAdress(response.data)
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
     return (
         <Main>
@@ -214,7 +169,7 @@ const CoinWithdraw = (props) => {
                     }
                 >
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <span>برداشت از کیف پول شما</span>
+                        <span> برداشت از کیف پول شما</span>
                         <svg
                             onClick={() => {
                                 props.setBlur(false);
@@ -243,22 +198,23 @@ const CoinWithdraw = (props) => {
                             />
                         </svg>
                     </div>
-                    <span>کد تایید را وارد کنید</span>
-                    <input
-                        className="otp"
-                        type="text"
-                        onChange={(e) => {
-                            setOtp(e.target.value);
-                        }}
-                    />
-                    <div className="w-100 d-flex justify-content-center">
-                        <Submit
-                            onClick={withdrawHandler}
-                            disabled={values > item.balance}
-                        >
+                    <>
+                        <Typography variant='body1'>لطفا کد تایید را وارد نمایید </Typography>
+                        <Divider transparent sx={{ mt: 2 }} />
+
+                        <TextField
+                            fullWidth
+                            value={otp}
+                            onChange={(e) => {
+                                setOtp(e.target.value);
+                            }}
+                        />
+                        <Divider transparent sx={{ mt: 4 }} />
+
+                        <Button onClick={withdrawHandler} color="success" fullWidth size='small' variant='contained'>
                             ثبت درخواست برداشت
-                        </Submit>
-                    </div>
+                        </Button>
+                    </>
                 </div>
             ) : (
                 <div

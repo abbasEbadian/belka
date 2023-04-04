@@ -198,13 +198,13 @@ ul {
 }
 
 .bg-dark-2 {
-    background: #0c1023 !important;
-    background-color: #0c1023 !important;
+    background: #101721 !important;
+    background-color: #101721 !important;
 }
 
 .bg-gray {
-    background: #191d30 !important;
-    background-color: #191d30 !important;
+    background: #222833 !important;
+    background-color: #222833 !important;
 }
 
 .color-white-2 {
@@ -212,13 +212,13 @@ ul {
 }
 
 .bg-dark-2 .css-1s2u09g-control {
-    background: #0c1023 !important;
-    background-color: #0c1023 !important;
+    background: #101721 !important;
+    background-color: #101721 !important;
 }
 
 .bg-dark-2 input {
-    background: #0c1023 !important;
-    background-color: #0c1023 !important;
+    background: #101721 !important;
+    background-color: #101721 !important;
     color: #fff;
 }
 
@@ -288,7 +288,7 @@ ul {
 }
 
 .bg-gray .bb-2 {
-    border-bottom: 1px solid #0c1023;
+    border-bottom: 1px solid #101721;
 }
 
 .bg-gray .buy-head {
@@ -324,7 +324,7 @@ ul {
 
 .coins-table-light table {
     background-color: #fff;
-    color: #0c1023 !important;
+    color: #101721 !important;
 }
 
 .coins-table-light thead tr,
@@ -340,4 +340,15 @@ a {
     #goftino_w{
         transform: scale(0.9) translate(24px, -32px) !important;
     }
+}
+
+.pre-wrap {
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -webkit-pre-wrap;          /* Chrome & Safari */ 
+    white-space: -pre-wrap;                 /* Opera 4-6 */
+    white-space: -o-pre-wrap;               /* Opera 7 */
+    white-space: pre-wrap;                  /* CSS3 */
+    word-wrap: break-word;                  /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
 }

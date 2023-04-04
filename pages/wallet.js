@@ -17,7 +17,7 @@ import RialDeposit from "../components/Wallet/RialDeposit";
 import RialWithdraw from "../components/Wallet/RialWithdraw";
 import WalletTableC from "../components/Wallet/WalletTable";
 import { useFetchCoins, useFetchWallet } from '../components/hooks'
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 
 
 const Main = styled('div')`
@@ -25,12 +25,7 @@ const Main = styled('div')`
     width: 100%;
     min-height: 100vh;
     position: relative;
-    button {
-        font-family: IRANSansX;
-        border: none !important;
-        outline: none !important;
-        background-color: transparent;
-    }
+
 
     .dep-btn {
         color: #30e0a1 !important;
@@ -160,6 +155,7 @@ const WalletMain = styled('div')`
         height: 125px;
     }
     @media (max-width: 992px) {
+        padding-inline: 16px;
         .balance-2 {
             margin-top: 10px;
         }
@@ -433,323 +429,12 @@ export default function Wallet() {
                 <Content className={showMenu ? "pr-176" : "pr-80"}>
                     <Header show-menu={menuHandler} />
                     <WalletMain className={blur ? " bg-blur" : ""}>
-                    <WalletTableC wallet={wallet} />
                         <Typography variant="h6" >کیف پول شما</Typography >
-                        <div className="scrollable">
-                            <WalletTable>
-                                <thead>
-                                    <tr className="align-middle ">
-                                        <th scope="col" className="remove-mob">
-                                            <div className="d-flex align-items-center">
-                                                #
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center">
-                                                <div className="arrows">
-                                                    <svg
-                                                        width="6"
-                                                        height="5"
-                                                        viewBox="0 0 6 5"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M2.50405 1.22444C2.59165 1.11489 2.70278 1.02645 2.82919 0.965679C2.95561 0.904904 3.09407 0.873348 3.23434 0.873348C3.3746 0.873348 3.51307 0.904904 3.63949 0.965679C3.7659 1.02645 3.87702 1.11489 3.96462 1.22444L5.75901 3.46766C5.86914 3.6052 5.93816 3.77106 5.95812 3.94612C5.97809 4.12118 5.94818 4.29832 5.87186 4.45713C5.79554 4.61593 5.67589 4.74994 5.52672 4.84372C5.37755 4.93749 5.20492 4.98721 5.02873 4.98714H1.43995C1.26375 4.98721 1.09112 4.93749 0.941953 4.84372C0.792783 4.74994 0.673142 4.61593 0.596817 4.45713C0.520492 4.29832 0.49059 4.12118 0.510555 3.94612C0.53052 3.77106 0.59954 3.6052 0.709663 3.46766L2.50405 1.22444Z"
-                                                            fill="#657D95"
-                                                        />
-                                                    </svg>
-                                                    <svg
-                                                        width="6"
-                                                        height="5"
-                                                        viewBox="0 0 6 5"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M3.96502 4.48999C3.87742 4.59954 3.76629 4.68797 3.63988 4.74875C3.51346 4.80952 3.375 4.84108 3.23473 4.84108C3.09447 4.84108 2.956 4.80952 2.82958 4.74875C2.70317 4.68797 2.59205 4.59954 2.50445 4.48999L0.710056 2.24677C0.599934 2.10923 0.530913 1.94337 0.510948 1.76831C0.490983 1.59325 0.520885 1.41611 0.59721 1.2573C0.673535 1.09849 0.793176 0.964484 0.942346 0.870713C1.09152 0.77694 1.26415 0.727223 1.44034 0.727289L5.02912 0.727289C5.20532 0.727223 5.37795 0.77694 5.52712 0.870713C5.67629 0.964484 5.79593 1.09849 5.87225 1.2573C5.94858 1.41611 5.97848 1.59325 5.95852 1.76831C5.93855 1.94337 5.86953 2.10923 5.75941 2.24677L3.96502 4.48999Z"
-                                                            fill="#657D95"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                                اسم
-                                            </div>
-                                        </th>
-                                        <th scope="col">
-                                            <div className="d-flex align-items-center ">
-                                                <div className="arrows">
-                                                    <svg
-                                                        width="6"
-                                                        height="5"
-                                                        viewBox="0 0 6 5"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M2.50405 1.22444C2.59165 1.11489 2.70278 1.02645 2.82919 0.965679C2.95561 0.904904 3.09407 0.873348 3.23434 0.873348C3.3746 0.873348 3.51307 0.904904 3.63949 0.965679C3.7659 1.02645 3.87702 1.11489 3.96462 1.22444L5.75901 3.46766C5.86914 3.6052 5.93816 3.77106 5.95812 3.94612C5.97809 4.12118 5.94818 4.29832 5.87186 4.45713C5.79554 4.61593 5.67589 4.74994 5.52672 4.84372C5.37755 4.93749 5.20492 4.98721 5.02873 4.98714H1.43995C1.26375 4.98721 1.09112 4.93749 0.941953 4.84372C0.792783 4.74994 0.673142 4.61593 0.596817 4.45713C0.520492 4.29832 0.49059 4.12118 0.510555 3.94612C0.53052 3.77106 0.59954 3.6052 0.709663 3.46766L2.50405 1.22444Z"
-                                                            fill="#657D95"
-                                                        />
-                                                    </svg>
-                                                    <svg
-                                                        width="6"
-                                                        height="5"
-                                                        viewBox="0 0 6 5"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M3.96502 4.48999C3.87742 4.59954 3.76629 4.68797 3.63988 4.74875C3.51346 4.80952 3.375 4.84108 3.23473 4.84108C3.09447 4.84108 2.956 4.80952 2.82958 4.74875C2.70317 4.68797 2.59205 4.59954 2.50445 4.48999L0.710056 2.24677C0.599934 2.10923 0.530913 1.94337 0.510948 1.76831C0.490983 1.59325 0.520885 1.41611 0.59721 1.2573C0.673535 1.09849 0.793176 0.964484 0.942346 0.870713C1.09152 0.77694 1.26415 0.727223 1.44034 0.727289L5.02912 0.727289C5.20532 0.727223 5.37795 0.77694 5.52712 0.870713C5.67629 0.964484 5.79593 1.09849 5.87225 1.2573C5.94858 1.41611 5.97848 1.59325 5.95852 1.76831C5.93855 1.94337 5.86953 2.10923 5.75941 2.24677L3.96502 4.48999Z"
-                                                            fill="#657D95"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                                مقدار
-                                            </div>
-                                        </th>
-                                        <th className=" " scope="col">
-                                            اکشن
-                                        </th>
-                                        <th className=""></th>
-                                        <th className="remove-mob"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {coins.map((item) => {
-                                        {
-                                            row++;
-                                        }
-                                        return (
-                                            <tr key={item.row}>
-                                                <td
-                                                    scope="row"
-                                                    className="pt-12 remove-mob-2"
-                                                >
-                                                    {row}
-                                                </td>
-                                                <td className="align-middle">
-                                                    <img
-                                                        src={item.image}
-                                                        alt="coin"
-                                                        width={25}
-                                                        height={25}
-                                                    />
-                                                    <span className="me-2">
-                                                        {item.name}
-                                                    </span>
-
-                                                    <span className="ms-1 text-center">
-
-                                                    </span>
-                                                </td>
-                                                <td className="align-middle">
-                                                    {wallet.lenght !== 0
-                                                        ? wallet.map((wal) => {
-                                                            return wal.service !==
-                                                                null &&
-                                                                wal.service
-                                                                    .id ===
-                                                                item.id ? (
-                                                                <span key={wal.id}>
-                                                                    <span className="d-none">
-                                                                        {ids.push(
-                                                                            item.id
-                                                                        )}
-                                                                    </span>
-                                                                    {wal
-                                                                        .balance
-                                                                        .lenght !==
-                                                                        0 &&
-                                                                        wal.balance !==
-                                                                        undefined ? (
-                                                                        <span>
-                                                                            {" "}
-                                                                            {
-                                                                                new Intl.NumberFormat().format(wal.balance)
-                                                                            }{" "}
-                                                                        </span>
-                                                                    ) : (
-                                                                        " 1 "
-                                                                    )}
-                                                                </span>
-                                                            ) : (
-                                                                ""
-                                                            );
-                                                        })
-                                                        : ""}
-                                                </td>
-                                                <td className="align-middle ">
-                                                    {ids.indexOf(item.id) ==
-                                                        -1 ? (
-                                                        <>
-                                                            <button
-                                                                onClick={() => {
-                                                                    ShowGenModalHandler(
-                                                                        item
-                                                                    );
-                                                                    setItemToGen(
-                                                                        item
-                                                                    );
-                                                                    setItemTo(
-                                                                        item
-                                                                    );
-                                                                }}
-                                                                className="dep-btn"
-                                                                disabled={
-                                                                    !loaded
-                                                                }
-                                                            >
-                                                                واریز
-                                                            </button>
-                                                            {showGenModal && (
-                                                                <ShowGenModal>
-                                                                    <p>
-                                                                        شما کیف
-                                                                        پول این
-                                                                        ارز را
-                                                                        ندارید.
-                                                                        آیا
-                                                                        می‌خواهید
-                                                                        کیف پول
-                                                                        این ارز
-                                                                        برای شما
-                                                                        ایجاد
-                                                                        شود؟
-                                                                    </p>
-                                                                    <div className="d-flex justify-content-between mt-5">
-                                                                        <button
-                                                                            className="btn btn-danger"
-                                                                            onClick={() => {
-                                                                                setShowGenModal(
-                                                                                    false
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            لغو
-                                                                        </button>
-                                                                        <button
-                                                                            className="btn btn-success"
-                                                                            disabled={
-                                                                                !actives
-                                                                            }
-                                                                            onClick={() => {
-                                                                                genratee(
-                                                                                    itemToGen
-                                                                                );
-                                                                                setActives(
-                                                                                    false
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            ایجاد
-                                                                            کیف
-                                                                            پول
-                                                                        </button>
-                                                                    </div>
-                                                                </ShowGenModal>
-                                                            )}
-                                                        </>
-                                                    ) : (
-                                                        <button
-                                                            disabled={!loaded}
-                                                            onClick={() => {
-                                                                setId(item.id);
-                                                                if (
-                                                                    item.name ==
-                                                                    "تومان"
-                                                                ) {
-                                                                    setShowRialDeposit(
-                                                                        true
-                                                                    );
-                                                                } else {
-                                                                    setShowCoinDeposit(
-                                                                        true
-                                                                    );
-                                                                }
-                                                                setBlur(true);
-                                                                setItemTo(item);
-                                                            }}
-                                                            className="dep-btn"
-                                                        >
-                                                            واریز
-                                                        </button>
-                                                    )}
-                                                </td>
-                                                <td className="align-middle ">
-                                                    {ids.indexOf(item.id) ==
-                                                        -1 ? (
-                                                        <button
-                                                            disabled={!loaded}
-                                                            onClick={() => {
-                                                                ShowGenModalHandler(
-                                                                    item
-                                                                );
-                                                                setItemToGen(
-                                                                    item
-                                                                );
-                                                                setItemTo(item);
-                                                            }}
-                                                            className="with-btn"
-                                                        >
-                                                            برداشت
-                                                        </button>
-                                                    ) : (
-                                                        <button
-                                                            disabled={!loaded}
-                                                            onClick={() => {
-                                                                if (
-                                                                    item.name ==
-                                                                    "تومان"
-                                                                ) {
-                                                                    setShowRialWithDrow(
-                                                                        true
-                                                                    );
-                                                                } else {
-                                                                    setShowCoinWithDrow(
-                                                                        true
-                                                                    );
-                                                                }
-                                                                setItemTo(item);
-                                                                setBlur(true);
-                                                            }}
-                                                            className="with-btn"
-                                                        >
-                                                            برداشت
-                                                        </button>
-                                                    )}
-                                                </td>
-                                                <td className="align-middle remove-mob">
-                                                    <button
-                                                        onClick={() => {
-                                                            Router.push(
-                                                                "/trade"
-                                                            );
-                                                        }}
-                                                        className="trade-btn"
-                                                    >
-                                                        معامله
-                                                    </button>
-                                                </td>
-                                                <td className="d-none"></td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </WalletTable>
-                        </div>
+                        <Divider transparent sx={{mt: 2}} />
+                        <WalletTableC wallet={wallet} coins={coins} />
                     </WalletMain>
                 </Content>
-                {showCoinDeposit ? (
-                    <CoinDeposit
-                        wallet={wallet}
-                        itemTo={itemTo}
-                        setBlur={setBlur}
-                        stts={stts}
-                        setShowCoinDeposit={setShowCoinDeposit}
-                        token={token}
-                    />
-                ) : (
-                    ""
-                )}
+                
                 {showCoinWithDrow ? (
                     <CoinWithdraw
                         wallet={wallet}
@@ -757,18 +442,6 @@ export default function Wallet() {
                         setBlur={setBlur}
                         stts={stts}
                         setShowCoinWithDrow={setShowCoinWithDrow}
-                        token={token}
-                    />
-                ) : (
-                    ""
-                )}
-                {showRialDeposit ? (
-                    <RialDeposit
-                        wallet={wallet}
-                        itemTo={itemTo}
-                        setBlur={setBlur}
-                        stts={stts}
-                        setShowRialDeposit={setShowRialDeposit}
                         token={token}
                     />
                 ) : (

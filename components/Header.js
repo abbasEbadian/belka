@@ -352,7 +352,7 @@ const Header = (props) => {
     const stts = useContext(NightModeContext);
     let isCheck = "";
     if (typeof window !== "undefined") {
-        if(localStorage.getItem("night") === null) {
+        if (localStorage.getItem("night") === null) {
             localStorage.setItem("night", true);
         }
         isCheck = localStorage.getItem("night");
@@ -373,7 +373,7 @@ const Header = (props) => {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 url: `${BASEURL}notification/unread_list/`,
                 method: "GET",
@@ -381,17 +381,17 @@ const Header = (props) => {
             axios(config)
                 .then((res) => {
                     if (res.status == "200") {
-                        setNotifs(typeof res.data === typeof [] ? res.data : [] );
+                        setNotifs(typeof res.data === typeof [] ? res.data : []);
                     }
                 })
-                .catch((error) => {});
+                .catch((error) => { });
         }, 2200);
     }, []);
     const readAllHandler = (e) => {
         let config = {
             headers: {
                 "Content-type": "application/json",
-                
+
             },
             method: "POST",
             url: `${BASEURL}notification/readAll/`,
@@ -401,7 +401,7 @@ const Header = (props) => {
             .then((response) => {
                 toast.success(response.data.message);
             })
-            .catch((error) => {});
+            .catch((error) => { });
     };
 
     let elem;
@@ -428,7 +428,7 @@ const Header = (props) => {
             document.msExitFullscreen();
         }
     }
-    const {isLoading: isLoadingUser, data: user = {}} = useFetchUser()
+    const { isLoading: isLoadingUser, data: user = {} } = useFetchUser()
     useEffect(() => {
         setImg(user?.avatar);
     }, [user]);
@@ -438,7 +438,7 @@ const Header = (props) => {
             className={stts.night == "true" ? "night-header no-shadow" : ""}
         >
             <HeaderRight>
-                
+
                 {!props["show-menu-state"] ? (
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -512,24 +512,24 @@ const Header = (props) => {
                 )}
             </HeaderRight>
             <HeaderLeft>
-			<div>
-			{  (user.authentication_status !== "accepted"  && user.authentication_status ) ? (
-		             <button
-                                    onClick={() => {
-                                        Router.push("/auth");
-                                    }}
-                                    className="auth-button"
-                                >
-                                  لطفا احراز هویت خود را کامل نمایید
-                                </button>
-			
-			) : ( 
-			<div></div>
-			)
-			}
-			</div>
-			
-			
+                <div>
+                    {(user.authentication_status !== "accepted" && user.authentication_status) ? (
+                        <button
+                            onClick={() => {
+                                Router.push("/auth");
+                            }}
+                            className="auth-button"
+                        >
+                            لطفا احراز هویت خود را کامل نمایید
+                        </button>
+
+                    ) : (
+                        <div></div>
+                    )
+                    }
+                </div>
+
+
                 <label>
                     <input onChange={handleOnChange} type="checkbox" />
                     <div
@@ -765,8 +765,8 @@ const Header = (props) => {
                         >
                             {notifs !== undefined && notifs.lenght !== 0
                                 ? notifs.map((i) => {
-                                      return <div key={i.id}>{i.text}</div>;
-                                  })
+                                    return <div key={i.id}>{i.text}</div>;
+                                })
                                 : ""}
                             {notifs.lenght !== undefined ? (
                                 <div
@@ -893,7 +893,7 @@ const Header = (props) => {
                                 />
                             </div>
                         )}
-                        
+
                     </div>
                 </div>
             </HeaderLeft>
