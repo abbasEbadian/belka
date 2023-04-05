@@ -372,9 +372,6 @@ export default function Wallet() {
         }
     };
 
-    setTimeout(() => {
-        if (typeof window !== 'undefined') token = localStorage.getItem("token");
-    }, 2000);
 
 
 

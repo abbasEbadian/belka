@@ -12,15 +12,10 @@ import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import { prefixer } from 'stylis';
 
-// Create rtl cache
-const cacheRtl = createCache({
-    key: 'muirtl',
-    stylisPlugins: [prefixer, rtlPlugin],
-});
-const cssCache = createCache({ key: 'css', prepend: true });
 
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
+import "nprogress/nprogress.css"
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import axios from 'axios';
@@ -28,6 +23,14 @@ import Head from 'next/head';
 import Loading from '../components/Loading';
 import Login from './login';
 import Router from 'next/router';
+import NProgress from 'nprogress'
+
+// Create rtl cache
+const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [prefixer, rtlPlugin],
+});
+const cssCache = createCache({ key: 'css', prepend: true });
 
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token')
@@ -48,6 +51,19 @@ axios.interceptors.response.use((config) =>{
         return Promise.reject(error)
     }
 )
+
+
+Router.onRouteChangeStart = () => {
+	NProgress.start();
+};
+
+Router.onRouteChangeComplete = () => {
+	NProgress.done();
+};
+
+Router.onRouteChangeError = () => {
+	NProgress.done();
+};
 
 const getToken = () => {
     return typeof window !== 'undefined' && localStorage.getItem("token") || undefined
@@ -86,7 +102,7 @@ function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         setTimeout(() => {
-            if(!getToken()) Router.push('/login')
+            if(!getToken() && Component.protected) Router.push('/login')
             setAuthenticated(getToken())
             setCheckingAuth(false)
         }, [2000])
@@ -111,11 +127,10 @@ function MyApp({ Component, pageProps }) {
                             {
                                 checkingAuth?
                                 <Loading/>:
-                                (
-                                    Component.protected && !authenticated?
-                                    <Login />: 
+                                
+                                    
                                     <Component {...pageProps} />
-                                )
+                                
                                
                             }
                                        

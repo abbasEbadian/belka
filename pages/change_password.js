@@ -10,6 +10,7 @@ import { BASEURL } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { Card } from "@mui/material";
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -41,7 +42,7 @@ const Content = styled('div')`
         }
     }
 `;
-const ChangeMain = styled('div')`
+const ChangeMain = styled(Card)`
     position: relative;
     z-index: 9999 !important;
     border-radius: 10px;
@@ -50,13 +51,10 @@ const ChangeMain = styled('div')`
     margin-left: auto;
     margin-top: 30px;
     height: 100%;
-    background-color: #fff;
     padding-bottom: 30px;
     @media (max-width: 786px) {
         width: 90%;
     }
-    box-shadow: 5px 7px 26px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
 `;
 
 const ChangeHead = styled('div')`
@@ -218,7 +216,7 @@ export default function ChangePass() {
             <Sidebar show-menu={menuHandler} active="2" show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />
-                <ChangeMain className={stts.night == "true" ? "bg-gray" : ""}>
+                <ChangeMain variant="outlined">
                     <ChangeHead>
                         <h6>تغییر رمز عبور</h6>
                     </ChangeHead>

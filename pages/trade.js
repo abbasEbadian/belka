@@ -219,7 +219,6 @@ const TradeMain = styled('div')`
         }
     }
 `;
-
 const TradeBox = styled('div')`
     width: calc(100vw);
     margin-right: auto;
@@ -340,6 +339,7 @@ const SelectCoin = styled('div')`
         margin-left: 5px;
     }
 `;
+
 const MainTable = styled('div')`
     position: relative;
     margin-top: 100px;

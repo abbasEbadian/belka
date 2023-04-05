@@ -7,12 +7,13 @@ import Sidebar from "../components/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
 import axios from "axios";
 import NightModeContext from "../components/Context";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useFetchUser } from "../components/hooks";
-import { Card, CircularProgress } from "@mui/material";
+import { Button, Card, CircularProgress, FilledInput, Grid, Typography } from "@mui/material";
 import { ChevronLeft, CreditCard, Edit, Shield } from "@mui/icons-material";
+import Link from "next/link";
 const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
@@ -276,36 +277,25 @@ const Success = styled('div')`
     }
 `;
 
-const Inp = styled('input')`
-    background: #ffffff;
-    border: 1.5px solid #dbdbdb;
-    border-radius: 8px;
-    height: 39px;
-    padding: 10px;
-    width: 100%;
-    @media (max-width: 786px) {
-        width: 100% !important;
-    }
-`;
 
 
 
-Profile.title =  ` صرافی ${SETTINGS.WEBSITE_NAME} | پروفایل`
+Profile.title = ` صرافی ${SETTINGS.WEBSITE_NAME} | پروفایل`
 export default function Profile() {
     const [loading, setLoading] = useState(false);
-    const stts = useContext(NightModeContext);
 
     const [showMenu, setShowMenu] = useState(true);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
 
-    const { refetch: getUser, data: user ={}} = useFetchUser()
-    const img = useMemo( () => {
+    const { refetch: getUser, data: user = {} } = useFetchUser()
+
+    const img = useMemo(() => {
         return user?.avatar
     }, [user])
-   
 
+    console.log(user)
     const profileChange = (e) => {
         let data = new FormData();
         data.append("file", e);
@@ -323,21 +313,7 @@ export default function Profile() {
             .finally(d => setLoading(false))
     };
 
-    const otpHandler = (e) => {
-        let config2 = {
-            headers: {
-                "Content-type": "application/json",
 
-            },
-            method: "GET",
-            url: `${BASEURL}account/verify/phone/`,
-        };
-        axios(config2)
-            .then((response) => { })
-            .catch((error) => {
-                toast.error("خطایی وجود دارد");
-            });
-    };
     return (
         <>
             <div className="max-w-1992">
@@ -368,7 +344,7 @@ export default function Profile() {
                                                             height={78}
                                                             alt="profile"
                                                         />
-                                                        <CircularProgress size="small"/>
+                                                        <CircularProgress size="small" />
                                                     </div>
                                                 )}
 
@@ -407,35 +383,7 @@ export default function Profile() {
                                                     height={78}
                                                     alt="profile"
                                                 />
-                                                <svg
-                                                    className={
-                                                        stts.night == "true"
-                                                            ? "svg-white edit-prof-svg"
-                                                            : " edit-prof-svg"
-                                                    }
-                                                    width="32"
-                                                    height="32"
-                                                    viewBox="0 0 32 32"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        clipRule="evenodd"
-                                                        d="M7.05732 20.8253L20.8253 7.05733C21.3453 6.53733 22.1893 6.53733 22.7093 7.05733L24.944 9.29199C25.464 9.81199 25.464 10.656 24.944 11.176L11.1747 24.9427C10.9253 25.1933 10.5867 25.3333 10.2333 25.3333H6.66666V21.7667C6.66666 21.4133 6.80666 21.0747 7.05732 20.8253Z"
-                                                        stroke="#323232"
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    />
-                                                    <path
-                                                        d="M18.3333 9.54666L22.4533 13.6667"
-                                                        stroke="#323232"
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    />
-                                                </svg>
+                                                <Edit className="edit-prof-svg" />
                                             </div>
                                         )}
                                     </label>
@@ -495,7 +443,7 @@ export default function Profile() {
                                 </div>
                                 <div className="edit-prof d-flex align-items-center">
                                     <div className="d-flex align-items-center">
-                                        <Edit sx={{ mr: 2}}/>
+                                        <Edit sx={{ mr: 2 }} />
                                         <span>ویرایش پروفایل</span>
                                     </div>
                                     <ChevronLeft />
@@ -506,7 +454,7 @@ export default function Profile() {
                                         Router.push("/cards");
                                     }}
                                 >
-                                    <CreditCard sx={{ mr: 2}}/>
+                                    <CreditCard sx={{ mr: 2 }} />
 
                                     <span>کارت های بانکی</span>
                                 </div>
@@ -516,7 +464,7 @@ export default function Profile() {
                                         Router.push("/change_password");
                                     }}
                                 >
-                                   <Shield sx={{ mr: 2}}/>
+                                    <Shield sx={{ mr: 2 }} />
 
                                     <span>امنیت</span>
                                 </div>
@@ -533,106 +481,104 @@ export default function Profile() {
                             </RightBox>
                             <LeftBox >
                                 <div className="d-flex flex-wrap justify-content-center ">
-                                    <label>
-                                        <div>نام و نام خانوادگی</div>
-                                        <Inp
-                                            value={
-                                                user.first_name +
-                                                " " +
-                                                user.last_name
-                                            }
-                                            disabled
-                                        />
-                                    </label>
-                                    <label>
-                                        <div>نام پدر</div>
-                                        <Inp
-                                            value={
-                                                user.father_name
-                                                    ? user.father_name
-                                                    : ""
-                                            }
-                                            disabled
-                                            className="w-162"
-                                        />
-                                    </label>
-                                    <label>
-                                        <div>شماره همراه</div>
-                                        <Inp
-                                            value={
-                                                user.mobile ? user.mobile : ""
-                                            }
-                                            disabled
-                                            type="number"
-                                        />
-                                    </label>
-                                    <label>
-                                        <div>کد ملی</div>
-                                        <Inp
-                                            value={
-                                                user.personal_data !== undefined
-                                                    ? user.personal_data
-                                                        .birth_certificate_id
-                                                    : ""
-                                            }
-                                            disabled
-                                        />
-                                    </label>
-                                    <label>
-                                        <div>شماره ثابت</div>
-                                        <Inp
-                                            value={
-                                                user.personal_data !== undefined
-                                                    ? user.personal_data.address
-                                                        .phone
-                                                    : ""
-                                            }
-                                            disabled
-                                            className="w-162"
-                                            type="number"
-                                        />
-                                    </label>
-                                    <label>
-                                        <div>کد پستی</div>
-                                        <Inp
-                                            value={
-                                                user.personal_data !== undefined
-                                                    ? user.personal_data.address
-                                                        .post_code
-                                                    : ""
-                                            }
-                                            disabled
-                                        />
-                                    </label>
-                                <label>
-                                    <div>آدرس</div>
-                                    <Inp
-                                        disabled
-                                        className="w-100"
-                                        value={
-                                            user.personal_data !== undefined
-                                                ? user.address
-                                                : ""
-                                        }
-                                    />
-                                </label>
+                                    <Grid container rowSpacing={3} columnSpacing={2}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> نام و نام خانوادگی </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user?.first_name + " " + user?.last_name}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> نام پدر </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user.father_name ?? ""}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> شماره همراه </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user.mobile ?? ""}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> کد ملی </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user?.personal_data?.birth_certificate_id ?? ""}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> شماره ثابت </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user?.personal_data?.address?.phone ?? ""}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> کد پستی </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user?.personal_data?.address?.post_code ?? ""}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} >
+                                            <Typography variant="caption" sx={{ mb: 0.6 }}> آدرس </Typography>
+                                            <FilledInput
+                                                color="success"
+                                                value={user?.address ?? ""}
+                                                // onChange={(e) => setFirstName(e.target.value)}
+                                                direction="left"
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                    </Grid>
+
+
+
+
+
+
+
                                 </div>
 
-                                <div className="w-100 d-flex justify-content-center mt-3">
-                                    <button
-                                        className="btn btn-warning px-5"
-                                        onClick={() => {
-                                            Router.push("/edit");
-                                        }}
-                                    >
+                                <Link href="/edit">
+                                    <Button color='info' variant="contained" fullWidth sx={{mt: 5}}>
                                         اصلاح
-                                    </button>
-                                </div>
+                                    </Button>
+                                </Link>
                             </LeftBox>
                         </div>
                     </ProfMain>
-                </Content>
-            </div>
+                </Content >
+            </div >
         </>
     );
 }

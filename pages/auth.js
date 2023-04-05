@@ -10,6 +10,7 @@ import Wizard from "../components/Auth/Wizard";
 import axios from "axios";
 import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
+import { useFetchUser } from "../components/hooks";
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -74,65 +75,23 @@ Auth.title = ` صرافی ${SETTINGS.WEBSITE_NAME} | احراز هویت`
 export default function Auth() {
     const stts = useContext(NightModeContext);
 
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
     const [showMenu, setShowMenu] = useState(true);
-    const [profile, setProfile] = useState([]);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
 
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 1000);
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}account/details/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setProfile(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 1200);
-    }, []);
+   
+    const {data: profile} = useFetchUser()
 
     return (
-        <Main
-            className={
-                stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
-            }
-        >
+        <Main className={ "max-w-1992" } >
 
             <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 <Header show-menu={menuHandler} />
                 <AuthMain>
                     <h2 className="bg-d-w">احراز هویت</h2>
-                    <Wizard stts={stts} profile={profile} token={token} />
+                    <Wizard  profile={profile} />
                 </AuthMain>
             </Content>
         </Main>

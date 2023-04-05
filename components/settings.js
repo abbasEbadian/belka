@@ -87,6 +87,23 @@ export const theme = createTheme({
     borderRadius: 10
   },
   components: {
+    MuiFilledInput: {
+      styleOverrides:{
+        root: {
+          borderRadius: "4px 4px 0 0 ",
+          ["input"]: {
+            paddingBlock: "10px"
+          }
+        }
+      }
+    },
+    MuiInputBase:{
+      styleOverrides: {
+        root: {
+          borderRadius: 4
+        }
+      }
+    },
     MuiTextField:{
       defaultProps: {
         size: "small"

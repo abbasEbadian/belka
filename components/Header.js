@@ -530,7 +530,7 @@ const Header = (props) => {
                 </div>
 
 
-                <label>
+                {/* <label>
                     <input onChange={handleOnChange} type="checkbox" />
                     <div
                         className={
@@ -718,7 +718,7 @@ const Header = (props) => {
                             </defs>
                         </svg>
                     </div>
-                </label>
+                </label> */}
 
                 <div className="items">
                     <div

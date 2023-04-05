@@ -283,7 +283,7 @@ const Submit = styled('button')`
         height: 38px;
     }
 `;
-const Wizard = (props) => {
+const Wizard = ({ profile }) => {
     const [step, setStep] = useState(1);
     const [homePhone, setHomePhone] = useState();
     const [subHomePhone, setSubHomePhone] = useState(false);
@@ -388,8 +388,8 @@ const Wizard = (props) => {
                     .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)),
                 card_id: cardId,
                 email: email,
-                first_name: props.profile.first_name,
-                last_name: props.profile.last_name,
+                first_name: profile.first_name,
+                last_name: profile.last_name,
                 father_name: fatherName,
                 phone: homeNumber,
                 post_code: postCode,
@@ -408,30 +408,14 @@ const Wizard = (props) => {
                 .then((response) => {
                  
 				   response.data.error == 1
-                        ? toast.error(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          })
+                        ? toast.error(response.data.message)
                         : setStep(3);
 				 
 				 
 				 
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                 });
  
  
@@ -455,34 +439,18 @@ const Wizard = (props) => {
             axios(config)
                 .then((response) => {
                     response.data.error == 1
-                        ? toast.error(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          })
+                        ? toast.error(response.data.message)
                         : setStep(3);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                 });
         }, 2001);
     };
 
     useEffect((e) => {
-        if (props.profile.personal_data !== undefined) {
-            props.profile.personal_data.address.phone !== null
+        if (profile.personal_data !== undefined) {
+            profile.personal_data.address.phone !== null
                 ? setStep(2)
                 : "";
         }
@@ -512,15 +480,7 @@ const Wizard = (props) => {
             axios(config)
                 .then((response) => {})
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                 });
         }, 3000);
     };
@@ -546,11 +506,7 @@ const Wizard = (props) => {
                         </Circle>
                     </Circles>
                     <Content>
-                        <StepTwo
-                            className={
-                                props.stts.night == "true" ? "bg-gray" : ""
-                            }
-                        >
+                        <StepTwo>
                             <p>آدرس و اطلاعات شما</p>
                             <span>
                                 دقت کنید آدرس دقیق محل سکونت فعلی خود را وارد
@@ -682,11 +638,7 @@ const Wizard = (props) => {
                         </Circle>
                     </Circles>
                     <Content>
-                        <StepOne
-                            className={
-                                props.stts.night == "true" ? "bg-gray" : ""
-                            }
-                        >
+                        <StepOne>
                             {!subHomePhone ? (
                                 <>
                                     <p className="text-center">
@@ -803,11 +755,7 @@ const Wizard = (props) => {
                         </Circle>
                     </Circles>
                     <Content>
-                        <StepThree
-                            className={
-                                props.stts.night == "true" ? "bg-gray" : ""
-                            }
-                        >
+                        <StepThree >
                             <p>آپلود مدارک</p>
                             <span>
                                 عکس کارت ملی به صورت پشت و رو همراه عکس شناسنامه
@@ -1105,11 +1053,7 @@ const Wizard = (props) => {
                         </Circle>
                     </Circles>
                     <Content>
-                        <StepThree
-                            className={
-                                props.stts.night == "true" ? "bg-gray" : ""
-                            }
-                        >
+                        <StepThree>
                             <p>آپلود مدارک</p>
                             <span>
                          اطلاعات شما جهت بررسی به کارشناسان ما ارسال شد. بزودی نتیجه برای شما ارسال می شود .
