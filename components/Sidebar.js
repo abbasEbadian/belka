@@ -26,8 +26,8 @@ const SidebarHeader = styled('div')`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 32px;
     .svg-white {
         fill: #fff;
     }
@@ -104,7 +104,7 @@ const Sidebar = (props) => {
                         }}
                         className="c-p"
                         src="/images/logodark.png"
-                        width={150}
+                        width={75}
                         alt="logo"
                     />
                     }
@@ -126,8 +126,8 @@ const Sidebar = (props) => {
                         }}
                         className="c-p"
                         src="/images/logo-close.png"
-                        width={32}
-                        height={32}
+                        width={48}
+                        height={48}
                         alt="logo"
                     />
                     }

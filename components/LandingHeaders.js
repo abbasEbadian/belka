@@ -57,7 +57,7 @@ const LandingHeaders = ({ page }) => {
                     xs: 0,
                     md: 1
                 }}>
-                    <Box position={"relative"} width={130} height={62}>
+                    <Box position={"relative"} width={62} height={62}>
                         <Image src={"/images/logo.png"} layout={"fill"} onClick={() => Router.push("/")}   alt='logo' />
                     </Box>
 
@@ -143,7 +143,7 @@ const LandingHeaders = ({ page }) => {
                             {
                                 NAVITEMS.map((item, idx) => {
                                     if (item.path) return <Link href={item.path} key={idx}>
-                                        <Button variant='text' className={page === item.slug ? "active-nav" : ""} color={"neutral"}>
+                                        <Button variant='text' className={page === item.slug ? "active-nav" : ""} color={"neutral"}  key={idx}>
                                             <Typography variant="body2" color="common.white">{item.title}</Typography>
                                         </Button>
                                     </Link>
@@ -157,7 +157,7 @@ const LandingHeaders = ({ page }) => {
                                                 
                                                     {
                                                         item.children.map((child, idx2) => {
-                                                            return <ListItemButton sx={{ pl: 4 }}><ListItemText key={idx2}>
+                                                            return <ListItemButton sx={{ pl: 4 }} key={idx2}><ListItemText >
                                                                 <Link href={child.path}>
                                                                     <Typography variant="body2" color="common.white">{child.title}</Typography>
                                                                 </Link>

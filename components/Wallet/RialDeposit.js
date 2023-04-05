@@ -324,6 +324,7 @@ const RialDeposit = (props) => {
                             {
                                 [5000000, 10000000, 15000000, 20000000, 50000000].map(price => {
                                     return <PriceBox
+                                    key={price}
                                         onClick={() => {
                                             setValue(price);
                                         }}
