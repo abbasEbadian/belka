@@ -3,7 +3,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { styled } from '@mui/material/styles';
 import QRCode from "react-qr-code";
-import { baseUrl } from "../BaseUrl";
 import axios from "axios";
 import { BASEURL } from "../settings";
 import { Button, Divider, TextField, Typography } from "@mui/material";

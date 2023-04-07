@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Select from "react-select";
 import axios from "axios";
-import { baseUrl } from "../BaseUrl";
 import NightModeContext from "../Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";

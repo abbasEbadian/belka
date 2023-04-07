@@ -6,7 +6,6 @@ import NightModeContext from "./Context";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { baseUrl } from "./BaseUrl";
 import axios from "axios";
 import { BASEURL } from "./settings";
 import { Stack, Toolbar } from "@mui/material";
