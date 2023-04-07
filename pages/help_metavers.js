@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
+import { SETTINGS } from "../components/settings";
 
 const Main = styled('div')`
     background-color: #111;
@@ -88,33 +89,28 @@ const SContent = styled('div')`
             margin-bottom: 30px;
         }
     }
-    p {
-        direction: rtl;
-    }
+    
 `;
 
+Fee.title = `صرافی ${SETTINGS.WEBSITE_NAME} | راهنمای ${SETTINGS.WEBSITE_NAME}`
 export default function Fee() {
     return (
         <Main>
-            <Head>
-                <title>صرافی متاورس | راهنمای متاورس</title>
-                <link rel="shortcut icon" href="/images/favicon.ico" />
-            </Head>
             <LandingHeaders page="help_buy_usdt" />
             <SMain>
                 <SContent>
                 <div style={{color: "white"}}>
-                    <h2>راهنمای متاورس</h2>
+                    <h2>راهنمای {SETTINGS.WEBSITE_NAME}</h2>
 
-                    <h3>شروع کار با متاورس</h3>
+                    <h3>شروع کار با {SETTINGS.WEBSITE_NAME}</h3>
 
                     <p>&nbsp;</p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-to-trade-in-nobitex/">چه روش&zwnj;هایی برای معامله در متاورس وجود دارد؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-to-trade-in-nobitex/">چه روش&zwnj;هایی برای معامله در {SETTINGS.WEBSITE_NAME} وجود دارد؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/where-to-begin/">از کجا شروع کنم؟</a></p>
 
-                    <p>راهنمای ویدیویی جامع کار با متاورس</p>
+                    <p>راهنمای ویدیویی جامع کار با {SETTINGS.WEBSITE_NAME}</p>
 
                     <p><a href="https://bitex-help.nobitex.ir/type/video/">ویدئو</a></p>
 
@@ -122,21 +118,21 @@ export default function Fee() {
 
                     <p>&nbsp;<a href="https://bitex-help.nobitex.ir/knowledgebase/how-to-deposit/">چگونه می&zwnj;توان حساب کاربری خود را شارژ کرد؟</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-do-i-trust-nobitex/">چرا می&zwnj;توان به متاورس اعتماد کرد؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-do-i-trust-nobitex/">چرا می&zwnj;توان به {SETTINGS.WEBSITE_NAME} اعتماد کرد؟</a></p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/available-crypto-assets/">چه ارزهایی را می&zwnj;توان در متاورس معامله کرد؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/available-crypto-assets/">چه ارزهایی را می&zwnj;توان در {SETTINGS.WEBSITE_NAME} معامله کرد؟</a></p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-nobitex-will-help-you/">متاورس چیست و چه خدماتی ارائه می&zwnj;دهد؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-nobitex-will-help-you/">{SETTINGS.WEBSITE_NAME} چیست و چه خدماتی ارائه می&zwnj;دهد؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/type/video/">ویدئو</a></p>
 
-                    <p>راه&zwnj;های ارتباط با متاورس</p>
+                    <p>راه&zwnj;های ارتباط با {SETTINGS.WEBSITE_NAME}</p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/why-should-i-send-my-documents/">چرا برای کار با متاورس ، ارائه اطلاعات شخصی الزامی است؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/why-should-i-send-my-documents/">چرا برای کار با {SETTINGS.WEBSITE_NAME} ، ارائه اطلاعات شخصی الزامی است؟</a></p>
 
                     <p>ثبت&zwnj;نام و احراز هویت</p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-to-kyc-in-nobitex/">چطور در متاورس احراز هویت کنیم؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-to-kyc-in-nobitex/">چطور در {SETTINGS.WEBSITE_NAME} احراز هویت کنیم؟</a></p>
 
                     <p>ویدئ</p>
 
@@ -150,13 +146,13 @@ export default function Fee() {
 
                     <h3>واریز و برداشت ارز دیجیتال</h3>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/transaction-recovery/">در صورت واریز در شبکه&zwnj;ای که متاورس از آن پشتیبانی نمی&zwnj;کند؛ چه کنیم؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/transaction-recovery/">در صورت واریز در شبکه&zwnj;ای که {SETTINGS.WEBSITE_NAME} از آن پشتیبانی نمی&zwnj;کند؛ چه کنیم؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/what_is_supporting_networks/">شبکه ی انتقال ارز دیجیتال چیست و چرا باید به آن توجه کنیم؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-to-find-supporting-network/">چگونه شبکه انتقال ارز خود را پیدا کنیم؟</a></p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/nobitex-supporting-networks/">متاورس برای واریز و برداشت رمزارز از چه شبکه&zwnj;هایی پشتیبانی می&zwnj;کند؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/nobitex-supporting-networks/">{SETTINGS.WEBSITE_NAME} برای واریز و برداشت رمزارز از چه شبکه&zwnj;هایی پشتیبانی می&zwnj;کند؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/crypto-withdraw-limits/">حداقل میزان برداشت هر رمزارز چقدر است؟</a></p>
 
@@ -168,9 +164,9 @@ export default function Fee() {
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/cancel-withdrawal/">لغو برداشت به چه شکل است؟</a></p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/nobitex-account-is-not-charged-with-cryptocurrency/">چرا رمزارز ارسال شده به حساب متاورس، شارژ نشده است؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/nobitex-account-is-not-charged-with-cryptocurrency/">چرا رمزارز ارسال شده به حساب {SETTINGS.WEBSITE_NAME}، شارژ نشده است؟</a></p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/crypto-withdrawals/">برداشت رمزارز از حساب متاورس به چه صورت است؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/crypto-withdrawals/">برداشت رمزارز از حساب {SETTINGS.WEBSITE_NAME} به چه صورت است؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/crypto-transfer-fees/">کارمزد انتقال رمزارزها چقدر است؟</a></p>
 
@@ -190,7 +186,7 @@ export default function Fee() {
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/why-was-my-rial-wallet-not-charged-after-payment/">چرا کیف پول ریالی پس از پرداخت شارژ نشده است؟</a></p>
 
-                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-can-i-withdraw-from-rial-wallet/">برداشت ریال از متاورس به چه شکل است؟</a></p>
+                    <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-can-i-withdraw-from-rial-wallet/">برداشت ریال از {SETTINGS.WEBSITE_NAME} به چه شکل است؟</a></p>
 
                     <p><a href="https://bitex-help.nobitex.ir/knowledgebase/how-can-i-deposit-my-rial-wallet/">شارژ کیف پول ریالی به چه صورت است؟</a></p>
 
@@ -238,7 +234,7 @@ export default function Fee() {
 
                     <p>سفارش فروش در قیمت خاص چیست ؟ ثبت</p>
                 </div>
-                <img style={{marginRight: "20px"}} src="/images/help_metavers.png"
+                <img style={{marginRight: "20px"}} src="/images/help_BelkaCrypto.png"
                      alt="" width={550} height={450} />
                 </SContent>
             </SMain>

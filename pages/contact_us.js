@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
+import { SETTINGS } from "../components/settings";
 
 const Main = styled('div')`
     background-color: #111;
@@ -92,17 +93,13 @@ const Content = styled('div')`
             margin-bottom: 30px;
         }
     }
-    p {
-        direction: rtl;
-    }
+    
 `;
 
+ContactUs.title = `صرافی ${SETTINGS.WEBSITE_NAME} | سوالات متداول`
 export default function ContactUs() {
     return (
         <Main>
-            <Head>
-                <title>صرافی متاورس | سوالات متداول</title>
-            </Head>
             <LandingHeaders page="contact_us" />
             <ContactMain>
                 <Content>
@@ -118,7 +115,7 @@ export default function ContactUs() {
                         <div className="d-flex align-items-center pe-0">
                             <a
                                 target="blank"
-                                href="https://www.instagram.com/metaverse.exchange"
+                                href="https://www.instagram.com/belkacrypto.exchange"
                             >
                                 <svg
                                     className="fill-fff"
@@ -136,7 +133,7 @@ export default function ContactUs() {
                             </a>
                             <a
                                 target="blank"
-                                href="https://t.me/SarafiMetavers"
+                                href="https://t.me/SarafiBelkaCrypto"
                             >
                                 <svg
                                     className="fill-fff mx-3 telegram"

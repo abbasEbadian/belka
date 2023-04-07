@@ -1,7 +1,7 @@
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
@@ -14,6 +14,7 @@ import Head from "next/head";
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useFetchBanks, useFetchCards } from "../components/hooks";
 
 
 
@@ -205,100 +206,25 @@ const Modal = styled('div')`
 		direction: ltr;
 	}
 `;
-
+Cards.title = `صرافی ${SETTINGS.WEBSITE_NAME} | حساب های بانکی`
 export default function Cards() {
-    const [cards, setCards] = useState([]);
-    const [bankNames, setBankNames] = useState("");
     const [cardNumber, setCardNumber] = useState("");
     const [shaba, setShaba] = useState("");
     const [bank, setBank] = useState("");
     const [showModal, setShowModal] = useState(false);
-	
-	useEffect(() => {
-  require("bootstrap/dist/js/bootstrap.bundle.min.js");
-}, []);
 
-    useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
+
+
     const stts = useContext(NightModeContext);
-    let refreshToken = "";
-    setTimeout(() => {
-        refreshToken = typeof window !== "undefined" && localStorage.getItem("refresh_token");
-    }, 2000);
 
-    setTimeout(() => {
-        setInterval(() => {
-            inter();
-        }, 600000);
-    }, 70000);
-    const inter = () => {
-        let data = {
-            refresh: refreshToken,
-        };
-        let config = {
-            method: "POST",
-            url: `${BASEURL}token/refresh/`,
-            data: data,
-        };
-
-        axios(config)
-            .then((response) => {
-                localStorage.setItem("token", response.data.access);
-            })
-            .catch((error) => {});
-    };
     const [showMenu, setShowMenu] = useState(true);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 2000);
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}bank/list/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setCards(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 2000);
-    }, [token]);
 
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                method: "GET",
-                url: `${BASEURL}bank/name/list/`,
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-            };
+    const { data: cards } = useFetchCards()
+    const { data: bankNames } = useFetchBanks()
 
-            axios(config)
-                .then((response) => {
-                    setBankNames(response.data);
-                })
-                .catch((error) => {});
-        }, 2000);
-    }, []);
 
     const addCardHandler = (e) => {
         let data = {
@@ -312,55 +238,24 @@ export default function Cards() {
             data: data,
             headers: {
                 "Content-type": "application/json",
-                
+
             },
         };
 
         axios(config)
             .then((response) => {
                 response.data.error == 1
-                    ? toast.error(response.data.message, {
-                          position: "top-center",
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      })
-                    : toast.success(
-                          "اطلاعات حساب شما ثبت شد و توسط کارشناسان در حال بررسی می باشد.",
-                          {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          }
-                      );
+                    ? toast.error(response.data.message)
+                    : toast.success("اطلاعات حساب شما ثبت شد و توسط کارشناسان در حال بررسی می باشد.");
                 setShowModal(false);
             })
             .catch((error) => {
-                toast.error(error, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                toast.error(error);
             });
     };
 
     return (
         <>
-            <Head>
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title>  صرافی متاورس | حساب های بانکی</title>
-            </Head>
             <div className="max-w-1992">
                 <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
                 {showModal ? (
@@ -402,20 +297,20 @@ export default function Cards() {
                                 placeholder="شماره کارت"
                                 value={cardNumber}
                             />
-                   
-							
-							      <InputGroup className="mb-3 sheba">
-        <InputGroup.Text id="basic-addon1">IR</InputGroup.Text>
-        <Form.Control
-            placeholder=" IR شماره شبا بدون "
-    type="number"
-          aria-describedby="basic-addon1"
-		          onChange={(e) => {
-                                    setShaba(e.target.value);
-                                }}
-        />
-      </InputGroup>
-							
+
+
+                            <InputGroup className="mb-3 sheba">
+                                <InputGroup.Text id="basic-addon1">IR</InputGroup.Text>
+                                <Form.Control
+                                    placeholder=" IR شماره شبا بدون "
+                                    type="number"
+                                    aria-describedby="basic-addon1"
+                                    onChange={(e) => {
+                                        setShaba(e.target.value);
+                                    }}
+                                />
+                            </InputGroup>
+
                             <select
                                 className="form-control"
                                 onChange={(e) => {
@@ -426,15 +321,15 @@ export default function Cards() {
                                 <option>انتخاب</option>
                                 {bankNames.length !== 0
                                     ? bankNames.map((i) => {
-                                          return (
-                                              <option
-                                                  key={i.name}
-                                                  value={i.name}
-                                              >
-                                                  {i.name}
-                                              </option>
-                                          );
-                                      })
+                                        return (
+                                            <option
+                                                key={i.name}
+                                                value={i.name}
+                                            >
+                                                {i.name}
+                                            </option>
+                                        );
+                                    })
                                     : ""}
                             </select>
                             <button
@@ -460,8 +355,8 @@ export default function Cards() {
                                 ? "pr-176 bg-dark-2"
                                 : "pr-176 "
                             : stts.night == "true"
-                            ? "bg-dark-2 pr-80"
-                            : " pr-80"
+                                ? "bg-dark-2 pr-80"
+                                : " pr-80"
                     }
                 >
                     <Header show-menu={menuHandler} />

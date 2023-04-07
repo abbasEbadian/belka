@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from '@mui/material/styles';
 import Router from "next/router";
 import { Box } from "@mui/material";
+import {SETTINGS} from './settings'
 const Footer = styled(Box)`
     display: flex;
     justify-content: space-around;
@@ -50,13 +51,13 @@ const LandingFooter = () => {
             <div>
                 <img src="/images/logo.png" width={130} alt="" />
                 <ul>
-                    <li className="d-ltr">(98)9104444028</li>
-                    <li>info@metavers-ex.com</li>
+                    <li className="d-ltr">(98)9143708563</li>
+                    <li>info@belkacrypto.com</li>
                     <li>
                         <div className="d-flex align-items-center">
                             <a
                                 target="blank"
-                                href="https://www.instagram.com/metaverse.exchange"
+                                href="https://www.instagram.com/belkacrypto.exchange"
                             >
                                 <svg
                                     className="fill-fff"
@@ -74,7 +75,7 @@ const LandingFooter = () => {
                             </a>
                             <a
                                 target="blank"
-                                href="https://t.me/SarafiMetavers"
+                                href="https://t.me/SarafiBelkaCrypto"
                             >
                                 <svg
                                     className="fill-fff telegram"
@@ -113,7 +114,7 @@ const LandingFooter = () => {
             </div>
             <div>
                 <ul>
-                    <div className="title">درباره متاورس</div>
+                    <div className="title">درباره {SETTINGS.WEBSITE_NAME}</div>
                     <li onClick={() => Router.push("/about_us")}>درباره ما</li>
                     <li onClick={() => Router.push("/contact_us")}>
                         تماس با ما
@@ -123,16 +124,16 @@ const LandingFooter = () => {
                     </li>
                     
                     <li onClick={() => Router.push("/reffer_friend")}>معرفی به دوستان</li>
-                    <li onClick={() => Router.push("/security_metavers")}>امنیت متاورس</li>
+                    <li onClick={() => Router.push("/security_BelkaCrypto")}>امنیت {SETTINGS.WEBSITE_NAME}</li>
                 
-                    <li onClick={() => Router.push("/fee")}>کارمزدهای متاورس</li>
+                    <li onClick={() => Router.push("/fee")}>کارمزدهای {SETTINGS.WEBSITE_NAME}</li>
                 </ul>
             </div>
             <div>
                 <ul>
                     <div className="title">سایت های مهم</div>
                     <li>
-                        <a href="https://blog.metavers-ex.com">blog.metavers-ex</a>
+                        <a href="https://blog.BelkaCrypto-ex.com">blog.BelkaCrypto-ex</a>
                     </li>
                     <li>
                         <a href="https://coinmarketcap.com">coinmarketcap</a>
@@ -167,9 +168,9 @@ const LandingFooter = () => {
                         <a
                             className="no-under"
                             target="blank"
-                            href="https://blog.metavers-ex.com"
+                            href="https://blog.BelkaCrypto-ex.com"
                         >
-                            آکادمی متاورس{" "}
+                            آکادمی {SETTINGS.WEBSITE_NAME}{" "}
                         </a>
                     </li>{" "}
                     <li

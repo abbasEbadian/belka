@@ -7,8 +7,9 @@ import { useServiceStore } from '../../store/store'
 import CoinSelectDialog from '../../components/market/market-coin-selector';
 import { BASEURL } from '../../components/settings';
 import MarketOrders from '../../components/market/market-orders';
+import { useFetchCoins } from '../../components/hooks';
 
-export default function Market( { services }) {
+export default function Market( {  }) {
   const { setServices } = useServiceStore()
   const [coinSelectDialogOpen, setCoinSelectDialogOpen] = useState(false)
 
@@ -17,7 +18,7 @@ export default function Market( { services }) {
     coinTo: null
   })
 
-
+  const {data: services} = useFetchCoins()
   React.useEffect(() => {
     setServices(services)
     if (services.length > 0 && !selectedCoins.coinFrom) {
@@ -66,21 +67,3 @@ export const COIN_TARGET = Object.freeze({
   FROM: 'coinFrom',
   TO: 'coinTo'
 })
-
-export async function getServerSideProps(context) {
-  
-  let services = []
-  try {
-      const r = await fetch(`${BASEURL}service/list/`)
-      services = await  r.json()
-      
-  } catch (error) {
-       console.log(error)
-  }
-  
-  return {
-    props: {
-      services
-    }, // will be passed to the page component as props
-  }
-}

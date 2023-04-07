@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
+import { SETTINGS } from "../components/settings";
 
 const Main = styled('div')`
     background-color: #111;
@@ -88,18 +89,13 @@ const FaqContent = styled('div')`
             margin-bottom: 30px;
         }
     }
-    p {
-        direction: rtl;
-    }
+    
 `;
 
+Faq.title = `صرافی ${SETTINGS.WEBSITE_NAME} | سوالات متداول`
 export default function Faq() {
     return (
         <Main>
-            <Head>
-                <title>صرافی متاورس | سوالات متداول</title>
-                <link rel="shortcut icon" href="/images/favicon.ico" />
-            </Head>
             <LandingHeaders page="faq" />
             <FaqMain>
                 <FaqContent>
@@ -108,13 +104,13 @@ export default function Faq() {
 
                     <p>از کجا شروع کنم؟</p>
 
-                    <p>برای شروع به کار با متاورس، پیش از هر چیز باید مراحل زیر را تکمیل کنید<span dir="LTR">:</span></p>
+                    <p>برای شروع به کار با {SETTINGS.WEBSITE_NAME} ، پیش از هر چیز باید مراحل زیر را تکمیل کنید<span dir="LTR">:</span></p>
 
                     <ol>
-                        <li><strong>ایجاد حساب کاربری در متاورس با ایمیل معتبر&nbsp;&nbsp; فیلم آموزشی</strong></li>
+                        <li><strong>ایجاد حساب کاربری در {SETTINGS.WEBSITE_NAME} با ایمیل معتبر&nbsp;&nbsp; فیلم آموزشی</strong></li>
                         <li><strong>انجام فرآیند احراز هویت</strong> <strong>فیلم آموزشی</strong></li>
                         <li><strong>واریز ریال یا رمزارز</strong></li>
-                        <li><strong>انجام معامله در بازار متاورس</strong></li>
+                        <li><strong>انجام معامله در بازار {SETTINGS.WEBSITE_NAME}</strong></li>
                     </ol>
 
                     <p><strong>مدارک مورد نیاز برای احراز هویت چیست؟</strong></p>
@@ -131,7 +127,7 @@ export default function Faq() {
 
                     <p><strong>چرا واریز ریال به حساب کاربری موفقیت آمیز نبوده است؟</strong></p>
 
-                    <p><strong>چرا با وجود کسر مبلغ از حساب بانکی، حساب متاورس شارژ نشده است؟</strong></p>
+                    <p><strong>چرا با وجود کسر مبلغ از حساب بانکی، حساب {SETTINGS.WEBSITE_NAME} شارژ نشده است؟</strong></p>
 
                     <p><strong>خطای &ldquo;کارت شما مجاز به پرداخت در این سامانه نمی&zwnj;باشد&rdquo; در هنگام واریز به چه معناست؟</strong></p>
 

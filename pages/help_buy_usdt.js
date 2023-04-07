@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import LandingFooter from "../components/LandingFooter";
 import LandingHeaders from "../components/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
+import { SETTINGS } from "../components/settings";
 
 const Main = styled('div')`
     background-color: #111;
@@ -88,25 +89,20 @@ const SContent = styled('div')`
             margin-bottom: 30px;
         }
     }
-    p {
-        direction: rtl;
-    }
+    
 `;
 
+Fee.title = `صرافی ${SETTINGS.WEBSITE_NAME} | راهنمای خرید تتر`
 export default function Fee() {
     return (
         <Main>
-            <Head>
-                <title>صرافی متاورس | راهنمای خرید تتر</title>
-                <link rel="shortcut icon" href="/images/favicon.ico" />
-            </Head>
             <LandingHeaders page="help_buy_usdt" />
             <SMain>
                 <SContent>
                 <div style={{color: "white"}}>
-                    <h2>آموزش خرید و فروش ارز دیجیتال در صرافی متاورس</h2>
+                    <h2>آموزش خرید و فروش ارز دیجیتال در صرافی {SETTINGS.WEBSITE_NAME}</h2>
 
-                    <p>در ادامه مراحل لازم برای خرید یا فروش رمزارز در صرافی متاورس می&zwnj;پردازیم. فرض کنید که قصد داریم از این صرافی مقداری   تتر خریداری کنیم. در صفحه اصلی گزینه (خرید و فروش) را انتخاب کنید. از میان لیست ارزها بعنوان مثال   تتر را انتخاب کنید.</p>
+                    <p>در ادامه مراحل لازم برای خرید یا فروش رمزارز در صرافی {SETTINGS.WEBSITE_NAME} می&zwnj;پردازیم. فرض کنید که قصد داریم از این صرافی مقداری   تتر خریداری کنیم. در صفحه اصلی گزینه (خرید و فروش) را انتخاب کنید. از میان لیست ارزها بعنوان مثال   تتر را انتخاب کنید.</p>
 
                     <p>&nbsp;در این مرحله دو امکان در اختیارتان قرار دارد: خرید با ریال و خرید با تترتوجه داشته باشید که هنگام خرید رمزارز به درگاه پرداخت متصل نمی&zwnj;شوید. بنابراین اگر موجودی شما کافی نیست ابتدا باید نسبت به شارژ موجودی کیف پول ریالی خود اقدام کنید.(عکس)</p>
 
@@ -116,9 +112,9 @@ export default function Fee() {
 
                     <p>برای واریز و برداشت رمزارز به این صرافی نیز می&zwnj;توانید در صفحه اصلی از گزینه&zwnj;های واریز و برداشت موجود در کنار نام هر رمزارز استفاده کنید(عکس)</p>
 
-                    <h2>مزایای صرافی متاورس</h2>
+                    <h2>مزایای صرافی {SETTINGS.WEBSITE_NAME}</h2>
 
-                    <p>از مزایای صرافی متاورس می&zwnj;توان به پشتیبانی از تعداد ارز زیاد، انجام فوری سفارشات، امکان تنظیم حد ضرر، بهره&zwnj;مندی از کیف پول رمزارزی و &hellip; اشاره کرد</p>
+                    <p>از مزایای صرافی {SETTINGS.WEBSITE_NAME} می&zwnj;توان به پشتیبانی از تعداد ارز زیاد، انجام فوری سفارشات، امکان تنظیم حد ضرر، بهره&zwnj;مندی از کیف پول رمزارزی و &hellip; اشاره کرد</p>
                 </div>
                 <img src="/images/help_buy_sell.png"
                      alt="" width="550" height="450" />

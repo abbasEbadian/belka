@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -115,6 +115,8 @@ const Submit = styled('button')`
         height: 38px;
     }
 `;
+
+Edit.title = `صرافی ${SETTINGS.WEBSITE_NAME} | اصلاح اطلاعات`
 export default function Edit() {
     const stts = useContext(NightModeContext);
     useEffect(() => {
@@ -184,38 +186,14 @@ export default function Edit() {
             axios(config)
                 .then((response) => {
                     response.data.error != 1
-                        ? toast.success(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          }) &&
+                        ? toast.success(response.data.message) &&
                           setTimeout(() => {
                               Router.push("/profile");
                           }, 2000)
-                        : toast.error(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          });
+                        : toast.error(response.data.message);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                 });
         }, 2001);
     };
@@ -226,11 +204,11 @@ export default function Edit() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title> صرافی متاورس | اصلاح اطلاعات</title>
-            </Head>
+        <Head>
+            {" "}
+            <link rel="shortcut icon" href="/images/fav.png" />
+            <title> </title>
+        </Head>
 
             <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>

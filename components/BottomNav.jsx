@@ -6,6 +6,7 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import MoneyOutlinedIcon from '@mui/icons-material/MoneyOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 const BotNav = styled(BottomNavigation)(({theme}) => ({
     position: "fixed",
@@ -15,7 +16,21 @@ const BotNav = styled(BottomNavigation)(({theme}) => ({
     paddingBlock: 8
 }))
 
+const NO_BOTTOM_NAV_PATHS = [
+    "login",
+    "register",
+    "forgetpassword",
+    "verifycode"
+]
+
+
 function BottomNav() {
+    const router = useRouter()
+    
+    if(NO_BOTTOM_NAV_PATHS.some(q => router.pathname.indexOf(q)> -1) ){
+        return null;
+    }
+
     return (
         <BotNav  showLabels sx={{
             display: {

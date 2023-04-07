@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -117,6 +117,8 @@ const ChangeContent = styled('div')`
     }
 `;
 
+ChangePass.title = ` صرافی ${SETTINGS.WEBSITE_NAME} | تعییر رمز`
+
 export default function ChangePass() {
     const stts = useContext(NightModeContext);
     const [showPassword, setShowPassword] = useState(false);
@@ -208,11 +210,6 @@ export default function ChangePass() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Head>
-                {" "}
-                <link rel="shortcut icon" href="/images/fav.png" />
-                <title> صرافی متاورس | تعییر رمز</title>
-            </Head>
             <Sidebar show-menu={menuHandler} active="2" show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />

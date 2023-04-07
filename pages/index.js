@@ -813,7 +813,7 @@ export default function Home() {
 
     const { isLoading: isCoinLoading, data: coins} = useFetchCoins()
     // const { isBlogLoading, data:blogData} = useQuery("get-blogs", () => {
-    //     return axios.get(`https://blog.metavers-ex.com/wp-json/wp/v2/posts`)
+    //     return axios.get(`https://blog.BelkaCrypto-ex.com/wp-json/wp/v2/posts`)
     // })
 
     let row = -1;
@@ -1534,19 +1534,4 @@ export default function Home() {
     );
 }
 
-export async function getServerSideProps(context) {
-    // let services = []
-    // try {
-    //     const data = await fetch(`${BASEURL}/service/list/`)
-    //     services = await r.json()
 
-    // } catch (error) {
-    //     console.log(error)
-    // }
-
-    return {
-        props: {
-            // services
-        }, // will be passed to the page component as props
-    }
-}

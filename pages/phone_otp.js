@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import { toast, ToastContainer } from "react-toastify";
 import ReactCodeInput from "react-code-input";
@@ -139,6 +139,9 @@ const Submit = styled('button')`
         height: 38px;
     }
 `;
+
+
+Edit.title = `صرافی ${SETTINGS.WEBSITE_NAME} | تایید شماره ثابت`
 export default function Edit() {
     const stts = useContext(NightModeContext);
     const [homeCode, setHomeCode] = useState();
@@ -188,35 +191,11 @@ export default function Edit() {
             axios(config)
                 .then((response) => {
                     response.data.error != 1
-                        ? toast.success(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          }) && Router.push("/profile")
-                        : toast.error(response.data.message, {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                          });
+                        ? toast.success(response.data.message) && Router.push("/profile")
+                        : toast.error(response.data.message);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                 });
         }, 2001);
     };
@@ -230,7 +209,7 @@ export default function Edit() {
             <Head>
                 {" "}
                 <link rel="shortcut icon" href="/images/fav.png" />
-                <title>صرافی متاورس | تایید شماره ثابت</title>
+                <title></title>
             </Head>
 
             <Sidebar show-menu={menuHandler} active="5" show={showMenu} />

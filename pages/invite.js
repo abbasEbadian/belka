@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL } from "../components/settings";
+import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -118,6 +118,7 @@ const CodeBox = styled('div')`
     }
 `;
 
+Invite.title = `صرافی ${SETTINGS.WEBSITE_NAME} | دعوت از دوستان`
 export default function Invite() {
     const [refral, setRefral] = useState([]);
     const stts = useContext(NightModeContext);
@@ -189,12 +190,6 @@ export default function Invite() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Head>
-                {" "}
-        
-                <link rel="shortcut icon" href="/images/favicon.ico" />
-                <title>صرافی متاورس | دعوت از دوستان</title>
-            </Head>
             <Sidebar show-menu={menuHandler} active="6" show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 <ToastContainer
@@ -223,7 +218,7 @@ export default function Invite() {
                                     <svg
                                         onClick={() => {
                                             navigator.clipboard.writeText(
-                                                ` https://www.metavers-ex.com/register?referral=${refral.referral_code}`
+                                                ` https://www.BelkaCrypto-ex.com/register?referral=${refral.referral_code}`
                                             );
                                             toast.success("آدرس کپی شد", {
                                                 position: "top-center",
@@ -263,7 +258,7 @@ export default function Invite() {
                                     </svg>
                                 </p>
                                 <p>
-                                    https://www.metavers-ex.com/register?referral=
+                                    https://www.BelkaCrypto-ex.com/register?referral=
                                     {refral.referral_code}
                                 </p>
                             </CodeBox>
