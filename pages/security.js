@@ -15,6 +15,7 @@ import { useFetchUser } from "../components/hooks";
 import { Button, Card, Divider, FilledInput, IconButton, InputAdornment, Stack, Typography } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import { SidebarLinkCode } from "../components/utils/types";
 
 
 const Main = styled('div')`
@@ -164,7 +165,7 @@ export default function ChangePass() {
     const [qrCodeValue, setQrCodeValue] = useState("");
 
 
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -308,7 +309,7 @@ export default function ChangePass() {
     return (
         <Main className={"max-w-1992"}
         >
-            <Sidebar show-menu={menuHandler} active="7" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.SECURITY} show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />
                 <ChangeMain variant="outlined">

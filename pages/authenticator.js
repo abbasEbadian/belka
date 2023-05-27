@@ -10,6 +10,7 @@ import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { SidebarLinkCode } from "../components/utils/types";
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -142,7 +143,7 @@ export default function Authenticator() {
             Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -240,7 +241,7 @@ export default function Authenticator() {
                 <link rel="shortcut icon" href="/images/fav.png" />
                 <title> </title>
             </Head> */}
-            <Sidebar show-menu={menuHandler} active="7" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.SECURITY} show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />
                 <ChangeMain className={stts.night == "true" ? "bg-gray" : ""}>

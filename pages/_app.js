@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import NightModeContext from "../components/Context";
 import BottomNav from "../components/BottomNav";
-import { theme } from "../components/settings";
+import { BASEURL, theme } from "../components/settings";
 
 
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -24,6 +24,7 @@ import Loading from '../components/Loading';
 import Login from './login';
 import Router from 'next/router';
 import NProgress from 'nprogress'
+import { useFetchUser } from '../components/hooks';
 
 // Create rtl cache
 const cacheRtl = createCache({
@@ -38,35 +39,37 @@ axios.interceptors.request.use((config) => {
         config.headers["Authorization"] = `Bearer ${token}`
     return config
 })
-axios.interceptors.response.use((config) =>{
-    
+axios.interceptors.response.use((config) => {
+
     return config
 },
     (error) => {
-        if(error?.response?.status === 401 && localStorage.getItem('token')){
+        if (error?.response?.status === 401 && localStorage.getItem('token')) {
             localStorage.removeItem('token');
             // window.location.reload()
         }
-            
+
         return Promise.reject(error)
     }
 )
 
 
 Router.onRouteChangeStart = () => {
-	NProgress.start();
+    NProgress.start();
 };
 
 Router.onRouteChangeComplete = () => {
-	NProgress.done();
+    NProgress.done();
 };
 
 Router.onRouteChangeError = () => {
-	NProgress.done();
+    NProgress.done();
 };
 
-const getToken = () => {
-    return typeof window !== 'undefined' && localStorage.getItem("token") || undefined
+const getToken = async () => {
+    if (typeof window === 'undefined') return Promise.resolve(undefined)
+    if (!localStorage.getItem("token")) return Promise.resolve(undefined)
+    return Promise.resolve((await axios.get(`${BASEURL}account/details/`)).status !== 401)
 }
 function MyApp({ Component, pageProps }) {
     const [night, setNight] = useState(true);
@@ -101,11 +104,15 @@ function MyApp({ Component, pageProps }) {
     const [queryClient] = React.useState(() => new QueryClient());
 
     useEffect(() => {
-        setTimeout(() => {
-            if(!getToken() && Component.protected) Router.push('/login')
-            setAuthenticated(getToken())
-            setCheckingAuth(false)
-        }, [2000])
+        const check = async() => {
+            const authenticated = await getToken()
+            if (!authenticated && Component.protected) Router.push('/login')
+            setAuthenticated(authenticated)
+            setTimeout( () => {
+                setCheckingAuth(false)
+            }, [2000])
+        }
+        check()
     }, [])
     return (
         <QueryClientProvider client={queryClient}>
@@ -120,23 +127,20 @@ function MyApp({ Component, pageProps }) {
                             }}
                         >
                             {
-                                Component.title? <Head>
+                                Component.title &&
+                                <Head>
                                     <title> {Component.title} </title>
-                                </Head>:null
+                                </Head>
                             }
                             {
-                                checkingAuth?
-                                <Loading/>:
-                                
-                                    
+                                checkingAuth ?
+                                    <Loading /> :
                                     <Component {...pageProps} />
-                                
-                               
                             }
-                                       
 
-                            
-                            
+
+
+
                             <ToastContainer
                                 rtl={true}
                                 position="top-center"

@@ -14,6 +14,7 @@ import { useFetchUser } from "../components/hooks";
 import { Button, Card, CircularProgress, FilledInput, Grid, Typography } from "@mui/material";
 import { ChevronLeft, CreditCard, Edit, Shield } from "@mui/icons-material";
 import Link from "next/link";
+import { SidebarLinkCode } from "../components/utils/types";
 const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;
@@ -235,7 +236,6 @@ const LeftBox = styled(Card)`
 `;
 const Alert = styled('div')`
     width: 473px;
-    height: 52px;
     background: #f6543e;
     border-radius: 8px;
     margin-left: auto;
@@ -284,7 +284,7 @@ Profile.title = ` صرافی ${SETTINGS.WEBSITE_NAME} | پروفایل`
 export default function Profile() {
     const [loading, setLoading] = useState(false);
 
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -295,7 +295,6 @@ export default function Profile() {
         return user?.avatar
     }, [user])
 
-    console.log(user)
     const profileChange = (e) => {
         let data = new FormData();
         data.append("file", e);
@@ -303,12 +302,12 @@ export default function Profile() {
         axios.post(`${BASEURL}account/avatar/`, data)
             .then((response) => {
                 toast.success(response.data.message);
-                changed();
+                // changed();
             })
             .catch((error) => {
 
                 toast.error("خطایی وجود دارد");
-                changed();
+                // changed();
             })
             .finally(d => setLoading(false))
     };
@@ -317,7 +316,7 @@ export default function Profile() {
     return (
         <>
             <div className="max-w-1992">
-                <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
+                <Sidebar show-menu={menuHandler} active={SidebarLinkCode.PROFILE} show={showMenu} />
 
                 <Content className={showMenu ? "pr-176 " : " pr-80"} >
                     <Header show-menu={menuHandler} />
@@ -396,7 +395,7 @@ export default function Profile() {
                                             profileChange(e.target.files["0"]);
                                         }}
                                     />
-                                    {(user.authentication_status != "accepted" && user.authentication_status) ? (
+                                    {(user.authentication_status != "accepted" && user.authentication_status || 1) ? (
                                         <Alert>
                                             <svg
                                                 width="25"

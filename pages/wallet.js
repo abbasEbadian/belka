@@ -18,6 +18,7 @@ import RialWithdraw from "../components/Wallet/RialWithdraw";
 import WalletTableC from "../components/Wallet/WalletTable";
 import { useFetchCoins, useFetchWallet } from '../components/hooks'
 import { Divider, Typography } from "@mui/material";
+import { SidebarLinkCode } from "../components/utils/types";
 
 
 const Main = styled('div')`
@@ -329,7 +330,7 @@ Wallet.title = `صرافی ${SETTINGS.WEBSITE_NAME} | کیف پول`
 
 export default function Wallet() {
     const [id, setId] = useState(null);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const [showCoinDeposit, setShowCoinDeposit] = useState(false);
     const [showCoinWithDrow, setShowCoinWithDrow] = useState(false);
     const [showRialDeposit, setShowRialDeposit] = useState(false);
@@ -422,7 +423,7 @@ export default function Wallet() {
         <>
             
             <Main >
-                <Sidebar show-menu={menuHandler} active="3" show={showMenu} />
+                <Sidebar show-menu={menuHandler} active={SidebarLinkCode.WALLET} show={showMenu} />
                 <Content className={showMenu ? "pr-176" : "pr-80"}>
                     <Header show-menu={menuHandler} />
                     <WalletMain className={blur ? " bg-blur" : ""}>

@@ -10,6 +10,7 @@ import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+import { SidebarLinkCode } from "../components/utils/types";
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -134,7 +135,7 @@ export default function Invite() {
             Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -190,7 +191,7 @@ export default function Invite() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Sidebar show-menu={menuHandler} active="6" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.INVITE} show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 <ToastContainer
                     rtl={true}

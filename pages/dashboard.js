@@ -21,6 +21,7 @@ import { useFetchOrders } from "../components/hooks/fetchOrders";
 import { Grid, Stack, Box, Card as MCard , Paper} from "@mui/material";
 import DashboardWallet from "../components/Dashboard/DashboardWallet";
 import DashboardHistory from "../components/Dashboard/DashboardHistory";
+import { SidebarLinkCode } from "../components/utils/types";
 
 const Main = styled(Box)`
    
@@ -253,7 +254,7 @@ Dashboard.title = `صرافی ${SETTINGS.WEBSITE_NAME} | داشبورد`
 export default function Dashboard() {
     console.log(typeof Chartsss);
     const [sourcePrice, setSourcePrice] = useState();
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const [selectedOption, setSelectedOption] = useState();
     const [selectedOptionTwo, setSelectedOptionTwo] = useState();
     const [calcRespons, setCalcRespons] = useState();
@@ -350,26 +351,10 @@ export default function Dashboard() {
             };
             axios(config)
                 .then((response) => {
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.success(response.data.message);
                 })
                 .catch((error) => {
-                    toast.error("خطایی وجود دارد", {
-                        position: "top-center",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
+                    toast.error("خطایی وجود دارد");
                 });
         }, 2600);
     };
@@ -420,7 +405,7 @@ export default function Dashboard() {
     return (
         <>
             <Main>
-                <Sidebar show-menu={menuHandler} active="1" show={showMenu} />
+                <Sidebar show-menu={menuHandler} active={SidebarLinkCode.DASHBOARD} show={showMenu} />
                 <Content className={showMenu ? "pr-176" : "pr-80"}>
                     <Header
                         show-menu={menuHandler}

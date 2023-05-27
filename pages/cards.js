@@ -15,6 +15,7 @@ import Head from "next/head";
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { useFetchBanks, useFetchCards } from "../components/hooks";
+import { SidebarLinkCode } from "../components/utils/types";
 
 
 
@@ -217,7 +218,7 @@ export default function Cards() {
 
     const stts = useContext(NightModeContext);
 
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -257,7 +258,7 @@ export default function Cards() {
     return (
         <>
             <div className="max-w-1992">
-                <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
+                <Sidebar show-menu={menuHandler} active={SidebarLinkCode.PROFILE} show={showMenu} />
                 {showModal ? (
                     <Modal>
                         <div className="modal-h">
@@ -365,7 +366,7 @@ export default function Cards() {
                             <h6 className="under-line">
                                 حساب یا کارت های متصل
                             </h6>
-                            {cards.map((item) => {
+                            {cards?.map((item) => {
                                 return (
                                     <Card key={item.card}>
                                         <div className="divs">

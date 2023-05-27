@@ -11,9 +11,10 @@ import axios from "axios";
 import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import { useFetchUser } from "../components/hooks";
+import { SidebarLinkCode } from "../components/utils/types";
+import { Box, Card, Typography } from "@mui/material";
 
-const Main = styled('div')`
-    background-color: #e4e3ef;
+const Main = styled(Box)`
     width: 100%;
     min-height: 100vh;
 `;
@@ -64,7 +65,6 @@ const Content = styled('div')`
 const AuthMain = styled('div')`
     padding: 32px;
     h2 {
-        color: #000;
         line-height: 25.74px;
         font-size: 18px;
         font-weight: 600;
@@ -72,10 +72,10 @@ const AuthMain = styled('div')`
 `;
 
 Auth.title = ` صرافی ${SETTINGS.WEBSITE_NAME} | احراز هویت`
+Auth.protected = true
 export default function Auth() {
-    const stts = useContext(NightModeContext);
 
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -86,12 +86,12 @@ export default function Auth() {
     return (
         <Main className={ "max-w-1992" } >
 
-            <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.PROFILE} show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 <Header show-menu={menuHandler} />
                 <AuthMain>
-                    <h2 className="bg-d-w">احراز هویت</h2>
-                    <Wizard  profile={profile} />
+                    <Typography variant="subtitle1" mb={2} >احراز هویت</Typography>
+                    { profile &&  <Wizard  profile={profile} /> }
                 </AuthMain>
             </Content>
         </Main>

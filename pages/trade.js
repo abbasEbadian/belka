@@ -13,6 +13,7 @@ import MarketPrices from '../components/market/market-prices';
 import { useFetchCoins, useFetchOrders, useFetchWallet } from "../components/hooks";
 import HistoryTableTrade from "../components/History/HistoryTableTrade";
 import { Divider, Typography } from "@mui/material";
+import { SidebarLinkCode } from "../components/utils/types";
 
 
 const Main = styled('div')`
@@ -517,7 +518,7 @@ export default function Dashboard() {
             // Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -947,7 +948,7 @@ export default function Dashboard() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Sidebar show-menu={menuHandler} active="2" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.TRADE} show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 {sellShowModal ? (
                     <div className="my-modal">

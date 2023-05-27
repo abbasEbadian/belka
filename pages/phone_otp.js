@@ -154,7 +154,7 @@ export default function Edit() {
             Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -212,7 +212,7 @@ export default function Edit() {
                 <title></title>
             </Head>
 
-            <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.PROFILE} show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />
                 <AuthMain>

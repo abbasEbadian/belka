@@ -9,116 +9,16 @@ import axios from "axios";
 import { BASEURL, SETTINGS } from "../components/settings";
 import NightModeContext from "../components/Context";
 import { toast, ToastContainer } from "react-toastify";
+import { Box, Card, Divider, FilledInput, Stack, TextField, Typography } from "@mui/material";
+import { useFetchUser } from "../components/hooks";
+import { LoadingButton } from "@mui/lab";
+import { SidebarLinkCode } from "../components/utils/types";
 
-const Main = styled('div')`
-    background-color: #e4e3ef;
-    width: 100%;
-    min-height: 100vh;
-`;
-const Content = styled('div')`
-    overflow: hidden;
-    transition: 0.1s all;
-    padding-bottom: 70px;
-    @media (max-width: 1300px) {
-        .mx-1200 {
-            flex-wrap: wrap;
-        }
-        .y-inv {
-            margin-right: 0;
-        }
-    }
 
-    @media (max-width: 992px) {
-        .mx-1200 {
-            flex-wrap: wrap;
-            flex-direction: column;
-            align-items: center;
-        }
-        .y-inv {
-            margin-right: 0;
-        }
-    }
-    @media (max-width: 786px) {
-    }
-    .scrollable {
-        max-height: 450px !important;
-        overflow-y: auto !important;
-        overflow-x: hidden;
-        tbody tr {
-            width: 336px;
-        }
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 9px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background-color: #00293957;
-            border-radius: 20px;
-            width: 5px;
-        }
-    }
-`;
 
-const AuthMain = styled('div')`
-    margin-top: 70px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    .box {
-        width: 625px;
-        height: 100%;
-        background: #ffffff;
-        border-radius: 16px;
-        padding-top: 32px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 50px;
-        p {
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 26px;
-        }
-        span {
-            font-size: 14px;
-            color: #777777;
-        }
-        input {
-            width: 264px;
-            height: 42px;
-            background-color: transparent;
-            border: 1px solid #dedede;
-            border-radius: 4px;
-            margin-top: 4px;
-            padding: 16px;
-        }
-        label {
-            display: flex;
-            flex-direction: column;
-            margin-top: 16px;
-        }
-    }
-`;
-const Submit = styled('button')`
-    width: 270px;
-    height: 42px;
-    border-radius: 8px;
-    transition: 0.3s all;
-    color: #fff;
-    background-color: #5965f9;
-    border-color: #5965f9;
-    margin-top: 60px !important;
-    :hover {
-        opacity: 0.83;
-    }
-    @media (max-width: 550px) {
-        height: 38px;
-    }
-`;
 
 Edit.title = `صرافی ${SETTINGS.WEBSITE_NAME} | اصلاح اطلاعات`
 export default function Edit() {
-    const stts = useContext(NightModeContext);
     useEffect(() => {
         if (
             localStorage.getItem("token") == null ||
@@ -127,46 +27,22 @@ export default function Edit() {
             Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
-    const [profile, setProfile] = useState([]);
+    const [showMenu, setShowMenu] = useState(false);
     const [adress, setAdress] = useState();
     const [postCode, setPostCode] = useState();
     const [phone, setPhone] = useState();
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
+    const { data: profile={} } = useFetchUser();
 
-    let token = "";
-    setTimeout(() => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 1000);
     useEffect(() => {
-        if (
-            localStorage.getItem("token") == null ||
-            typeof window == "undefined"
-        ) {
-            Router.push("/login");
-        }
-    }, []);
-    useEffect(() => {
-        setTimeout(() => {
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                url: `${BASEURL}account/details/`,
-                method: "GET",
-            };
-            axios(config)
-                .then((res) => {
-                    if (res.status == "200") {
-                        setProfile(res.data);
-                    }
-                })
-                .catch((error) => {});
-        }, 1200);
-    }, []);
+        setAdress( profile?.address )
+        setPostCode( profile?.address?.personal_date?.address?.post_code )
+        setPhone( profile?.address?.personal_date?.address?.phone )
+
+    }, [profile])
+
     const editHandler = (e) => {
         setTimeout((e) => {
             let data = new FormData();
@@ -176,7 +52,7 @@ export default function Edit() {
             let config = {
                 headers: {
                     "Content-type": "application/json",
-                    
+
                 },
                 method: "POST",
                 url: `${BASEURL}account/edit/`,
@@ -187,9 +63,9 @@ export default function Edit() {
                 .then((response) => {
                     response.data.error != 1
                         ? toast.success(response.data.message) &&
-                          setTimeout(() => {
-                              Router.push("/profile");
-                          }, 2000)
+                        setTimeout(() => {
+                            Router.push("/profile");
+                        }, 2000)
                         : toast.error(response.data.message);
                 })
                 .catch((error) => {
@@ -199,62 +75,49 @@ export default function Edit() {
     };
 
     return (
-        <Main
-            className={
-                stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
-            }
-        >
-        <Head>
-            {" "}
-            <link rel="shortcut icon" href="/images/fav.png" />
-            <title> </title>
-        </Head>
-
-            <Sidebar show-menu={menuHandler} active="5" show={showMenu} />
-            <Content className={showMenu ? "pr-176" : ""}>
+        <Box sx={{ minHeight: "100vh" }}>
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.PROFILE} show={showMenu} />
+            <Box  paddingLeft={{ lg: "240px" }}>
                 <Header show-menu={menuHandler} />
-                <AuthMain>
-                    <div
-                        className={
-                            stts.night == "true" ? "bg-gray box" : " box"
-                        }
-                    >
-                        <label>
-                            آدرس
-                            <input
-                                type="text"
-                                onChange={(e) => {
-                                    setAdress(e.target.value);
-                                }}
+                <Stack justifyContent={"center"} alignItems="center"  paddingTop={6}>
+                    <Card variant="outlined" sx={{maxWidth: 400}}>
+                        <Stack >
+                            <Typography variant="caption" sx={{ mb: 0.6 }}> آدرس </Typography>
+                            <FilledInput
+                                color="success"
+                                value={adress}
+                                onChange={(e) => setAdress(e.target.value)}
                             />
-                        </label>
-
-                        <label>
-                            کد پستی
-                            <input
-                                type="text"
-                                onChange={(e) => {
-                                    setPostCode(e.target.value);
-                                }}
+                            <Divider transparent sx={{ my: 1.5 }} />
+                            <Typography variant="caption" sx={{ mb: 0.6 }}> کد پستی </Typography>
+                            <FilledInput
+                                color="success"
+                                value={postCode}
+                                onChange={(e) => setPostCode(e.target.value)}
                             />
-                        </label>
 
-                        <label>
-                            شماره ثابت
-                            <input
-                                type="number"
-                                onChange={(e) => {
-                                    setPhone(e.target.value);
-                                }}
+                            <Divider transparent sx={{ my: 1.5 }} />
+                            <Typography variant="caption" sx={{ mb: 0.6 }}> شماره ثابت </Typography>
+                            <FilledInput
+                                color="success"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
                             />
-                        </label>
+                        </Stack>
 
-                        <Submit className="mt-3" onClick={editHandler}>
-                            تایید و ادامه
-                        </Submit>
-                    </div>
-                </AuthMain>
-            </Content>
-        </Main>
+
+
+                        <LoadingButton 
+                            sx={{ mt: 4 }} 
+                            onClick={editHandler} 
+                            fullWidth 
+                            color='info'
+                            variant="contained">
+                                تایید و ادامه
+                        </LoadingButton>
+                    </Card>
+                </Stack>
+            </Box>
+        </Box>
     );
 }

@@ -6,7 +6,7 @@ import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOu
 import MoneyOutlinedIcon from '@mui/icons-material/MoneyOutlined';
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 const BotNav = styled(BottomNavigation)(({theme}) => ({
     position: "fixed",
@@ -32,16 +32,17 @@ function BottomNav() {
     }
 
     return (
-        <BotNav  showLabels sx={{
+        <BotNav className='bottomnav' showLabels sx={{
             display: {
                 md: "none"
-            }
+            },
+            zIndex: 999
         }}>
-            <BottomNavigationAction label="خانه" icon={<OtherHousesIcon />} />
-            <BottomNavigationAction label="بازار" icon={<CandlestickChartOutlinedIcon />} />
-            <BottomNavigationAction label="تبدیل" icon={<CurrencyExchangeOutlinedIcon />} />
-            <BottomNavigationAction label="خرید" icon={<MoneyOutlinedIcon />} />
-            <BottomNavigationAction label="کیف" icon={<AccountBalanceWalletOutlinedIcon />} />
+            <BottomNavigationAction label="خانه" icon={<OtherHousesIcon />} onClick={() => Router.push("/")}></BottomNavigationAction>
+            <BottomNavigationAction label="بازار" icon={<CandlestickChartOutlinedIcon />} onClick={() => Router.push("/trade")} />
+            <BottomNavigationAction label="تبدیل" icon={<CurrencyExchangeOutlinedIcon />} onClick={() => Router.push("/dashboard")} />
+            <BottomNavigationAction label="خرید" icon={<MoneyOutlinedIcon />} onClick={() => Router.push("/change")} />
+            <BottomNavigationAction label="کیف" icon={<AccountBalanceWalletOutlinedIcon />} onClick={() => Router.push("/wallet")}/>
         </BotNav>
     )
 }

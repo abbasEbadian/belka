@@ -12,6 +12,7 @@ import Select from "react-select";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { Box, Button, Divider, InputAdornment, Stack, TextField, Typography } from "@mui/material";
+import { SidebarLinkCode } from "../components/utils/types";
 
 const Main = styled('div')`
    
@@ -417,7 +418,7 @@ export default function Change() {
             // Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -715,7 +716,7 @@ export default function Change() {
             className={"max-w-1992"}
         >
 
-            <Sidebar show-menu={menuHandler} active="10" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.CHANGE} show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 {sellShowModal ? (
                     <div className="my-modal">

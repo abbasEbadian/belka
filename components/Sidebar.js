@@ -5,6 +5,7 @@ import Router from "next/router";
 import NightModeContext from "./Context";
 import { Dashboard, History, Person, PersonAdd, Shield, SwapHoriz, SwapVert, Wallet } from "@mui/icons-material";
 import { Box, Paper } from "@mui/material";
+import { SidebarLinkCode } from "./utils/types";
 
 const SidebarMain = styled(Paper)`
     z-index: 100000;
@@ -36,10 +37,11 @@ const SidebarHeader = styled('div')`
     }
     @media (max-width: 992px) {
         img {
-            padding-left: 20px !important;
+            margin-inline: auto;
         }
         .close {
             display: block;
+            transform: translateX(-16px);
         }
         justify-content: flex-end;
         padding-left: 20px;
@@ -84,55 +86,55 @@ const SidebarUl = styled('ul')`
     }
 `;
 
-const Sidebar = (props) => {
+const Sidebar = ({ show: shouldShowSidebar, "show-menu": menuHandler, active: activeLink }) => {
     const stts = useContext(NightModeContext);
 
     return (
-        <SidebarMain  className={
-            props.show
+        <SidebarMain className={
+            shouldShowSidebar
                 ? ""
                 : "w-0"
         }>
             <div>
                 <SidebarHeader
                     className={stts.night == "true" ? "bor-l-b" : ""}
-                >   
-                {props["show"] && stts.night == "true" &&
-                     <img
-                        onClick={() => {
-                            Router.push("/");
-                        }}
-                        className="c-p"
-                        src="/images/logodark.png"
-                        width={75}
-                        alt="logo"
-                    />
+                >
+                    {shouldShowSidebar && stts.night == "true" &&
+                        <img
+                            onClick={() => {
+                                Router.push("/");
+                            }}
+                            className="c-p"
+                            src="/images/logodark.png"
+                            width={75}
+                            alt="logo"
+                        />
                     }
-                    {props["show"] && stts.night != "true" &&
-                     <img
-                        onClick={() => {
-                            Router.push("/");
-                        }}
-                        className="c-p"
-                        src="/images/logo2.png"
-                
-                        alt="logo"
-                    />
+                    {shouldShowSidebar && stts.night != "true" &&
+                        <img
+                            onClick={() => {
+                                Router.push("/");
+                            }}
+                            className="c-p"
+                            src="/images/logo2.png"
+
+                            alt="logo"
+                        />
                     }
-                    {!props["show"] &&
-                     <img
-                        onClick={() => {
-                            Router.push("/");
-                        }}
-                        className="c-p"
-                        src="/images/logo-close.png"
-                        width={48}
-                        height={48}
-                        alt="logo"
-                    />
+                    {!shouldShowSidebar &&
+                        <img
+                            onClick={() => {
+                                Router.push("/");
+                            }}
+                            className="c-p"
+                            src="/images/logo-close.png"
+                            width={48}
+                            height={48}
+                            alt="logo"
+                        />
                     }
                     <svg
-                        onClick={props["show-menu"]}
+                        onClick={menuHandler}
                         className={
                             stts.night == "true" ? "close svg-white" : "close"
                         }
@@ -148,85 +150,27 @@ const Sidebar = (props) => {
                         />
                     </svg>
                 </SidebarHeader>
-                <SidebarUl className={props.show ? "" : "op-0"}>
-                    <li
-                        className={props.active === "1" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/dashboard");
-                        }}
-                    >
-                        <Dashboard sx={{mr: 1}} />
-                        <span>داشبورد</span>
-                    </li>
-                    <li
-                        className={props.active === "2" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/trade");
-                        }}
-                    >
-                        <SwapHoriz sx={{mr: 1}}/>
+                <SidebarUl className={shouldShowSidebar ? "" : "op-0"}>
+                    {
+                        SidebarItems.map(item => {
+                            return <li key={item.title}
+                                className={activeLink === item.activeCode ? "active" : ""}
+                                onClick={() => {
+                                    menuHandler(false)
+                                    Router.push(item.route);
+                                }}
+                            >
+                                {item.iconComponent}
+                                <span> {item.title} </span>
+                            </li>
+                        })
+                    }
 
-                        <span>خرید و فروش</span>
-                    </li>
-                    <li
-                        className={props.active === "10" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/change");
-                        }}
-                    >
-                        <SwapVert sx={{mr: 1}}/>
-
-                        <span>خرید و فروش تتر</span>
-                    </li>
-                    <li
-                        className={props.active === "3" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/wallet");
-                        }}
-                    >
-                        <Wallet sx={{mr: 1}}/>
-                        <span>کیف پول</span>
-                    </li>
-                    <li
-                        className={props.active === "4" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/history");
-                        }}
-                    >
-                        <History sx={{mr: 1}}/>
-
-                        <span>تاریخچه</span>
-                    </li>
-                    <li
-                        className={props.active === "5" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/profile");
-                        }}
-                    >
-                        <Person sx={{mr: 1}}/>
-
-                        <span>حساب کاربری</span>
-                    </li>
-                    <li
-                        className={props.active === "7" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/security");
-                        }}
-                    >
-                       <Shield sx={{mr: 1}}/>
-
-                        <span>امنیت</span>
-                    </li>
-                    <li
-                        className={props.active === "6" ? "active" : ""}
-                        onClick={() => {
-                            Router.push("/invite");
-                        }}
-                    >
-                       <PersonAdd sx={{mr: 1}}/>
-
-                        <span>دعوت از دوستان</span>
-                    </li>
+                   
+                  
+                   
+                  
+                  
                 </SidebarUl>
             </div>
         </SidebarMain>
@@ -234,3 +178,50 @@ const Sidebar = (props) => {
 };
 
 export default Sidebar;
+
+const SidebarItems = [
+    {
+        title: 'داشبورد',
+        route: "/dashboard",
+        activeCode: SidebarLinkCode.DASHBOARD,
+        iconComponent: <Dashboard sx={{ mr: 1 }} />
+    },
+    {
+        title: 'خرید و فروش',
+        route: "/trade",
+        activeCode: SidebarLinkCode.TRADE,
+        iconComponent: <SwapHoriz sx={{ mr: 1 }} /> 
+    },
+    {
+        title: 'کیف پول',
+        route: "/wallet",
+        activeCode: SidebarLinkCode.WALLET,
+        iconComponent: <Wallet sx={{ mr: 1 }} /> 
+    },
+    {
+        title: 'تاریخچه',
+        route: "/history",
+        activeCode: SidebarLinkCode.HISTORY,
+        iconComponent: <History sx={{ mr: 1 }} /> 
+    },
+    {
+        title: 'حساب کاربری',
+        route: "/profile",
+        activeCode: SidebarLinkCode.PROFILE,
+        iconComponent: <Person sx={{ mr: 1 }} /> 
+    },
+    {
+        title: 'امنیت',
+        route: "/security",
+        activeCode: SidebarLinkCode.SECURITY,
+        iconComponent: <Shield sx={{ mr: 1 }} /> 
+    },
+    {
+        title: 'دعوت از دوستان',
+        route: "/invite",
+        activeCode: SidebarLinkCode.INVITE,
+        iconComponent: <PersonAdd sx={{ mr: 1 }} /> 
+    },
+
+
+]

@@ -78,7 +78,7 @@ export default function Register() {
             localStorage.setItem("token", response.data.access);
             localStorage.setItem("refresh_token", response.data.refresh);
 
-            Router.push({ pathname: '/dashabord' })
+            Router.push({ pathname: '/dashboard' })
         },
         onError: (error) => {
             toast.error(error);
@@ -88,7 +88,7 @@ export default function Register() {
         setShowPassword(s => !s)
     }
     return (
-        <Container sx={{ py: 5 }} maxWidth="sm">
+        <Container sx={{ py: 5, minHeight: "100vh" }} maxWidth="sm">
             <FormContainer onSubmit={register} noValidate>
                 <Card variant="outlined" sx={{ py: 3 }}>
                     <Stack >

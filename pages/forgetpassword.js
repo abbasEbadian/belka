@@ -90,7 +90,7 @@ export default function ForgetPassword() {
             });
     };
     return (
-        <Container sx={{ py: 5 }} maxWidth="sm">
+        <Container sx={{ py: 5, minHeight: "100vh" }} maxWidth="sm">
             <FormContainer onSubmit={sendCode} >
                 <Card variant="outlined" sx={{ py: 3 }}>
                     <Stack >

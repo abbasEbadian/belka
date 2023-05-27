@@ -75,7 +75,7 @@ export default function Login() {
 
 
     return (
-        <Container sx={{ py: 5 }} maxWidth="sm">
+        <Container sx={{ py: 5, minHeight: "100vh" }} maxWidth="sm">
             <FormContainer onSubmit={doLogin} >
             <Card variant="outlined" sx={{ py: 3}}>
                 <Stack >

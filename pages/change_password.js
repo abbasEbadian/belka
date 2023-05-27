@@ -11,6 +11,7 @@ import NightModeContext from "../components/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import { Card } from "@mui/material";
+import { SidebarLinkCode } from "../components/utils/types";
 
 const Main = styled('div')`
     background-color: #e4e3ef;
@@ -139,7 +140,7 @@ export default function ChangePass() {
             Router.push("/login");
         }
     }, []);
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const menuHandler = () => {
         setShowMenu(!showMenu);
     };
@@ -210,7 +211,7 @@ export default function ChangePass() {
                 stts.night == "true" ? "bg-dark-2 max-w-1992" : "max-w-1992"
             }
         >
-            <Sidebar show-menu={menuHandler} active="2" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.SECURITY} show={showMenu} />
             <Content className={showMenu ? "pr-176" : ""}>
                 <Header show-menu={menuHandler} />
                 <ChangeMain variant="outlined">

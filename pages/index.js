@@ -804,7 +804,7 @@ const Post = styled(Box)`
 
 
 export default function Home() {
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const [showSlider, setShowSlider] = useState(false);
     const [aboutActive, setAboutActive] = useState(1);
     const [activeBtn, setActiveBtn] = useState(1);

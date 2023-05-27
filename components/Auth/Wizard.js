@@ -9,15 +9,36 @@ import "react-toastify/dist/ReactToastify.css";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-const Main = styled('div')``;
+import { Button, Card, Stack } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { BASEURL } from "../settings";
+const Main = styled('div')`
+    @media (min-width: 768px) {
+        padding: 0 42px;
+    }
+    @media (max-width: 768px) {
+        span{
+            display: none;
+        }
+        .current span{
+            display: block;
+        }
+    }
+    
+`;
 const Circles = styled('div')`
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    
     .first {
-        right: 0px;
+        right: -60px;
     }
+    .current{
+        background-color: yellowgreen;
+    }
+    
 `;
 const Circle = styled('div')`
     width: 38px;
@@ -45,7 +66,7 @@ const Circle = styled('div')`
         font-size: 16px;
         font-weight: 600;
         span {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
         }
     }
@@ -53,7 +74,7 @@ const Circle = styled('div')`
 
 const Line = styled('div')`
     width: 100%;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #7778;
 `;
 
 const Content = styled('div')`
@@ -61,15 +82,12 @@ const Content = styled('div')`
     width: 100%;
     display: flex;
     justify-content: center;
-    .w-80 {
-        width: 80% !important;
-    }
+   
 `;
 
-const StepOne = styled('div')`
+const StepOne = styled(Card)`
     width: 625px;
     height: 285px;
-    background: #ffffff;
     border-radius: 16px;
     padding-top: 32px;
     display: flex;
@@ -110,16 +128,11 @@ const StepOne = styled('div')`
             width: 100%;
         }
     }
-    box-shadow: 5px 7px 26px -5px #9f9fbb55;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb55;
 `;
 
-const StepTwo = styled('div')`
-    box-shadow: 5px 7px 26px -5px #9f9fbb55;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb55;
+const StepTwo = styled(Card)`
     width: 625px;
     height: 565px;
-    background: #ffffff;
     border-radius: 16px;
     padding-top: 32px;
     display: flex;
@@ -174,12 +187,9 @@ const StepTwo = styled('div')`
     }
 `;
 
-const StepThree = styled('div')`
+const StepThree = styled(Card)`
     width: 625px;
-    box-shadow: 5px 7px 26px -5px #9f9fbb;
-    -webkit-box-shadow: 5px 7px 26px -5px #9f9fbb;
     height: 100%;
-    background: #ffffff;
     border-radius: 16px;
     padding-top: 32px;
     padding-bottom: 32px;
@@ -293,18 +303,15 @@ const Wizard = ({ profile }) => {
     const [shenasname, setShenasname] = useState(null);
     const [selfi, setSelfi] = useState(null);
     const [birthCertificateId, setBirthCertificateId] = useState("");
-    const [birthday, setBirthday] = useState(new Date());
+    const [birthday, setBirthday] = useState('');
     const [cardId, setCardId] = useState("");
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [postCode, setPostCode] = useState("");
     const [fatherName, setFatherName] = useState("");
-    console.log(birthCertificateId);
-    let token = "";
-    setTimeout((e) => {
-        if( typeof window !=='undefined' )token = localStorage.getItem("token");
-    }, 1000);
+
+
     const melliHanleChange = (file) => {
         if (file.target.files[0] !== undefined) {
             if (
@@ -324,7 +331,6 @@ const Wizard = ({ profile }) => {
             }
         }
     };
-    console.log(selfi);
     const shenasnameHanleChange = (file) => {
         if (file.target.files[0] !== undefined) {
             if (
@@ -365,81 +371,73 @@ const Wizard = ({ profile }) => {
     };
     const homePhoneHandler = (e) => {
         setSubHomePhone(true);
-     
+
     };
     const handlePinChange = (pinCode) => {
         setHomeCode(pinCode);
     };
-    const isPhoneAccepted = (e) => {
- 
- 
-     let data = {
-                action: "profile",
-                address: addres,
-                birth_certificate_id: birthCertificateId,
-                birthday: birthday
-                    .toLocaleDateString("fa-IR", {
-                        month: "2-digit",
-                        day: "2-digit",
-                        year: "numeric",
-                    })
-                    .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
-                    .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)),
-                card_id: cardId,
-                email: email,
-                first_name: profile.first_name,
-                last_name: profile.last_name,
-                father_name: fatherName,
-                phone: homeNumber,
-                post_code: postCode,
-            };
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                method: "POST",
-                url: `${BASEURL}account/manage/`,
-                data: data,
-            };
-			
-			    axios(config)
-                .then((response) => {
-                 
-				   response.data.error == 1
-                        ? toast.error(response.data.message)
-                        : setStep(3);
-				 
-				 
-				 
+    useEffect(() => {
+        if (!profile) return
+        setCardId(profile.personal_data?.national_id)
+        setEmail(profile.email)
+        setBirthday(profile.birthday)
+        setFatherName(profile.father_name)
+        setPostCode(profile.personal_data?.address?.post_code)
+        setAddres(profile.address)
+    }, [profile])
+
+    const submitStepOne = (e) => {
+
+
+        let data = {
+            action: "profile",
+            address: addres,
+            // birth_certificate_id: birthCertificateId,
+            birthday: typeof birthday === typeof new Date() ?birthday
+                .toLocaleDateString("fa-IR", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "numeric",
                 })
-                .catch((error) => {
-                    toast.error("خطایی وجود دارد");
-                });
- 
- 
+                .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
+                .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)): birthday,
+            card_id: cardId,
+            email: email,
+            first_name: profile.first_name,
+            last_name: profile.last_name,
+            father_name: fatherName,
+            phone: homeNumber,
+            post_code: postCode,
+        };
+
+
+        axios.post(`${BASEURL}account/manage/`, data)
+            .then((response) => {
+                toast(response.data.message, { type: response.data.error === 1 ? "error" : 'success' })
+                if (response.data.error == 0) {
+                    setStep(2);
+                }
+            })
+            .catch((error) => {
+                toast.error("خطایی وجود دارد");
+            });
+
+
     };
-    const verifyPhone = (e) => {};
+    const verifyPhone = (e) => { };
     const otpHandler = (e) => {
         setTimeout((e) => {
             let data = {
                 otp: homeCode,
             };
-            let config = {
-                headers: {
-                    "Content-type": "application/json",
-                    
-                },
-                method: "POST",
-                url: `${BASEURL}account/verify/phone/complete/`,
-                data: data,
-            };
 
-            axios(config)
+
+            axios.post(`${BASEURL}account/verify/phone/complete/`, data)
                 .then((response) => {
-                    response.data.error == 1
-                        ? toast.error(response.data.message)
-                        : setStep(3);
+                    toast(response.data.message, { type: response.data.error === 1 ? "error" : 'success' })
+                    if (response.data.error == 0) {
+                        setStep(3);
+                    }
                 })
                 .catch((error) => {
                     toast.error("خطایی وجود دارد");
@@ -465,47 +463,56 @@ const Wizard = ({ profile }) => {
             shenasname !== null ? shenasname.base64 : ""
         );
 
-        let config = {
-            headers: {
-                "Content-type": "application/json",
-                
-            },
-            method: "POST",
-            url: `${BASEURL}account/document/`,
-            data: data,
-        };
 
-        setTimeout(() => {
-            axios(config)
-                .then((response) => {})
-                .catch((error) => {
-                    toast.error("خطایی وجود دارد");
-                });
-        }, 3000);
+
+        axios.post(`${BASEURL}account/document/`, data)
+            .then((response) => {
+                toast(response.data.message, { type: response.data.error === 1 ? "error" : 'success' })
+                if (response.data.error == 0) {
+                    setStep(4);
+                }
+            })
+            .catch((error) => {
+                toast.error("خطایی وجود دارد");
+            });
     };
     return (
-        <Main>
+        <Main >
+            <Circles>
+                {
+                    STEPS.map((stepItem, idx) => {
+                        return <><Circle key={stepItem.step} className={stepItem.step === step ? 'current' : ''}>
+                            {
+                                stepItem.step < step &&
+                                <svg
+                                    width="17"
+                                    height="12"
+                                    viewBox="0 0 17 12"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
+                                        stroke="#30E0A1"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            }
+                            <span className={stepItem.titleClass}> {stepItem.title} </span>
+                        </Circle>
+                            {stepItem.step < idx && <Line />}
+                        </>
+                    })
+                }
+
+            </Circles>
             {step === 1 ? (
                 <>
-                    <Circles>
-                        <Circle>
-                            1<span className="first">آدرس و مشخصات</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            2<span>تلفن ثابت</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            3<span>آپلود مدارک</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            4<span>تایید هویت</span>
-                        </Circle>
-                    </Circles>
-                    <Content>
-                        <StepTwo>
+
+                    <Content >
+                        <StepTwo variant="">
                             <p>آدرس و اطلاعات شما</p>
                             <span>
                                 دقت کنید آدرس دقیق محل سکونت فعلی خود را وارد
@@ -523,15 +530,11 @@ const Wizard = ({ profile }) => {
                                     />
                                 </label>
                                 <label>
-                                    شماره شناسنامه
+                                    شماره تماس
                                     <input
                                         type="text"
-                                        value={birthCertificateId}
-                                        onChange={(e) => {
-                                            setBirthCertificateId(
-                                                e.target.value
-                                            );
-                                        }}
+                                        value={profile?.mobile}
+                                        disabled
                                     />
                                 </label>
                             </div>
@@ -591,53 +594,28 @@ const Wizard = ({ profile }) => {
                                     className="w-100"
                                 />
                             </label>
-                            <div className="d-flex justify-content-center w-100 px-4">
-                                <Submit
-                                    onClick={isPhoneAccepted}
-                                    className="mt-3"
+                            <div className="d-flex justify-content-center w-100 px-4 mt-4">
+
+                                <LoadingButton
+
+                                    variant="contained"
+                                    color="info"
+                                    onClick={submitStepOne}
+                                    sx={{ borderRadius: "600px", flexGrow: 1 }}
+
                                 >
                                     تایید و ادامه
-                                </Submit>
+
+                                </LoadingButton>
                             </div>
                         </StepTwo>
                     </Content>
                 </>
             ) : step === 2 ? (
                 <>
-                    <Circles>
-                        <Circle>
-                            <svg
-                                width="17"
-                                height="12"
-                                viewBox="0 0 17 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
-                                    stroke="#30E0A1"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                            <span className="first">آدرس و مشخصات</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            2<span>تلفن ثابت</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            3<span>آپلود مدارک</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            4<span>تایید هویت</span>
-                        </Circle>
-                    </Circles>
+
                     <Content>
-                        <StepOne>
+                        <StepOne variant="outlined">
                             {!subHomePhone ? (
                                 <>
                                     <p className="text-center">
@@ -653,22 +631,26 @@ const Wizard = ({ profile }) => {
                                             setHomeNumber(e.target.value);
                                         }}
                                     />
-                                    <div className="w-80 d-flex align-items-center justify-content-between">
-                                        <Submit
-                                            className="mt-5"
+                                    <Stack mt={6} alignItems={'center'} justifyContent={"space-between"} columnGap={2} flexDirection={'row'} sx={{ width: "100%", maxWidth: 340 }}  >
+                                        <LoadingButton
+                                            variant="contained"
+                                            color="info"
                                             onClick={homePhoneHandler}
+                                            sx={{ borderRadius: "600px", flexGrow: 1 }}
+
                                         >
                                             تایید
-                                        </Submit>
-                                        <BackBtn
-                                            className="mt-5"
+                                        </LoadingButton>
+                                        <Button
+                                            sx={{ borderRadius: "600px", flexGrow: 1 }}
+                                            color="neutral"
                                             onClick={(e) => {
                                                 setStep(1);
                                             }}
                                         >
                                             بازگشت
-                                        </BackBtn>
-                                    </div>
+                                        </Button>
+                                    </Stack>
                                 </>
                             ) : (
                                 <>
@@ -677,28 +659,35 @@ const Wizard = ({ profile }) => {
                                     </p>
                                     <div className="right mt-4">کد تایید</div>
                                     <div className="l-t-r">
-                                        <ReactCodeInput 
+                                        <ReactCodeInput
                                             onChange={handlePinChange}
                                             type="number"
                                             fields={5}
                                         />
                                     </div>
-                                    <div className="w-80 d-flex align-items-center justify-content-between">
-                                        <Submit
+                                    <Stack mt={6} alignItems={'center'} justifyContent={"space-between"} columnGap={2} flexDirection={'row'} sx={{ width: "100%", maxWidth: 340 }}  >
+
+                                        <LoadingButton
+                                            variant="contained"
+                                            color="info"
                                             onClick={otpHandler}
-                                            className="mt-5"
+                                            sx={{ borderRadius: "600px", flexGrow: 1 }}
+
                                         >
                                             تایید و ادامه
-                                        </Submit>
-                                        <BackBtn
-                                            className="mt-5"
+                                        </LoadingButton>
+                                        <Button
+                                            sx={{ borderRadius: "600px", flexGrow: 1 }}
+                                            color="neutral"
                                             onClick={(e) => {
+                                                setStep(1);
                                                 setSubHomePhone(!subHomePhone);
                                             }}
                                         >
                                             بازگشت
-                                        </BackBtn>
-                                    </div>
+                                        </Button>
+
+                                    </Stack>
                                 </>
                             )}
                         </StepOne>
@@ -706,55 +695,9 @@ const Wizard = ({ profile }) => {
                 </>
             ) : step === 3 ? (
                 <>
-                    <Circles>
-                        <Circle>
-                            <svg
-                                width="17"
-                                height="12"
-                                viewBox="0 0 17 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
-                                    stroke="#30E0A1"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                            <span className="first">آدرس و مشخصات</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            <svg
-                                width="17"
-                                height="12"
-                                viewBox="0 0 17 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
-                                    stroke="#30E0A1"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                            <span>تلفن ثابت</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            3<span>آپلود مدارک</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            4<span>تایید هویت</span>
-                        </Circle>
-                    </Circles>
+
                     <Content>
-                        <StepThree >
+                        <StepThree variant="outlined">
                             <p>آپلود مدارک</p>
                             <span>
                                 عکس کارت ملی به صورت پشت و رو همراه عکس شناسنامه
@@ -835,7 +778,7 @@ const Wizard = ({ profile }) => {
                                     </Upload>
                                 )}
                                 {shenasname !== null &&
-                                shenasname.lenght !== 0 ? (
+                                    shenasname.lenght !== 0 ? (
                                     <div className="success">
                                         تصویر با موفقیت آپلود شد
                                     </div>
@@ -968,94 +911,40 @@ const Wizard = ({ profile }) => {
                                     </Upload>
                                 )}
                             </Uploads>
-                            <div className="d-flex justify-content-between w-100 px-4">
-                                <BackBtn
+                            <Stack mt={6} alignItems={'center'} justifyContent={"space-between"} columnGap={2} flexDirection={'row'} sx={{ width: "100%", maxWidth: 340 }}  >
+
+
+
+                                <LoadingButton
+                                    variant="contained"
+                                    color="info"
+                                    onClick={uploadHandler}
+                                    sx={{ borderRadius: "600px", flexGrow: 1 }}
+
+                                >
+                                    تایید و ادامه
+                                </LoadingButton>
+                                <Button
+                                    sx={{ borderRadius: "600px", flexGrow: 1 }}
+                                    color="neutral"
                                     onClick={(e) => {
-                                       setStep(1);
+                                        setStep(2);
                                     }}
                                 >
                                     بازگشت
-                                </BackBtn>
-                                <Submit
-                                    onClick={uploadHandler}
-                                    className="mt-3"
-                                >
-                                    تایید و ادامه
-                                </Submit>
-                            </div>
+                                </Button>
+                            </Stack>
                         </StepThree>
                     </Content>
                 </>
             ) : (
                 <>
-                    <Circles>
-                        <Circle>
-                            <svg
-                                width="17"
-                                height="12"
-                                viewBox="0 0 17 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
-                                    stroke="#30E0A1"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
 
-                            <span className="first">آدرس و مشخصات</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            <svg
-                                width="17"
-                                height="12"
-                                viewBox="0 0 17 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
-                                    stroke="#30E0A1"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                            <span>تلفن ثابت</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            <svg
-                                width="17"
-                                height="12"
-                                viewBox="0 0 17 12"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.0813 0.925354L6.00667 11L0.970673 5.96269"
-                                    stroke="#30E0A1"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                            <span>آپلود مدارک</span>
-                        </Circle>
-                        <Line />
-                        <Circle>
-                            4<span>تایید هویت</span>
-                        </Circle>
-                    </Circles>
                     <Content>
                         <StepThree>
                             <p>آپلود مدارک</p>
                             <span>
-                         اطلاعات شما جهت بررسی به کارشناسان ما ارسال شد. بزودی نتیجه برای شما ارسال می شود .
+                                اطلاعات شما جهت بررسی به کارشناسان ما ارسال شد. بزودی نتیجه برای شما ارسال می شود .
                             </span>
                             <svg
                                 className="mt-5 mb-3"
@@ -1122,14 +1011,30 @@ const Wizard = ({ profile }) => {
                                 </defs>
                             </svg>
 
-                            <Submit
-                                onClick={(e) => {
-                                    Router.push("/dashboard");
-                                }}
-                                className="mt-3"
-                            >
-                                تایید
-                            </Submit>
+                            <Stack mt={6} alignItems={'center'} justifyContent={"space-between"} columnGap={2} flexDirection={'row'} sx={{ width: "100%", maxWidth: 340 }}  >
+
+
+
+                                <LoadingButton
+                                    variant="contained"
+                                    color="info"
+                                    onClick={() => Router.push("/dashboard")}
+                                    sx={{ borderRadius: "600px", flexGrow: 1 }}
+
+                                >
+                                    تایید
+                                </LoadingButton>
+                                <Button
+                                    sx={{ borderRadius: "600px", flexGrow: 1 }}
+                                    color="neutral"
+                                    onClick={(e) => {
+                                        setStep(2);
+                                    }}
+                                >
+                                    بازگشت
+                                </Button>
+                            </Stack>
+
                         </StepThree>
                     </Content>
                 </>
@@ -1139,3 +1044,26 @@ const Wizard = ({ profile }) => {
 };
 
 export default Wizard;
+
+const STEPS = [
+    {
+        step: 1,
+        title: "آدرس و مشخصات",
+        titleClass: "first",
+    },
+    {
+        step: 2,
+        title: "تلفن ثابت",
+        titleClass: "",
+    },
+    {
+        step: 3,
+        title: "آپلود مدارک",
+        titleClass: "",
+    },
+    {
+        step: 4,
+        title: "تایید هویت",
+        titleClass: "",
+    },
+]

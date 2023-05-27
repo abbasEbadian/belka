@@ -91,7 +91,13 @@ function WalletTableC({ wallet = [], coins = [] }) {
                   {idx + 1}
                 </Typography>
                 <Typography sx={{ width: "35%", flexShrink: 0 }} variant={isMobile ? "subtitle2" : "body1"}>
-                  {item.service.name}
+                  
+                  <Stack direction={"row"} columnGap={1}>
+                    <img src={item.service?.image} alt={item.service?.name} width={24} height={24} />
+                    <Typography>
+                    {item.service?.name}
+                    </Typography>
+                  </Stack>
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', width: "40%", }}>
                   <Typography variant='caption'> {item.service.small_name_slug} </Typography>
@@ -126,7 +132,13 @@ function WalletTableC({ wallet = [], coins = [] }) {
                   {wallet.length + idx}
                 </Typography>
                 <Typography sx={{ width: "35%", flexShrink: 0 }} variant={isMobile ? "subtitle2" : "body1"}>
-                  {item.name}
+                  <Stack direction={"row"} columnGap={1}>
+                    <img src={item.image} alt={item.name} width={24} height={24} />
+                    <Typography>
+                        {item.name}
+                    </Typography>
+                  </Stack>
+
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', width: "40%", }}>
                   <Typography variant='caption'> {item.small_name_slug} </Typography>

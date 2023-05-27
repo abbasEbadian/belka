@@ -10,6 +10,7 @@ import { useFetchOrders } from "../components/hooks";
 import HistoryTableTrade from "../components/History/HistoryTableTrade";
 import HistoryTableHistory from "../components/History/HistoryTableHistory";
 import { Divider, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { SidebarLinkCode } from "../components/utils/types";
 
 const Main = styled('div')`
     width: 100%;
@@ -151,7 +152,7 @@ const HistoryTable = styled('table')`
 `;
 History.title = `صرافی ${SETTINGS.WEBSITE_NAME} | تاریخچه معاملات`
 export default function History() {
-    const [showMenu, setShowMenu] = useState(true);
+    const [showMenu, setShowMenu] = useState(false);
     const [transactions, setTransactions] = useState([]);
     const [tabActive, setTabActive] = useState("trade");
     const menuHandler = () => {
@@ -166,7 +167,7 @@ export default function History() {
         <Main
             className={"max-w-1992"}
         >
-            <Sidebar show-menu={menuHandler} active="4" show={showMenu} />
+            <Sidebar show-menu={menuHandler} active={SidebarLinkCode.HISTORY} show={showMenu} />
             <Content className={showMenu ? "pr-176" : "pr-80"}>
                 <Header show-menu={menuHandler} />
                 <div className="p-32">
