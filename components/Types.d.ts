@@ -1,39 +1,46 @@
 import { AxiosError } from "axios"
 
 export interface Coin {
-    "id": number,
-    "name": string,
-    "image": string,
-    "small_name": string,
-    "small_name_slug": string,
-    "decimal": number,
-    "buyPrice": number,
-    "sellPrice": number,
-    "show_price_irt": number,
-    "fix_fee": number,
-    "trade_fee": number,
-    "min_buy_amount": number,
-    "min_sell_amount": number,
-    "quote_usd": {
-        "percent1h": number | null,
-        "percent24h": number | null,
-        "percent7d": number | null,
-        "percent30d": number | null
+    id: number,
+    name: string,
+    image: string,
+    small_name: string,
+    small_name_slug: string,
+    decimal: number,
+    buyPrice: number,
+    sellPrice: number,
+    show_price_irt: number,
+    fix_fee: number,
+    trade_fee: number,
+    min_buy_amount: number,
+    min_sell_amount: number,
+    quote_usd: {
+        percent1h: number | null,
+        percent24h: number | null,
+        percent7d: number | null,
+        percent30d: number | null
     },
-    "withdraw": {
-        "min": number,
-        "max": number,
-        "fee": number
+    withdraw: {
+        min: number,
+        max: number,
+        fee: number
     },
-    "deposit": {
-        "min": number,
-        "max": number,
-        "fee": number
+    deposit: {
+        min: number,
+        max: number,
+        fee: number
     },
-    "is_name_tag": boolean,
-    "is_stablecoin": boolean,
-    "network": any[],
-    "is_active": boolean
+    is_name_tag: boolean,
+    is_stablecoin: boolean,
+    network: {
+        id: number,
+        name: string,
+        realName: string,
+        addressRegex: string,
+        memoRegex: string,
+        explore_url: string
+    }[],
+    is_active: boolean
 }
 
 
