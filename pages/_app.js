@@ -44,7 +44,7 @@ axios.interceptors.response.use((config) => {
     return config
 },
     (error) => {
-        if (error?.response?.status === 401 && localStorage.getItem('token')) {
+        if ((error?.response?.status === 401 || error?.response?.status === 400) && localStorage.getItem('token')) {
             localStorage.removeItem('token');
             // window.location.reload()
         }
@@ -71,6 +71,7 @@ const getToken = async () => {
     if (!localStorage.getItem("token")) return Promise.resolve(undefined)
     return Promise.resolve((await axios.get(`${BASEURL}account/details/`)).status !== 401)
 }
+
 function MyApp({ Component, pageProps }) {
     const [night, setNight] = useState(true);
 
@@ -114,6 +115,7 @@ function MyApp({ Component, pageProps }) {
         }
         check()
     }, [])
+    
     return (
         <QueryClientProvider client={queryClient}>
             <CacheProvider value={cssCache}>

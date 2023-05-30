@@ -1,8 +1,7 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Stack, Typography, useMediaQuery } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Divider, Stack, Typography, useMediaQuery } from '@mui/material'
 import { GridExpandMoreIcon } from '@mui/x-data-grid'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTheme } from '@mui/material/styles';
-import GenerateWalletDialog from './GenerateWalletDialog';
 // import CoinDeposit from './CoinDeposit';
 import CoinDeposit from './CoinDeposit2';
 import RialDeposit from './RialDeposit2';
@@ -30,10 +29,6 @@ function WalletTableC({ wallet = [], coins = [] }) {
   const [coinWithdrawWallet, setCoinToWithdrawWallet] = useState({})
   const [showCoinWithdrawDialog, setShowCoinWithdrawDialog] = useState(false)
 
-
-
-  const [generateModalOpen, setGenerateModalOpen] = useState(false)
-  const [selectedCoinForGenerate, setSelectedCoinForGenerate] = useState({})
   const [expanded, setExpanded] = useState(null)
 
   const changeExpanded = (item) => {
@@ -81,6 +76,8 @@ function WalletTableC({ wallet = [], coins = [] }) {
 
   return (
     <Box>
+      <Typography variant="h6" >کیف پول شما</Typography >
+      <Divider transparent sx={{ mt: 2 }} />
       {
         wallet.map((item, idx) => {
           return <Accordion TransitionProps={{ unmountOnExit: true }} expanded={expanded === item.service.id} onChange={() => changeExpanded(item.service.id)} key={item.service.id}>
@@ -91,11 +88,11 @@ function WalletTableC({ wallet = [], coins = [] }) {
                   {idx + 1}
                 </Typography>
                 <Typography sx={{ width: "35%", flexShrink: 0 }} variant={isMobile ? "subtitle2" : "body1"}>
-                  
+
                   <Stack direction={"row"} columnGap={1}>
                     <img src={item.service?.image} alt={item.service?.name} width={24} height={24} />
                     <Typography>
-                    {item.service?.name}
+                      {item.service?.name}
                     </Typography>
                   </Stack>
                 </Typography>
@@ -120,65 +117,11 @@ function WalletTableC({ wallet = [], coins = [] }) {
           </Accordion>
         })
       }
-      {
-        coins.map((item, idx) => {
-          if (wallet.find(q => q.service.id === item.id)) return;
-
-          return <Accordion TransitionProps={{ unmountOnExit: true }} expanded={expanded === item.id} onChange={() => changeExpanded(item.id)} key={item.id}>
-            <AccordionSummary expandIcon={isMobile && <GridExpandMoreIcon />}
-            >
-              <Stack direction={'row'} sx={{ width: "100%" }}>
-                <Typography sx={{ width: 32, flexShrink: 0 }} variant={isMobile ? "subtitle2" : "body1"}>
-                  {wallet.length + idx}
-                </Typography>
-                <Typography sx={{ width: "35%", flexShrink: 0 }} variant={isMobile ? "subtitle2" : "body1"}>
-                  <Stack direction={"row"} columnGap={1}>
-                    <img src={item.image} alt={item.name} width={24} height={24} />
-                    <Typography>
-                        {item.name}
-                    </Typography>
-                  </Stack>
-
-                </Typography>
-                <Typography sx={{ color: 'text.secondary', width: "40%", }}>
-                  <Typography variant='caption'> {item.small_name_slug} </Typography>
-                  {0}
-                </Typography>
-                <Stack direction={"row"} spacing={2} display={{
-                  xs: "none",
-                  lg: "flex"
-                }}>
-                  <Button size="small" variant='outlined' color="success" onClick={() => openGenerateModal(item)}> واریز </Button>
-                  <Button size="small" variant='outlined' color="error" onClick={() => openGenerateModal(item)}>  برداشت</Button>
-                  <Button size="small" variant='outlined' color="info" onClick={() => openGenerateModal(item)}>  معامله</Button>
-                </Stack>
-              </Stack>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack direction={"row"} spacing={2} display={{
-                xs: "flex",
-                lg: "none"
-              }}>
-                <Button sx={{ flexGrow: 1 }} size="small" variant='outlined' color="success" onClick={() => openGenerateModal(item)}> واریز </Button>
-                <Button sx={{ flexGrow: 1 }} size="small" variant='outlined' color="error" onClick={() => openGenerateModal(item)}>  برداشت</Button>
-                <Button sx={{ flexGrow: 1 }} size="small" variant='outlined' color="info" onClick={() => openGenerateModal(item)}>  معامله</Button>
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
-        })
-      }
 
 
-      <GenerateWalletDialog
-        open={generateModalOpen}
-        setOpen={setGenerateModalOpen}
-        selectedCoin={selectedCoinForGenerate}
-      />
 
-      {/* <CoinDeposit
-          wallet={coinToDepositWallet}
-          setShowCoinDeposit={setShowCoinDepositDialog}
-      /> */}
+
+
 
       <CoinDeposit
         wallet={coinToDepositWallet}

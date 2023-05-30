@@ -4,7 +4,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box, Divider, InputAdornment, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
-import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASEURL } from '../settings';
 import { toast } from 'react-toastify';

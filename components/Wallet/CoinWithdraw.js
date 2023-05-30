@@ -6,6 +6,7 @@ import QRCode from "react-qr-code";
 import axios from "axios";
 import { BASEURL } from "../settings";
 import { Button, Divider, TextField, Typography } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 const Main = styled('div')`
     z-index: 10;
@@ -162,7 +163,7 @@ const CoinWithdraw = (props) => {
     };
     return (
         <Main>
-            {getOtp ? (
+            {getOtp? (
                 <div
                     className={
                         props.stts.night == "true" ? "bg-gray box" : " box"
@@ -170,33 +171,12 @@ const CoinWithdraw = (props) => {
                 >
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <span> برداشت از کیف پول شما</span>
-                        <svg
-                            onClick={() => {
-                                props.setBlur(false);
-                                props.setShowCoinWithDrow(false);
-                            }}
-                            className="c-p"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M12 20L20 12"
-                                stroke="#777777"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                            <path
-                                d="M20 20L12 12"
-                                stroke="#777777"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </svg>
+                        
+                        <Close color="primary" onClick={() => {
+                            props.setBlur(false);
+                            props.setShowCoinWithDrow(false);
+                        }}/>
+                    
                     </div>
                     <>
                         <Typography variant='body1'>لطفا کد تایید را وارد نمایید </Typography>
@@ -224,33 +204,10 @@ const CoinWithdraw = (props) => {
                 >
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <span>برداشت از کیف پول شما</span>
-                        <svg
-                            onClick={() => {
-                                props.setBlur(false);
-                                props.setShowCoinWithDrow(false);
-                            }}
-                            className="c-p"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M12 20L20 12"
-                                stroke="#777777"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                            <path
-                                d="M20 20L12 12"
-                                stroke="#777777"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </svg>
+                        <Close color="primary" onClick={() => {
+                            props.setBlur(false);
+                            props.setShowCoinWithDrow(false);
+                        }}/>
                     </div>
                     <p>
                         در صورت تمایل به برداشت موجودی کیف پول های خود ، درخواست
@@ -278,11 +235,7 @@ const CoinWithdraw = (props) => {
                             }}
                         />
                         <button
-                            className={
-                                props.stts.night == "true"
-                                    ? "color-white-2"
-                                    : " "
-                            }
+                            
                             onClick={() => {
                                 setValues(item.balance);
                             }}

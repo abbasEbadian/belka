@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { styled } from '@mui/material/styles';
 import Router from "next/router";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BASEURL, SETTINGS } from "../components/settings";
@@ -11,6 +10,7 @@ import Link from "next/link"
 import { LoadingButton } from "@mui/lab";
 import { useMutation } from "react-query";
 import ReactCodeInput from "react-code-input";
+import { URLS, api } from "./api/api";
 
 const FormContainer = styled('form')(({ theme }) => ({
     [`.react-code-input`]: {
@@ -34,17 +34,17 @@ const FormContainer = styled('form')(({ theme }) => ({
 
 
 const VERIFY_URLS = {
-    login: `${BASEURL}token/verify/`,
-    forgetpassword: `${BASEURL}token/password/verify/`,
+    login: URLS.LoginVerify,
+    forgetpassword: URLS.ForgetPasswordVerify,
 }
 const RESEND_URLS = {
-    login: `${BASEURL}token/otp/`,
-    forgetpassword: `${BASEURL}token/password/`,
+    login: URLS.Login,
+    forgetpassword:URLS.ForgetPassword,
 }
 
 Login.title = `صرافی ${SETTINGS.WEBSITE_NAME} | تایید کد`
 export default function Login() {
-    const [time, setTime] = useState(60)
+    const [time, setTime] = useState(1)
     const [code, setCode] = useState("")
     const query = Router.query
 
@@ -76,16 +76,20 @@ export default function Login() {
         e.preventDefault();
         e.stopPropagation();
 
-        const data = {}
-        if (utm === 'login') {
-            data["id"] = id
-            data["otp"] = code
-        } else if (utm === "forgetpassword") {
-            data["token_id"] = id
-            data["code"] = code
+        const data = new FormData()
+        data.set("mobile", mobile)
+        data.set("code", code)
+        const loginData = {
+            id,
+            otp:  code
+        }
+        let d = loginData
+        if (utm === "forgetpassword") {
+            api.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded"
+            d = data
         }
         const url = VERIFY_URLS[utm]
-        return axios.post(url, data);
+        return api.post(url, d);
     }, {
         onSuccess: (response) => {
             toast(response.data.message, { type: response.data.error ? 'error' : 'success' })
@@ -109,7 +113,7 @@ export default function Login() {
         if (utm === 'login') {
             data["password"] = loginPassword
         }
-        return axios.post(url, data)
+        return api.post(url, data)
     }, {
         onSuccess: (response) => {
             toast(response.data.message, { type: response.data.error ? 'error' : 'success' })
@@ -136,6 +140,7 @@ export default function Login() {
             } 
         },
         onError: (error) => {
+            console.log(error);
             toast.error('خطا در ارسال');
         }
     })
