@@ -2,9 +2,9 @@ import React from 'react'
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import NightModeContext from "../components/Context";
-import BottomNav from "../components/BottomNav";
-import { BASEURL, theme } from "../components/settings";
+import NightModeContext from "@/c/Context";
+import BottomNav from "@/c/BottomNav";
+import { BASEURL, theme } from "@/c/settings";
 
 
 import rtlPlugin from 'stylis-plugin-rtl';
@@ -20,11 +20,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import axios from 'axios';
 import Head from 'next/head';
-import Loading from '../components/Loading';
+import Loading from '@/c/Loading';
 import Login from './login';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress'
-import { useFetchUser } from '../components/hooks';
+import { useFetchUser } from '@/c/hooks';
 
 // Create rtl cache
 const cacheRtl = createCache({
@@ -75,6 +75,7 @@ const getToken = async () => {
 function MyApp({ Component, pageProps }) {
     const [night, setNight] = useState(true);
 
+    const router = useRouter()
     const [checkingAuth, setCheckingAuth] = useState(true)
     const [authenticated, setAuthenticated] = useState(false)
 
@@ -115,20 +116,21 @@ function MyApp({ Component, pageProps }) {
         }
         check()
     }, [])
-    
+        console.log(router.pathname);
     return (
         <QueryClientProvider client={queryClient}>
             <CacheProvider value={cssCache}>
                 <CacheProvider value={cacheRtl}>
                     <ThemeProvider theme={theme}>
-                        <CssBaseline />
+                        {router.pathname !== '/' && <CssBaseline />}
                         <NightModeContext.Provider
                             value={{
                                 night,
                                 setStatus,
                             }}
                         >
-                            {
+                            <Component {...pageProps} />
+                            {/* {
                                 Component.title &&
                                 <Head>
                                     <title> {Component.title} </title>
@@ -138,7 +140,7 @@ function MyApp({ Component, pageProps }) {
                                 checkingAuth ?
                                     <Loading /> :
                                     <Component {...pageProps} />
-                            }
+                            } */}
 
 
 

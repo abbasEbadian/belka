@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import MarketAppbar from '../../components/market/market-appbar';
-import MarketPrices from '../../components/market/market-prices';
-import BottomNav from '../../components/BottomNav';
+import MarketAppbar from '../@/c/market/market-appbar';
+import MarketPrices from '../@/c/market/market-prices';
+import BottomNav from '../@/c/BottomNav';
 import { useServiceStore } from '../../store/store'
-import CoinSelectDialog from '../../components/market/market-coin-selector';
-import { BASEURL } from '../../components/settings';
-import MarketOrders from '../../components/market/market-orders';
-import { useFetchCoins } from '../../components/hooks';
+import CoinSelectDialog from '../@/c/market/market-coin-selector';
+import { BASEURL } from '../@/c/settings';
+import MarketOrders from '../@/c/market/market-orders';
+import { useFetchCoins } from '../@/c/hooks';
 
 export default function Market( {  }) {
   const { setServices } = useServiceStore()

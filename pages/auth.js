@@ -1,17 +1,17 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/c/Sidebar";
 import { styled } from '@mui/material/styles';
-import Header from "../components/Header";
+import Header from "@/c/Header";
 import { useContext, useEffect, useState } from "react";
 import Router from "next/router";
 import Image from "next/image";
-import Wizard from "../components/Auth/Wizard";
+import Wizard from "@/c/Auth/Wizard";
 import axios from "axios";
-import { BASEURL, SETTINGS } from "../components/settings";
-import NightModeContext from "../components/Context";
-import { useFetchUser } from "../components/hooks";
-import { SidebarLinkCode } from "../components/utils/types";
+import { BASEURL, SETTINGS } from "@/c/settings";
+import NightModeContext from "@/c/Context";
+import { useFetchUser } from "@/c/hooks";
+import { SidebarLinkCode } from "@/c/utils/types";
 import { Box, Card, Typography } from "@mui/material";
 
 const Main = styled(Box)`

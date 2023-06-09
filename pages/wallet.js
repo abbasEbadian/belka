@@ -1,21 +1,20 @@
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/c/Sidebar";
 import { styled } from '@mui/material/styles';
-import Header from "../components/Header";
+import Header from "@/c/Header";
 import { useContext, useEffect, useState } from "react";
 
-import { BASEURL, SETTINGS } from "../components/settings";
+import { BASEURL, SETTINGS } from "@/c/settings";
 import "react-toastify/dist/ReactToastify.css";
-import CoinDeposit from "../components/Wallet/CoinDeposit";
-import CoinWithdraw from "../components/Wallet/CoinWithdraw";
-import NightModeContext from "../components/Context";
-import RialDeposit from "../components/Wallet/RialDeposit";
-import RialWithdraw from "../components/Wallet/RialWithdraw";
-import WalletTableC from "../components/Wallet/WalletTable";
-import { useFetchCoins, useFetchWallet } from '../components/hooks'
+import CoinDeposit from "@/c/Wallet/CoinDeposit";
+import CoinWithdraw from "@/c/Wallet/CoinWithdraw";
+import NightModeContext from "@/c/Context";
+import RialDeposit from "@/c/Wallet/RialDeposit";
+import RialWithdraw from "@/c/Wallet/RialWithdraw";
+import { useFetchCoins, useFetchWallet } from '@/c/hooks'
 import { Container, Divider, Typography } from "@mui/material";
-import { SidebarLinkCode } from "../components/utils/types";
-import CoinTable from "../components/Wallet/CoinTable";
-
+import { SidebarLinkCode } from "@/c/utils/types";
+import CoinTable from "@/c/Wallet/CoinTable";
+import WalletTableC from '@/c/Wallet/WalletTable'
 
 const Main = styled('div')`
    

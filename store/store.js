@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { BASEURL } from '../components/settings'
+import { BASEURL } from '@/c/settings'
 
 export const useServiceStore = create((set) => ({
   services: [],

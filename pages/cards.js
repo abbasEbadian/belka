@@ -1,21 +1,21 @@
 import Router from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
-import { BASEURL, SETTINGS } from "../components/settings";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import { BASEURL, SETTINGS } from "@/c/settings";
+import Header from "@/c/Header";
+import Sidebar from "@/c/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
 import Image from "next/image";
 import axios from "axios";
-import NightModeContext from "../components/Context";
+import NightModeContext from "@/c/Context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { useFetchBanks, useFetchCards } from "../components/hooks";
-import { SidebarLinkCode } from "../components/utils/types";
+import { useFetchBanks, useFetchCards } from "@/c/hooks";
+import { SidebarLinkCode } from "@/c/utils/types";
 
 
 

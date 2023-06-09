@@ -28,12 +28,13 @@ export const theme = createTheme({
       100: "#111111",
       200: "#1d1d1d",
       300: "#1f2533",
-      400: "#757b89"
+      400: "#757b89",
+      900: "#eee",
     },
     primary: {
-      light: "#feffc6",
-      main: '#fd961a',
-      dark: "#a05700",
+      light: "#e5f7f2",
+      main: '#01bc8d',
+      dark: "#0c9371",
       contrastText: "#fff"
     },
     secondary: {

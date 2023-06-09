@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Router from "next/router";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BASEURL, SETTINGS } from "../components/settings";
+import { BASEURL, SETTINGS } from "@/c/settings";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment, Card, Typography, Stack, Container, Divider, FilledInput, Button } from "@mui/material";
 import Link from "next/link"

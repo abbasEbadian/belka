@@ -4,24 +4,24 @@ import "bootstrap/dist/css/bootstrap.css";
 import { styled } from '@mui/material/styles';
 import { useContext, useEffect, useMemo, useState } from "react";
 import Router from "next/router";
-import { BASEURL, SETTINGS } from "../components/settings";
+import { BASEURL, SETTINGS } from "@/c/settings";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NightModeContext from "../components/Context";
+import NightModeContext from "@/c/Context";
 import axios from "axios";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import Header from "@/c/Header";
+import Sidebar from "@/c/Sidebar";
 import Marquee from "react-fast-marquee";
-import BuyComponent from "../components/Dashboard/BuyComponent";
-import SellComponent from "../components/Dashboard/SellComponent";
-import Change from "../components/Dashboard/Change";
-import { useFetchCoins } from "../components/hooks/fetchCoins";
-import { useFetchWallet } from "../components/hooks/fetchWallet";
-import { useFetchOrders } from "../components/hooks/fetchOrders";
+import BuyComponent from "@/c/Dashboard/BuyComponent";
+import SellComponent from "@/c/Dashboard/SellComponent";
+import Change from "@/c/Dashboard/Change";
+import { useFetchCoins } from "@/c/hooks/fetchCoins";
+import { useFetchWallet } from "@/c/hooks/fetchWallet";
+import { useFetchOrders } from "@/c/hooks/fetchOrders";
 import { Grid, Stack, Box, Card as MCard , Paper} from "@mui/material";
-import DashboardWallet from "../components/Dashboard/DashboardWallet";
-import DashboardHistory from "../components/Dashboard/DashboardHistory";
-import { SidebarLinkCode } from "../components/utils/types";
+import DashboardWallet from "@/c/Dashboard/DashboardWallet";
+import DashboardHistory from "@/c/Dashboard/DashboardHistory";
+import { SidebarLinkCode } from "@/c/utils/types";
 
 const Main = styled(Box)`
    

@@ -1,20 +1,20 @@
 import Router from "next/router";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { styled } from '@mui/material/styles';
-import { BASEURL, SETTINGS } from "../components/settings";
-import Header from "../components/Header";
-import Sidebar from "../components/Sidebar";
+import { BASEURL, SETTINGS } from "@/c/settings";
+import Header from "@/c/Header";
+import Sidebar from "@/c/Sidebar";
 import "bootstrap/dist/css/bootstrap.css";
 import axios from "axios";
-import NightModeContext from "../components/Context";
+import NightModeContext from "@/c/Context";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useFetchUser } from "../components/hooks";
+import { useFetchUser } from "@/c/hooks";
 import { Button, Card, CircularProgress, FilledInput, Grid, Typography } from "@mui/material";
 import { ChevronLeft, CreditCard, Edit, Shield } from "@mui/icons-material";
 import Link from "next/link";
-import { SidebarLinkCode } from "../components/utils/types";
+import { SidebarLinkCode } from "@/c/utils/types";
 const Content = styled('div')`
     overflow: hidden;
     transition: 0.1s all;

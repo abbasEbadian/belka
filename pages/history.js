@@ -1,16 +1,16 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/c/Sidebar";
 import { styled } from '@mui/material/styles';
-import Header from "../components/Header";
+import Header from "@/c/Header";
 import { useContext, useEffect, useState } from "react";
-import { BASEURL, SETTINGS } from "../components/settings";
-import NightModeContext from "../components/Context";
-import { useFetchOrders } from "../components/hooks";
-import HistoryTableTrade from "../components/History/HistoryTableTrade";
-import HistoryTableHistory from "../components/History/HistoryTableHistory";
+import { BASEURL, SETTINGS } from "@/c/settings";
+import NightModeContext from "@/c/Context";
+import { useFetchOrders } from "@/c/hooks";
+import HistoryTableTrade from "@/c/History/HistoryTableTrade";
+import HistoryTableHistory from "@/c/History/HistoryTableHistory";
 import { Divider, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
-import { SidebarLinkCode } from "../components/utils/types";
+import { SidebarLinkCode } from "@/c/utils/types";
 
 const Main = styled('div')`
     width: 100%;

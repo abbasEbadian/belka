@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { useState } from "react";
 import { styled } from '@mui/material/styles';
-import LandingFooter from "../components/LandingFooter";
-import LandingHeaders from "../components/LandingHeaders";
+import LandingFooter from "@/c/LandingFooter";
+import LandingHeaders from "@/c/LandingHeaders";
 import "bootstrap/dist/css/bootstrap.css";
-import { SETTINGS } from "../components/settings";
+import { SETTINGS } from "@/c/settings";
 
 const Main = styled('div')`
     background-color: #111;

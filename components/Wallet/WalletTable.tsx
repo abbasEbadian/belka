@@ -7,9 +7,15 @@ import CoinDeposit from './CoinDeposit2';
 import RialDeposit from './RialDeposit2';
 import RialWithdraw2 from './RialWithdraw2';
 import CoinWithdraw from './CoinWithdraw2';
+import Image from 'next/image';
+import { Coin, Wallet } from '../Types';
 
+interface IWalletTableC {
+  wallet: Wallet[],
+  coins: Coin[]
+}
 
-function WalletTableC({ wallet = [], coins = [] }) {
+function WalletTableC({ wallet = [], coins = [] }: IWalletTableC) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'), { noSsr: true });
 
@@ -29,18 +35,15 @@ function WalletTableC({ wallet = [], coins = [] }) {
   const [coinWithdrawWallet, setCoinToWithdrawWallet] = useState({})
   const [showCoinWithdrawDialog, setShowCoinWithdrawDialog] = useState(false)
 
-  const [expanded, setExpanded] = useState(null)
+  const [expanded, setExpanded] = useState<number | null>(null)
 
-  const changeExpanded = (item) => {
+  const changeExpanded = (item: number | null) => {
     if (!isMobile) return
     if (item === expanded) setExpanded(null)
     else setExpanded(item)
   }
 
-  const openGenerateModal = (coin) => {
-    setGenerateModalOpen(true)
-    setSelectedCoinForGenerate(coin)
-  }
+
 
   /**
    * Open deposit modal for rial or other coins
@@ -48,7 +51,7 @@ function WalletTableC({ wallet = [], coins = [] }) {
    * @param {object} wallet.service
    * @param {string} wallet.service.small_name_slug
    */
-  const openDepositModal = (wallet) => {
+  const openDepositModal = (wallet: Wallet) => {
     if (wallet.service.small_name_slug === "IRT") {
       setRialToDepositWallet(wallet)
       setShowRialDepositDialog(true)
@@ -64,7 +67,7 @@ function WalletTableC({ wallet = [], coins = [] }) {
    * @param {object} wallet.service
    * @param {string} wallet.service.small_name_slug
    */
-  const opeWithdrawModal = (wallet) => {
+  const opeWithdrawModal = (wallet: Wallet) => {
     if (wallet.service.small_name_slug === "IRT") {
       setRialToWithdrawWallet(wallet)
       setShowRialWithdrawDialog(true)
@@ -77,7 +80,7 @@ function WalletTableC({ wallet = [], coins = [] }) {
   return (
     <Box>
       <Typography variant="h6" >کیف پول شما</Typography >
-      <Divider transparent sx={{ mt: 2 }} />
+      <Divider  sx={{ mt: 2 }} />
       {
         wallet.map((item, idx) => {
           return <Accordion TransitionProps={{ unmountOnExit: true }} expanded={expanded === item.service.id} onChange={() => changeExpanded(item.service.id)} key={item.service.id}>
@@ -90,7 +93,7 @@ function WalletTableC({ wallet = [], coins = [] }) {
                 <Typography sx={{ width: "35%", flexShrink: 0 }} variant={isMobile ? "subtitle2" : "body1"}>
 
                   <Stack direction={"row"} columnGap={1}>
-                    <img src={item.service?.image} alt={item.service?.name} width={24} height={24} />
+                    <Image src={item.service?.image} alt={item.service?.name} width={24} height={24} />
                     <Typography>
                       {item.service?.name}
                     </Typography>

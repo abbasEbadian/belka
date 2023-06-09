@@ -1,9 +1,9 @@
-import LandingHeaders from "../components/LandingHeaders";
+import LandingHeaders from "@/c/LandingHeaders";
 import Head from "next/head";
 import { styled } from '@mui/material/styles';
-import LandingFooter from "../components/LandingFooter";
+import LandingFooter from "@/c/LandingFooter";
 import "bootstrap/dist/css/bootstrap.css";
-import { SETTINGS } from "../components/settings";
+import { SETTINGS } from "@/c/settings";
 
 const Main = styled('div')`
     background-color: #111;

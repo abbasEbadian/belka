@@ -1,5 +1,23 @@
 @import url(/fonts/fontiran.css);
-
+:root{
+    --white:#ffff;
+    --white200:#f7f7f7;
+    --white300:#EAECEF;
+    --white400:rgb(146, 152, 160);
+    --blue100:rgba(0, 13, 29, 0.6);
+    --gray:#423f38;
+    --dark:#000;
+    --blue900:#000d1d;
+    --red:#D32F2F;
+    --green:#01bc8d;
+    --opgreen:#e5f7f2;
+    --body-color:#0B0E11;
+    --blue:#0569ff;
+    
+    scrollbar-color: #00293957 !important;
+    scrollbar-width: 2px !important;
+    scrollbar-track-color: #108abb;
+}
 body {
     direction: rtl;
 }
@@ -29,11 +47,7 @@ body::-webkit-scrollbar-thumb {
     border-radius: 20px;
     width: 5px;
 }
-:root {
-    scrollbar-color: #00293957 !important;
-    scrollbar-width: 2px !important;
-    scrollbar-track-color: #108abb;
-}
+
 
 h2,h3 {
     color: #ffca3f
@@ -87,9 +101,7 @@ button {
     border: none ;
     outline: none !important;
 }
-button:hover {
-    opacity: 0.9;
-}
+
 body,
 p {
     line-height: 28px;

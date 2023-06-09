@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Router from "next/router";
-import { BASEURL } from "../components/settings";
+import { BASEURL } from "@/c/settings";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

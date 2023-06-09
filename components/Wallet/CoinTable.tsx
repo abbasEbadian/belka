@@ -3,10 +3,12 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Theme, useTheme } from '@mui/material/styles';
 import Image from 'next/image';
 import { Search } from '@mui/icons-material';
-import { Coin } from '../Types';
+import { Coin, Wallet } from '../Types';
 import GenerateWalletDialog from './GenerateWalletDialog';
-
-function CoinTable({ wallet = [], coins = [] }: {wallet:any[], coins: Coin[]}) {
+interface ICoinTable {
+  wallet:Wallet[], coins: Coin[]
+ }
+function CoinTable({ wallet = [], coins = [] }: ICoinTable) {
   const theme = useTheme<Theme>()
   const isMobile = useMediaQuery<boolean>(theme.breakpoints.down('lg'), { noSsr: true });
 
@@ -16,12 +18,10 @@ function CoinTable({ wallet = [], coins = [] }: {wallet:any[], coins: Coin[]}) {
   const [selectedCoinForGenerate, setSelectedCoinForGenerate] = useState<undefined |  Coin>(undefined)
 
 
-  const openGenerateModal = useCallback((coin: Coin) => {
-    return (coin:Coin) => {
-      setGenerateModalOpen(true)
-      setSelectedCoinForGenerate(coin)
-    }
-  }, [])
+  const openGenerateModal: (coin: Coin) => void = (coin:Coin) => {
+    setGenerateModalOpen(true)
+    setSelectedCoinForGenerate(coin)
+  }
 
 
   const filteredCoins = useMemo<Coin[]>(() => {

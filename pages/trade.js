@@ -1,19 +1,19 @@
 import Head from "next/head";
 import "bootstrap/dist/css/bootstrap.css";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "@/c/Sidebar";
 import { styled } from '@mui/material/styles';
-import Header from "../components/Header";
+import Header from "@/c/Header";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { BASEURL, SETTINGS } from "../components/settings";
-import NightModeContext from "../components/Context";
+import { BASEURL, SETTINGS } from "@/c/settings";
+import NightModeContext from "@/c/Context";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import MarketPrices from '../components/market/market-prices';
-import { useFetchCoins, useFetchOrders, useFetchWallet } from "../components/hooks";
-import HistoryTableTrade from "../components/History/HistoryTableTrade";
+import MarketPrices from '@/c/market/market-prices';
+import { useFetchCoins, useFetchOrders, useFetchWallet } from "@/c/hooks";
+import HistoryTableTrade from "@/c/History/HistoryTableTrade";
 import { Divider, Typography } from "@mui/material";
-import { SidebarLinkCode } from "../components/utils/types";
+import { SidebarLinkCode } from "@/c/utils/types";
 
 
 const Main = styled('div')`

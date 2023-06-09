@@ -61,3 +61,9 @@ export interface IAxiosError extends AxiosError {
         }
     }
 }
+
+declare module '@mui/material/Divider' {
+    interface DividerPropsVariantOverrides {
+      transparent: boolean;
+    }
+  }

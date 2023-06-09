@@ -1,19 +1,18 @@
 import React from "react";
 import { styled } from '@mui/material/styles';
 import Router from "next/router";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import {SETTINGS} from './settings'
+import Image from "next/image";
 const Footer = styled(Box)`
     display: flex;
     justify-content: space-around;
     padding: 40px;
-    background: #0c0c0c;
     margin-top: 50px;
     .d-ltr {
         direction: ltr !important;
     }
     h6 {
-        color: #fd961a;
         font-size: 16px;
         margin-bottom: 15px;
         line-height: 28px;
@@ -23,14 +22,12 @@ const Footer = styled(Box)`
         list-style: none;
         .title {
             margin-bottom: 5px;
-            color: #fff;
             font-size: 14px;
             font-weight: 600;
             line-height: 28px;
         }
         li {
             cursor: pointer;
-            color: #999;
             line-height: 28px;
             margin-bottom: 5px;
             color: #999;
@@ -49,12 +46,14 @@ const LandingFooter = () => {
     return (
         <Footer>
             <div>
-                <img src="/images/logo.png" width={130} alt="" />
+                <Image src="/images/logo.png" width={130} height={130} alt="" />
                 <ul>
-                    <li className="d-ltr">(98)9143708563</li>
+                    <li className="d-ltr">
+                        <a href='tel:+989143708563'  dir="ltr">(98)9123456789</a>
+                    </li>
                     <li>info@belkacrypto.com</li>
                     <li>
-                        <div className="d-flex align-items-center">
+                        <Stack  direction={"row"} alignItems={"center"} gap={2}>
                             <a
                                 target="blank"
                                 href="https://www.instagram.com/belkacrypto.exchange"
@@ -104,7 +103,7 @@ const LandingFooter = () => {
                                     transform="translate(0 -48.082)"
                                 />
                             </svg>
-                        </div>
+                        </Stack>
                     </li>
                     <li>
                         آدرس : <br />

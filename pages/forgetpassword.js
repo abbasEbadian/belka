@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import "bootstrap/dist/css/bootstrap.css";
 import Router from "next/router";
 import axios from "axios";
-import { BASEURL, SETTINGS } from "../components/settings";
+import { BASEURL, SETTINGS } from "@/c/settings";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
